@@ -309,6 +309,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
 
       const minTokenAmount = await bridgeContract.getMinTokenAmount(toNetwork?.code)
 
+      console.log('minTokenAmount :::', minTokenAmount)
       if (+sendAmount < +minTokenAmount.toString()) {
         setFormError({
           sendAmount: `Please enter amount at least ${+minTokenAmount.toString()}`,

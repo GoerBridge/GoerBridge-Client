@@ -25,7 +25,7 @@ const preEventTextMapping = (t: ContextApi['t'], userStatus: UserStatusEnum) => 
 
 const PreEventText: React.FC<React.PropsWithChildren<PreEventProps>> = ({ t, saleStatus, userStatus }) =>
   [SaleStatusEnum.Pending, SaleStatusEnum.Premint].includes(saleStatus) ? (
-    <Text data-theme="dark" fontSize="16px" color="text">
+    <Text data-theme="light" fontSize="16px" color="text">
       {preEventTextMapping(t, userStatus)}
     </Text>
   ) : null

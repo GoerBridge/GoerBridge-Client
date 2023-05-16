@@ -6,7 +6,7 @@ import Link from "../../Link/Link";
 import { socials } from "../config";
 
 const SocialLinks: React.FC<React.PropsWithChildren<FlexProps>> = ({ ...props }) => (
-  <Flex {...props} data-theme="dark">
+  <Flex {...props} data-theme="light">
     {socials.map((social, index) => {
       const iconProps = {
         width: "20px",

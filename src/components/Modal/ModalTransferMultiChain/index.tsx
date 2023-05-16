@@ -31,7 +31,7 @@ const ModalTransferMultiChain: React.FC<InjectedModalProps> = ({ onDismiss, data
 
     const params = {
       amount: (+sendAmount * 10 ** 18).toString(),
-      transactionFee: [0, 0],
+      transactionFee: [10, 10],
       toBlockchain: toNetwork.code,
       toAddress: address,
     }
@@ -42,7 +42,7 @@ const ModalTransferMultiChain: React.FC<InjectedModalProps> = ({ onDismiss, data
       params.toBlockchain,
       params.toAddress,
     )
-
+    console.log('estimatedGas ::', estimatedGas)
     callWithGasPrice(
       bridgeContract,
       methodName,
