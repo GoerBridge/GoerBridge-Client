@@ -34,7 +34,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ onDismiss }) => {
 
   return (
     <>
-      <Box mb="24px">
+      <Box mb="24px" >
         <Text fontSize="16px" fontWeight="600" mb="8px">
           {t('Your Address')}
         </Text>
@@ -43,7 +43,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ onDismiss }) => {
       <Box mb="8px">
         <Flex alignItems="center" mb="8px">
           <ChainLogo chainId={chainId} />
-          <Text fontSize="16px" fontWeight="600" ml="8px">
+          <Text fontSize="16px" fontWeight="600" ml="8px" >
             {chain?.name}
           </Text>
         </Flex>
@@ -125,7 +125,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ onDismiss }) => {
         </Flex>
       </Box> */}
 
-      <Button width="100%" margin="0 auto" onClick={handleLogout}>
+      <Button width="100%" margin="0 auto" onClick={handleLogout} style={{background: '#052C83'}}>
         {t('Disconnect Wallet')}
       </Button>
     </>

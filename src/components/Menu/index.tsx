@@ -1,7 +1,8 @@
 import styled from 'styled-components'
-import { Flex, Logo } from '@pancakeswap/uikit'
+import { Box, Flex, Logo, Text } from '@pancakeswap/uikit'
 import { NetworkSwitcher } from 'components/NetworkSwitcher'
 import UserWalletWithModal from './UserWalletWithModal'
+import { useRouter } from 'next/router'
 
 const MENU_HEIGHT = 140
 
@@ -41,19 +42,25 @@ const Footer = styled.div`
 `
 
 const Menu = ({ children }) => {
+
+  const router = useRouter()
+
   return (
     <WrapMenu>
       <div className="nav">
-        <Flex width="100%" height="100%">
+        <Flex >
           <Logo href="/" />
         </Flex>
-        <Flex alignItems="center" height="100%">
+        <Flex alignItems="center" style={{ justifyContent: "flex-end", gap:10 }}>
+          <Flex onClick={() => router.push("/history")} alignItems="center" style={{ gap: "10px", cursor: "pointer" }}> <img src="/images/history.svg" alt="history" /> History</Flex>
           <NetworkSwitcher />
-          <UserWalletWithModal />
+          <Flex width="200px" justifyContent="flex-end">
+            <UserWalletWithModal />
+          </Flex>
         </Flex>
       </div>
       <InnerBody>{children}</InnerBody>
-      <Footer>Coppy right EVM@2020</Footer>
+      <Footer>Copyright by <a href={process.env.NEXT_PUBLIC_APP_URL} style={{color: '#052C83'}}>GoerBridge.com</a></Footer>
     </WrapMenu>
   )
 }

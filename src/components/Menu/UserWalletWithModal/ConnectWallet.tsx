@@ -1,4 +1,4 @@
-import { Flex } from '@pancakeswap/uikit'
+import { Flex, Button } from '@pancakeswap/uikit'
 import { useActiveHandle } from 'hooks/useEagerConnect.bmp'
 import { useWallet } from 'hooks/useWallet'
 import styled from 'styled-components'
@@ -8,42 +8,38 @@ export const StyledUserMenu = styled(Flex)`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  width: 155px;
-  height: 36px;
-  padding: 4px 8px;
+  background-color: #fff;
+  border-radius:10px ;
+   /* width: 205px;
+  height: 36px; */
+  padding:6px 10px;
   margin-left: 0;
-  position: relative;
+  /* position: relative; */
 
-  border-radius: 0 12px 12px 0;
+  /* border-radius: 0 12px 12px 0;
   background-image: url('/images/button-right-2.png');
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: 3px;
+  background-position: 3px; */
 
-  ${({ theme }) => theme.mediaQueries.sm} {
+  /* ${({ theme }) => theme.mediaQueries.sm} {
     width: 290px;
     height: 44px;
     background-position: left center;
-  }
+  } */
 
   img {
-    width: auto;
-    height: 82%;
-    object-fit: contain;
-    margin-right: 6px;
-    display: none;
-
-    ${({ theme }) => theme.mediaQueries.sm} {
-      display: block;
-    }
+   height:20px ;
   }
 `
 export const LabelText = styled.div`
   font-size: 14px;
-  color: ${({ theme }) => theme.colors.text};
+  background:#EDF1F7 ;
+  color: #000;
   font-weight: 600;
+  padding:5px 15px ;
   margin-left: 16px;
-
+  border-radius:5px ;
   ${({ theme }) => theme.mediaQueries.sm} {
     font-size: 16px;
     margin-right: 4px;
@@ -65,11 +61,21 @@ const ConnectWallet = ({ account, onPresentWalletModal, ...props }: any) => {
     }
   }
   const accountEllipsis = account ? `${account.substring(0, 4)}...${account.substring(account.length - 4)}` : null
+
+  if (account) {
+    return (
+      <StyledUserMenu onClick={handleClick}>
+        {accountEllipsis && <img src="/images/icon-metamask.svg" alt="" />}
+        <LabelText>{accountEllipsis}</LabelText>
+      </StyledUserMenu>
+    )
+  }
+
   return (
-    <StyledUserMenu onClick={handleClick} {...props}>
-      {accountEllipsis && <img src="/images/user_wallet_icon.png" alt="" />}
-      <LabelText>{accountEllipsis || 'Connect Wallet'}</LabelText>
-    </StyledUserMenu>
+    <Button onClick={handleClick}>
+      Connect Wallet
+    </Button>
+
   )
 }
 

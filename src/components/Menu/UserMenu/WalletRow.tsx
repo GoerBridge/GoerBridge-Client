@@ -11,7 +11,7 @@ const Wrapper = styled(Flex)`
   align-items: center;
   /* background-color: ${({ theme }) => theme.colors.dropdown}; */
   height: 68px;
-  background: #000000;
+  /* background: #000000; */
   border-radius: 12px;
   position: relative;
 `

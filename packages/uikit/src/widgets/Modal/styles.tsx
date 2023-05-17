@@ -59,9 +59,9 @@ export const ModalBackButton: React.FC<React.PropsWithChildren<{ onBack: ModalPr
   );
 };
 
-export const ModalContainer = styled(MotionBox)<{ $maxWidth: string }>`
+export const ModalContainer = styled(MotionBox) <{ $maxWidth: string }>`
   overflow: hidden;
-  background: #111b1e;
+  background: #fff;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
   max-height: calc(var(--vh, 1vh) * 100);
@@ -73,7 +73,7 @@ export const ModalContainer = styled(MotionBox)<{ $maxWidth: string }>`
   min-height: 300px;
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    border: 1px solid rgba(0, 128, 55, 0.5);
+    /* border: 1px solid rgba(0, 128, 55, 0.5); */
     box-shadow: 0px 20px 36px -8px rgba(14, 14, 44, 0.1), 0px 1px 1px rgba(0, 0, 0, 0.05);
     border-radius: 12px;
   }

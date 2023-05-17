@@ -25,8 +25,10 @@ import { useWeb3React } from '../../../packages/wagmi/src/useWeb3React'
 import TransactionBridge from './components/TransactionBridge'
 import WInput from './components/WInput'
 import * as Styles from './styles'
+import SelectChain from './components/SelectChain'
+import ModalChain from 'components/ModalChain'
 
-const allBlockchain = [
+export const allBlockchain = [
   {
     _id: '63e7b77e84dfdbf804007cd5',
     code: 'BinanceSmartChainTest',
@@ -166,6 +168,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
   const { chainId } = useActiveWeb3React()
   const native = useNativeCurrency()
   const router = useRouter()
+  const [isShowPopup, setShowPopup] = useState(null)
 
   const { pendingChainId, isLoading, canSwitch, switchNetworkAsync } = useSwitchNetwork()
 
@@ -309,7 +312,6 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
 
       const minTokenAmount = await bridgeContract.getMinTokenAmount(toNetwork?.code)
 
-      console.log('minTokenAmount :::', minTokenAmount);
       if (+sendAmount < +minTokenAmount.toString()) {
         setFormError({
           sendAmount: `Please enter amount at least ${+minTokenAmount.toString()}`,
@@ -324,121 +326,164 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
     }
   }
 
+  const onClosePopupChain = (pChain: any) => {
+    if (pChain?.chainid) {
+      if (isShowPopup === "FROM") {
+        const chainList = allBlockchain.filter((item) => pChain.transfers.includes(item.chainid))
+        setToChainList(chainList)
+
+        setFetchCurrencyAttrParams({
+          blockchain_id: pChain?._id,
+        })
+
+        switchNetworkAsync(pChain.chainid).then((res) => {
+          if (res) {
+            setFormValue((prev) => ({
+              ...prev,
+              fromNetwork: pChain,
+              toNetwork: undefined,
+              currency: undefined,
+            }))
+          }
+        })
+
+        setFormError({
+          ...formError,
+          fromNetwork: '',
+        })
+        setShowPopup(null)
+      } else {
+        setFormValue((prev) => ({ ...prev, toNetwork: pChain }))
+        setFormError({
+          ...formError,
+          toNetwork: '',
+        })
+        setShowPopup(null)
+      }
+    } else {
+      setShowPopup(null)
+    }
+
+  }
+
   return (
     <Styles.StyledHome>
       <Styles.CardBridgeTransfer>
-        <div className="head">
-          <h1>Transfer</h1>
-          <p>Cross Chain Bridge</p>
-        </div>
+
         <div className="content">
           <div className="form">
             {/* From */}
-            <div className="wrap-input-item">
-              <Dropdown
-                position="top-left"
-                target={
-                  <WInput
-                    labelLeft="From Network"
-                    errorMess={formError.fromNetwork}
-                    disabled
-                    leftInput={
-                      <Styles.RightInputButton>
-                        {formValue?.fromNetwork ? (
-                          <>
-                            <Box className="wIcon">
-                              <ChainLogo chainId={formValue?.fromNetwork?.chainid} />
-                            </Box>
-                            <Text fontSize={[12, , 16]} style={{ whiteSpace: 'nowrap' }}>
-                              {formValue?.fromNetwork?.title}
-                            </Text>
-                          </>
-                        ) : (
-                          <Text color="#FFFFFF" fontSize={[12, , 14]}>
-                            Select Network
-                          </Text>
-                        )}
-                      </Styles.RightInputButton>
-                    }
-                    rightInput={<ArrowDownIcon />}
-                  />
-                }
-              >
-                <NetworkSelect
-                  chainId={chainId}
-                  blockchainList={allBlockchain}
-                  switchNetwork={(pChain) => {
-                    const chainList = allBlockchain.filter((item) => pChain.transfers.includes(item.chainid))
-                    setToChainList(chainList)
+            <SelectChain data={{ chainid: formValue?.fromNetwork?.chainid, title: formValue?.fromNetwork?.title }} onSelect={() => setShowPopup("FROM")} selectTitle='From' />
 
-                    setFetchCurrencyAttrParams({
-                      blockchain_id: pChain?._id,
-                    })
+            {/* Send amount */}
+            <Box background="#f5f7fc" paddingY="10px" paddingX="10px" borderRadius={"15px"} mb={2} mt={3}>
+              <div className="wrap-input-item">
+                <WInput
+                  value={formValue.sendAmount}
+                  labelLeft="Send amount"
+                  labelRight={
+                    <Flex>
+                      <button type="button" onClick={handleMaxSendAmount} style={{ fontSize: '12px', border: 0, marginRight: "10px", background: "#627feb", cursor: "pointer" }}>
+                        Max
+                      </button>
+                      <Text fontSize={[12, , 14]}> {formValue?.currency ? currencyBalance : '--'}</Text>
+                    </Flex>
 
-                    switchNetworkAsync(pChain.chainid).then((res) => {
-                      if (res) {
-                        setFormValue((prev) => ({
-                          ...prev,
-                          fromNetwork: pChain,
-                          toNetwork: undefined,
-                          currency: undefined,
-                        }))
+                  }
+                  inputType="number"
+                  errorMess={formError.sendAmount}
+                  textAlign="right"
+                  placeholder="0.00"
+                  rightInput={
+                    <Dropdown
+                      position="top-left"
+                      target={
+                        <Styles.RightInputButton>
+                          <Box className="wIcon">
+                            {formValue.currency ? (
+                              <img src={`/images/currencies/${formValue?.currency?.code}.png`} alt="" />
+                            ) : (
+                              <HelpIcon />
+                            )}
+                          </Box>
+                          <Box ml="1px">
+                            <ArrowDownIcon />
+                          </Box>
+                        </Styles.RightInputButton>
                       }
-                    })
+                    >
+                      <CurrencySelect
+                        currencySelect={formValue.currency}
+                        currencyListByChain={currencyByChain || []}
+                        allCurrency={allCurrency}
+                        switchCurrency={(pCurrency) => {
+                          const current = currencyByChain?.map((item) => {
+                            if (item.currency_id === pCurrency._id) {
+                              return {
+                                ...item,
+                                ...pCurrency,
+                              }
+                            }
+                            return []
+                          })
 
-                    setFormError({
-                      ...formError,
-                      fromNetwork: '',
-                    })
-                  }}
-                />
-              </Dropdown>
-            </div>
-            {/* To */}
-            <div className="wrap-input-item">
-              <Dropdown
-                position="top-left"
-                target={
-                  <WInput
-                    labelLeft="To Network"
-                    errorMess={formError.toNetwork}
-                    disabled
-                    leftInput={
-                      <Styles.RightInputButton>
-                        {formValue?.toNetwork ? (
-                          <>
-                            <Box className="wIcon">
-                              <ChainLogo chainId={formValue?.toNetwork?.chainid} />
-                            </Box>
-                            <Text fontSize={[12, , 16]} style={{ whiteSpace: 'nowrap' }}>
-                              {formValue?.toNetwork?.title}
-                            </Text>
-                          </>
-                        ) : (
-                          <Text color="#FFFFFF" fontSize={[12, , 14]}>
-                            Select Network
-                          </Text>
-                        )}
-                      </Styles.RightInputButton>
+                          setFormValue((prev) => ({
+                            ...prev,
+                            currency: current[0],
+                          }))
+                          setFormError({
+                            ...formError,
+                            sendAmount: '',
+                            receiveAmount: '',
+                          })
+                        }}
+                      />
+                    </Dropdown>
+                  }
+
+                  onUserInput={(v) => {
+                    if (+v > +currencyBalance) {
+                      setFormError((prev) => ({ ...prev, sendAmount: 'Insufficient balance' }))
+                    } else {
+                      setFormError((prev) => ({ ...prev, sendAmount: '' }))
+                      setFormValue((prev) => ({
+                        ...prev,
+                        sendAmount: v,
+                        receiveAmount: +v - +v * (+formValue.currency?.system_fee / 100),
+                      }))
                     }
-                    rightInput={<ArrowDownIcon />}
-                  />
-                }
-              >
-                <NetworkSelect
-                  chainId={chainId}
-                  blockchainList={toChainList}
-                  switchNetwork={(pChain) => {
-                    setFormValue((prev) => ({ ...prev, toNetwork: pChain }))
-                    setFormError({
-                      ...formError,
-                      toNetwork: '',
-                    })
                   }}
+                  style={{ textAlign: 'left'}}
                 />
-              </Dropdown>
-            </div>
-            {/* Address */}
+              </div>
+            </Box>
+            {/* To */}
+            <Flex alignItems="center" justifyContent="center" mb={2}>
+              <Button style={{ background: "transparent", boxShadow: "none" }} ><img src="/images/icon-arrow.svg" alt="arrow" /></Button>
+            </Flex>
+
+            <SelectChain data={{ chainid: formValue?.toNetwork?.chainid, title: formValue?.toNetwork?.title }} onSelect={() => setShowPopup("TO")} selectTitle='To' />
+            {/* Receive amount */}
+            <Box background="#f5f7fc" paddingY="10px" paddingX="10px" borderRadius={"15px"} mb={4} mt={3}>
+              <div className="wrap-input-item">
+                <WInput
+                  value={formValue.receiveAmount}
+                  labelLeft="Receive amount"
+                  disabled
+                  // labelRight={<Text fontSize={[12, , 14]}>Balance: {formValue?.currency ? currencyBalance : '--'}</Text>}
+                  inputType="number"
+                  errorMess={formError.receiveAmount}
+                  textAlign="right"
+                  placeholder="0.00"
+
+                  onUserInput={(v) => v}
+                  style={{ textAlign: 'left' }}
+                />
+              </div>
+
+            </Box>
+
+            { /* Address
             <div className="wrap-input-item">
               <WInput
                 value={formValue.address}
@@ -446,151 +491,14 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
                 errorMess={formError.address}
                 placeholder="0xd96b5........................EF1bF"
                 disabled
-                // onUserInput={(v) => setFormValue((prev) => ({ ...prev, address: v }))}
+              // onUserInput={(v) => setFormValue((prev) => ({ ...prev, address: v }))}
               />
-            </div>
-            {/* Send amount */}
-            <div className="wrap-input-item">
-              <WInput
-                value={formValue.sendAmount}
-                labelLeft="Send amount"
-                labelRight={<Text fontSize={[12, , 14]}>Balance: {formValue?.currency ? currencyBalance : '--'}</Text>}
-                inputType="number"
-                errorMess={formError.sendAmount}
-                textAlign="right"
-                placeholder="0.00"
-                leftInput={
-                  <Dropdown
-                    position="top-left"
-                    target={
-                      <Styles.RightInputButton>
-                        <Box className="wIcon">
-                          {formValue.currency ? (
-                            <img src={`/images/currencies/${formValue?.currency?.code}.png`} alt="" />
-                          ) : (
-                            <HelpIcon />
-                          )}
-                        </Box>
-                        <Box ml="8px">
-                          <ArrowDownIcon />
-                        </Box>
-                      </Styles.RightInputButton>
-                    }
-                  >
-                    <CurrencySelect
-                      currencySelect={formValue.currency}
-                      currencyListByChain={currencyByChain || []}
-                      allCurrency={allCurrency}
-                      switchCurrency={(pCurrency) => {
-                        const current = currencyByChain?.map((item) => {
-                          if (item.currency_id === pCurrency._id) {
-                            return {
-                              ...item,
-                              ...pCurrency,
-                            }
-                          }
-                          return []
-                        })
-
-                        setFormValue((prev) => ({
-                          ...prev,
-                          currency: current[0],
-                        }))
-                        setFormError({
-                          ...formError,
-                          sendAmount: '',
-                          receiveAmount: '',
-                        })
-                      }}
-                    />
-                  </Dropdown>
-                }
-                rightInput={
-                  <button className="btn-max" type="button" onClick={handleMaxSendAmount}>
-                    Max
-                  </button>
-                }
-                onUserInput={(v) => {
-                  if (+v > +currencyBalance) {
-                    setFormError((prev) => ({ ...prev, sendAmount: 'Insufficient balance' }))
-                  } else {
-                    setFormError((prev) => ({ ...prev, sendAmount: '' }))
-                    setFormValue((prev) => ({
-                      ...prev,
-                      sendAmount: v,
-                      receiveAmount: +v - +v * (+formValue.currency?.system_fee / 100),
-                    }))
-                  }
-                }}
-                style={{ textAlign: 'right' }}
-              />
-            </div>
-            {/* Receive amount */}
-            <div className="wrap-input-item">
-              <WInput
-                value={formValue.receiveAmount}
-                labelLeft="Receive amount"
-                disabled
-                // labelRight={<Text fontSize={[12, , 14]}>Balance: {formValue?.currency ? currencyBalance : '--'}</Text>}
-                inputType="number"
-                errorMess={formError.receiveAmount}
-                textAlign="right"
-                placeholder="0.00"
-                leftInput={
-                  <Dropdown
-                    position="top-left"
-                    target={
-                      <Styles.RightInputButton>
-                        <Box className="wIcon">
-                          {formValue?.currency ? (
-                            <img src={`/images/currencies/${formValue?.currency?.code}.png`} alt="" />
-                          ) : (
-                            <HelpIcon />
-                          )}
-                        </Box>
-                        <Box ml="8px">
-                          <ArrowDownIcon />
-                        </Box>
-                      </Styles.RightInputButton>
-                    }
-                  >
-                    <CurrencySelect
-                      currencySelect={formValue?.currency}
-                      currencyListByChain={currencyByChain || []}
-                      allCurrency={allCurrency}
-                      switchCurrency={(pCurrency) => {
-                        const current = currencyByChain?.map((item) => {
-                          if (item.currency_id === pCurrency._id) {
-                            return {
-                              ...item,
-                              ...pCurrency,
-                            }
-                          }
-                          return []
-                        })
-
-                        setFormValue((prev) => ({
-                          ...prev,
-                          currency: current[0],
-                        }))
-                      }}
-                    />
-                  </Dropdown>
-                }
-                rightInput={
-                  <button className="btn-max" type="button" disabled>
-                    Max
-                  </button>
-                }
-                onUserInput={(v) => v}
-                style={{ textAlign: 'right' }}
-              />
-            </div>
+            </div> */ }
           </div>
           {formValue.fromNetwork && formValue.currency && formValue.sendAmount > 0 && (
             <div className="card-info">
               <Flex justifyContent="space-between" mb="8px">
-                <Text fontSize={['14px', '', '16px']} color="#008037">
+                <Text fontSize={['14px', '', '16px']} color="#052C83">
                   System Fee ({formValue.currency?.system_fee || '--'}%):
                 </Text>
                 <Text fontSize={['14px', '', '16px']} color="#F98C36">
@@ -598,7 +506,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
                 </Text>
               </Flex>
               <Flex justifyContent="space-between" mb="8px">
-                <Text fontSize={['14px', '', '16px']} color="#008037">
+                <Text fontSize={['14px', '', '16px']} color="#052C83">
                   Gas Fee:
                 </Text>
                 <Text fontSize={['14px', '', '16px']} color="#F98C36">
@@ -606,7 +514,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
                 </Text>
               </Flex>
               <Flex justifyContent="space-between" mb="8px">
-                <Text fontSize={['14px', '', '16px']} color="#008037">
+                <Text fontSize={['14px', '', '16px']} color="#052C83">
                   Estimated Time:
                 </Text>
                 <Text fontSize={['14px', '', '16px']} color="#F98C36">
@@ -624,7 +532,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
           <div className="form-action">
             {account ? (
               <Button onClick={handleTransfer} disabled={formIsValid}>
-                {formValue.sendAmount === 'Insufficient balance' ? 'Insufficient balance' : 'Transfer'}
+                {formValue.sendAmount === 'Insufficient balance' ? 'Insufficient balance' : 'Cross-Chain Transfer'}
               </Button>
             ) : (
               <ConnectWalletButton />
@@ -632,8 +540,11 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
           </div>
         </div>
       </Styles.CardBridgeTransfer>
-
-      <TransactionBridge transactionList={transactionList} chainList={allBlockchain} />
+      <ModalChain
+        isOpen={isShowPopup === "FROM" || isShowPopup === "TO"}
+        data={{ blockchainList: isShowPopup === "FROM" ? allBlockchain : toChainList, chainId, titlePopup: isShowPopup === "TO" ? "Select Destination Chain" : "Select Source Chain" }}
+        onRequestClose={onClosePopupChain}
+      />
     </Styles.StyledHome>
   )
 }

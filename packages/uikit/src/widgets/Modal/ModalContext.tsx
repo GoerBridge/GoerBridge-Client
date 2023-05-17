@@ -37,6 +37,7 @@ const ModalWrapper = styled(m.div)`
   z-index: ${({ theme }) => theme.zIndices.modal - 1};
   will-change: opacity;
   opacity: 0;
+  background: rgba(0,0,0,0.7);
   &.appear {
     animation: ${appearAnimation} 0.3s ease-in-out forwards;
     ${ModalContainer} {

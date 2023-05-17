@@ -11,7 +11,7 @@ const Wrapper = styled(Flex)`
   align-items: center;
   /* background-color: ${({ theme }) => theme.colors.dropdown}; */
   height: 68px;
-  background: #000000;
+  /* background: #000000; */
   border-radius: 12px;
   position: relative;
 `
@@ -62,7 +62,7 @@ const CopyAddress: React.FC<React.PropsWithChildren<CopyAddressProps>> = ({ acco
         </Address>
         <Flex margin="12px 24px">
           <CopyText text={account} tooltipMessage={t('Copied')} tooltipTop={-40}>
-            <Text color="#008037" style={{ cursor: 'pointer' }}>
+            <Text color="#052C83" style={{ cursor: 'pointer' }}>
               Copy
             </Text>
           </CopyText>

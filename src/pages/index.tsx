@@ -1,4 +1,4 @@
-import Home from 'views/Home'
+import Home from 'views/Home_v2'
 import { chains } from 'utils/wagmi'
 
 const pageSupportedChains = chains.map((chain) => chain.id)

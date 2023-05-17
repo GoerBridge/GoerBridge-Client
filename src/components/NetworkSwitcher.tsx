@@ -29,38 +29,23 @@ import { ChainLogo } from './Logo/ChainLogo'
 export const StyledUserMenu = styled(Flex)`
   align-items: center;
   cursor: pointer;
-  display: inline-flex;
-  width: 72px;
-  height: 36px;
+  display: inline-flex; 
   padding: 4px 8px;
   padding-left: 60px;
   position: relative;
   z-index: 10;
-
-  border-radius: 12px 0 0 12px;
-
-  background-image: url('/images/button-left.png');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: right center;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    width: 290px;
-    height: 44px;
-  }
-
+  padding:5px 15px;
+  border-radius: 10px;
+  background-color:#fff ;
+  gap:10px;
   img {
-    width: auto;
-    height: 82%;
-    position: absolute;
-    top: 50%;
-    left: 10px;
-    transform: translateY(-50%);
+   width:30px;   
   }
 `
 const NetworkSelectContentStyle = styled.div`
   padding: 16px;
-  display: flex;
-  flex-direction: column;
+  /* display: flex;
+  flex-direction: column; */
 
   border-radius: 8px;
   box-shadow: -2px -2px 2px #1e3238, inset 0px -2px 1px #001015;
