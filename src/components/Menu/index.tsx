@@ -1,8 +1,8 @@
 import styled from 'styled-components'
-import { Box, Flex, Logo, Text } from '@pancakeswap/uikit'
+import { Flex, Logo } from '@pancakeswap/uikit'
 import { NetworkSwitcher } from 'components/NetworkSwitcher'
-import UserWalletWithModal from './UserWalletWithModal'
 import { useRouter } from 'next/router'
+import UserWalletWithModal from './UserWalletWithModal'
 
 const MENU_HEIGHT = 140
 
@@ -42,17 +42,19 @@ const Footer = styled.div`
 `
 
 const Menu = ({ children }) => {
-
   const router = useRouter()
 
   return (
     <WrapMenu>
       <div className="nav">
-        <Flex >
+        <Flex>
           <Logo href="/" />
         </Flex>
-        <Flex alignItems="center" style={{ justifyContent: "flex-end", gap:10 }}>
-          <Flex onClick={() => router.push("/history")} alignItems="center" style={{ gap: "10px", cursor: "pointer" }}> <img src="/images/history.svg" alt="history" /> History</Flex>
+        <Flex alignItems="center" style={{ justifyContent: 'flex-end', gap: 10 }}>
+          <Flex onClick={() => router.push('/history')} alignItems="center" style={{ gap: '10px', cursor: 'pointer' }}>
+            {' '}
+            <img src="/images/history.svg" alt="history" /> History
+          </Flex>
           <NetworkSwitcher />
           <Flex width="200px" justifyContent="flex-end">
             <UserWalletWithModal />
@@ -60,7 +62,12 @@ const Menu = ({ children }) => {
         </Flex>
       </div>
       <InnerBody>{children}</InnerBody>
-      <Footer>Copyright by <a href={process.env.NEXT_PUBLIC_APP_URL} style={{color: '#052C83'}}>GoerBridge.com</a></Footer>
+      <Footer>
+        Copyright by{' '}
+        <a href={process.env.NEXT_PUBLIC_APP_URL} style={{ color: '#052C83' }}>
+          GoerBridge.com
+        </a>
+      </Footer>
     </WrapMenu>
   )
 }

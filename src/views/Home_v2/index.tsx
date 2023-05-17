@@ -21,12 +21,12 @@ import { useGasFee } from 'hooks/useGasFee'
 import { useRouter } from 'next/dist/client/router'
 import { useFetchTransaction, useTransactionList } from 'state/home/fetchTransaction'
 import { formatBigNumber } from 'utils/formatBalance'
+import ModalChain from 'components/ModalChain'
 import { useWeb3React } from '../../../packages/wagmi/src/useWeb3React'
 import TransactionBridge from './components/TransactionBridge'
 import WInput from './components/WInput'
 import * as Styles from './styles'
 import SelectChain from './components/SelectChain'
-import ModalChain from 'components/ModalChain'
 
 export const allBlockchain = [
   {
@@ -328,7 +328,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
 
   const onClosePopupChain = (pChain: any) => {
     if (pChain?.chainid) {
-      if (isShowPopup === "FROM") {
+      if (isShowPopup === 'FROM') {
         const chainList = allBlockchain.filter((item) => pChain.transfers.includes(item.chainid))
         setToChainList(chainList)
 
@@ -363,32 +363,43 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
     } else {
       setShowPopup(null)
     }
-
   }
 
   return (
     <Styles.StyledHome>
       <Styles.CardBridgeTransfer>
-
         <div className="content">
           <div className="form">
             {/* From */}
-            <SelectChain data={{ chainid: formValue?.fromNetwork?.chainid, title: formValue?.fromNetwork?.title }} onSelect={() => setShowPopup("FROM")} selectTitle='From' />
+            <SelectChain
+              data={{ chainid: formValue?.fromNetwork?.chainid, title: formValue?.fromNetwork?.title }}
+              onSelect={() => setShowPopup('FROM')}
+              selectTitle="From"
+            />
 
             {/* Send amount */}
-            <Box background="#f5f7fc" paddingY="10px" paddingX="10px" borderRadius={"15px"} mb={2} mt={3}>
+            <Box background="#f5f7fc" paddingY="10px" paddingX="10px" borderRadius="15px" mb={2} mt={3}>
               <div className="wrap-input-item">
                 <WInput
                   value={formValue.sendAmount}
                   labelLeft="Send amount"
                   labelRight={
                     <Flex>
-                      <button type="button" onClick={handleMaxSendAmount} style={{ fontSize: '12px', border: 0, marginRight: "10px", background: "#627feb", cursor: "pointer" }}>
+                      <button
+                        type="button"
+                        onClick={handleMaxSendAmount}
+                        style={{
+                          fontSize: '12px',
+                          border: 0,
+                          marginRight: '10px',
+                          background: '#627feb',
+                          cursor: 'pointer',
+                        }}
+                      >
                         Max
                       </button>
                       <Text fontSize={[12, , 14]}> {formValue?.currency ? currencyBalance : '--'}</Text>
                     </Flex>
-
                   }
                   inputType="number"
                   errorMess={formError.sendAmount}
@@ -440,7 +451,6 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
                       />
                     </Dropdown>
                   }
-
                   onUserInput={(v) => {
                     if (+v > +currencyBalance) {
                       setFormError((prev) => ({ ...prev, sendAmount: 'Insufficient balance' }))
@@ -453,18 +463,24 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
                       }))
                     }
                   }}
-                  style={{ textAlign: 'left'}}
+                  style={{ textAlign: 'left' }}
                 />
               </div>
             </Box>
             {/* To */}
             <Flex alignItems="center" justifyContent="center" mb={2}>
-              <Button style={{ background: "transparent", boxShadow: "none" }} ><img src="/images/icon-arrow.svg" alt="arrow" /></Button>
+              <Button style={{ background: 'transparent', boxShadow: 'none' }}>
+                <img src="/images/icon-arrow.svg" alt="arrow" />
+              </Button>
             </Flex>
 
-            <SelectChain data={{ chainid: formValue?.toNetwork?.chainid, title: formValue?.toNetwork?.title }} onSelect={() => setShowPopup("TO")} selectTitle='To' />
+            <SelectChain
+              data={{ chainid: formValue?.toNetwork?.chainid, title: formValue?.toNetwork?.title }}
+              onSelect={() => setShowPopup('TO')}
+              selectTitle="To"
+            />
             {/* Receive amount */}
-            <Box background="#f5f7fc" paddingY="10px" paddingX="10px" borderRadius={"15px"} mb={4} mt={3}>
+            <Box background="#f5f7fc" paddingY="10px" paddingX="10px" borderRadius="15px" mb={4} mt={3}>
               <div className="wrap-input-item">
                 <WInput
                   value={formValue.receiveAmount}
@@ -475,15 +491,13 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
                   errorMess={formError.receiveAmount}
                   textAlign="right"
                   placeholder="0.00"
-
                   onUserInput={(v) => v}
                   style={{ textAlign: 'left' }}
                 />
               </div>
-
             </Box>
 
-            { /* Address
+            {/* Address
             <div className="wrap-input-item">
               <WInput
                 value={formValue.address}
@@ -493,7 +507,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
                 disabled
               // onUserInput={(v) => setFormValue((prev) => ({ ...prev, address: v }))}
               />
-            </div> */ }
+            </div> */}
           </div>
           {formValue.fromNetwork && formValue.currency && formValue.sendAmount > 0 && (
             <div className="card-info">
@@ -541,8 +555,12 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
         </div>
       </Styles.CardBridgeTransfer>
       <ModalChain
-        isOpen={isShowPopup === "FROM" || isShowPopup === "TO"}
-        data={{ blockchainList: isShowPopup === "FROM" ? allBlockchain : toChainList, chainId, titlePopup: isShowPopup === "TO" ? "Select Destination Chain" : "Select Source Chain" }}
+        isOpen={isShowPopup === 'FROM' || isShowPopup === 'TO'}
+        data={{
+          blockchainList: isShowPopup === 'FROM' ? allBlockchain : toChainList,
+          chainId,
+          titlePopup: isShowPopup === 'TO' ? 'Select Destination Chain' : 'Select Source Chain',
+        }}
         onRequestClose={onClosePopupChain}
       />
     </Styles.StyledHome>
