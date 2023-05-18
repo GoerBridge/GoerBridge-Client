@@ -7,10 +7,11 @@ export const getAllBlockchain = async (params) =>
     params,
   })
 
-export const getAllCurrency = async () =>
+export const getAllCurrency = async (params) =>
   request({
     url: `/currency/list`,
     method: 'GET',
+    params,
   })
 
 export const getCurrencyAttr = async (params) =>

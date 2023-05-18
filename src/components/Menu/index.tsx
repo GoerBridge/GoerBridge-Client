@@ -26,6 +26,18 @@ const WrapMenu = styled.div`
       padding: 0 24px;
     }
   }
+  .historyMn {
+    -webkit-box-align: center;
+    align-items: center;
+    cursor: pointer;
+    display: inline-flex;
+    position: relative;
+    z-index: 10;
+    padding: 5px 15px;
+    border-radius: 10px;
+    background-color: #fff;
+    gap: 10px;
+  }
 `
 const InnerBody = styled.div`
   width: 100%;
@@ -51,7 +63,7 @@ const Menu = ({ children }) => {
           <Logo href="/" />
         </Flex>
         <Flex alignItems="center" style={{ justifyContent: 'flex-end', gap: 10 }}>
-          <Flex onClick={() => router.push('/history')} alignItems="center" style={{ gap: '10px', cursor: 'pointer' }}>
+          <Flex onClick={() => router.push('/history')} alignItems="center" className="historyMn">
             {' '}
             <img src="/images/history.svg" alt="history" /> History
           </Flex>

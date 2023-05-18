@@ -7,7 +7,7 @@ import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import useTokenBalance from 'hooks/useTokenBalance'
 import { useEffect, useState } from 'react'
-import { useAllBlockchain } from 'state/home/fetchAllBlockChain'
+// import { useAllBlockchain } from 'state/home/fetchAllBlockChain'
 import {
   useAllCurrency,
   useCurrencyByChain,
@@ -27,65 +27,39 @@ import TransactionBridge from './components/TransactionBridge'
 import WInput from './components/WInput'
 import * as Styles from './styles'
 import SelectChain from './components/SelectChain'
-
+// const blockchainList = useAllBlockchain()
 export const allBlockchain = [
   {
-    _id: '63e7b77e84dfdbf804007cd5',
+    _id: '64649525273b840019c673f8',
     code: 'BinanceSmartChainTest',
     title: 'BSC Chain',
     scan: 'https://testnet.bscscan.com',
     rpc: 'https://data-seed-prebsc-1-s1.binance.org:8545/',
     active: true,
     chainid: 97,
-    project_id: '63e7ab26412eb50be1f573f1',
+    project_id: process.env.NEXT_PUBLIC_PROJECT_ID,
     createdAt: 1676130174,
     updatedAt: 1676130174,
     transfers: [5],
   },
   {
-    _id: '6405b124681cb600128ca955',
+    _id: '64649606273b840019c673f9',
     code: 'GoerliChain',
     title: 'Goerli Testnet Chain',
     scan: 'https://testnet-scan.pulsenet.io',
     rpc: 'https://testnet-rpc-dataseed1.pulsenet.io',
     active: true,
     chainid: 5,
-    project_id: '63e7ab26412eb50be1f573f1',
+    project_id: 'process.env.NEXT_PUBLIC_PROJECT_ID',
     createdAt: 1678094628,
     updatedAt: 1678094628,
     transfers: [97],
   },
-
-  /*  {
-    _id: '63b4bdeafce7624bcb031a13',
-    code: 'PolyChain',
-    title: 'Polygon Chain',
-    scan: 'https://mumbai.polygonscan.com',
-    rpc: 'https://matic-mumbai.chainstacklabs.com/',
-    active: true,
-    chainid: 80001,
-    project_id: '63e7ab26412eb50be1f573f1',
-    updatedAt: 1676130025,
-  },
-  {
-    active: true,
-    chainid: 1680,
-    code: 'OPVChain',
-    project_id: '63e7ab26412eb50be1f573f1',
-    rpc: 'https://testnet-rpc-dataseed1.opvchain.com',
-    scan: 'https://testnet.opvchain.com',
-    title: 'OPV Chain',
-  }, */
 ]
 
 const NetworkSelect = ({ switchNetwork, chainId, blockchainList }) => {
   return (
     <Styles.NetworkSelectContentStyle>
-      {/* <Box>
-        <Text color="#FFFFFF" fontSize={[14, , 16]}>
-          Select a Network
-        </Text>
-      </Box> */}
       {blockchainList?.map((chain) => {
         return (
           <Box
@@ -208,11 +182,10 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
   useFetchAllCurrency()
   const { setParamsTransaction } = useFetchTransaction()
   const { setFetchCurrencyAttrParams } = useFetchAllCurrencyByChain({ blockchain_id: '' })
-  const blockchainList = useAllBlockchain()
 
   const allCurrency = useAllCurrency()
   const currencyByChain = useCurrencyByChain()
-  const transactionList = useTransactionList()
+  // const transactionList = useTransactionList()
 
   // Fetch transaction
   useEffect(() => {

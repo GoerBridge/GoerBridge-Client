@@ -16,7 +16,7 @@ export const useFetchAllBlockchain = (): {
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(false)
   const params = {
-    project_id: '63e7ab26412eb50be1f573f1',
+    project_id: process.env.NEXT_PUBLIC_PROJECT_ID,
   }
 
   const fetchAllBlockchain = useCallback(async () => {

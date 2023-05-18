@@ -67,6 +67,23 @@ const TransactionBridgeStyle = styled.div`
       }
     }
   }
+  .kkcgfB {
+    padding: 24px 16px;
+    border-radius: 12px;
+    background: #fff;
+    border: 1px solid rgb(199 202 200 / 50%);
+    overflow: hidden;
+  }
+  .kkcgfB .ant-table .ant-table-thead .ant-table-cell,
+  .kkcgfB .ant-table .ant-table-tbody .ant-table-cell {
+    color: #343131;
+    font-weight: 500;
+    font-size: 14px;
+    background: #fff;
+  }
+  .ImCmd {
+    font-weight: 300;
+  }
 `
 const TransactionBridge = ({ transactionList, chainList }) => {
   const columns = [

@@ -23,7 +23,13 @@ export function WrongNetworkModal({ currentChain, onDismiss }: { currentChain: C
   const switchText = t('Switch to %network%', { network: currentChain.name })
 
   return (
-    <Modal title={t('Wrong network')} headerBackground="transparent" hideCloseButton maxWidth="600px">
+    <Modal
+      title={t('Wrong network')}
+      headerBackground="transparent"
+      hideCloseButton
+      maxWidth="600px"
+      style={{ backgroundColor: '#e6eefe' }}
+    >
       <Grid style={{ gap: '16px' }} pt="24px">
         {/* <Text>{t('This page is located for %network%.', { network: currentChain.name })}</Text>
         <Text>
@@ -47,7 +53,7 @@ export function WrongNetworkModal({ currentChain, onDismiss }: { currentChain: C
           <Button
             isLoading={isLoading}
             height="68px"
-            style={{ lineHeight: '22px' }}
+            style={{ lineHeight: '22px', background: '#052C83' }}
             onClick={() => switchNetworkAsync(chainId)}
           >
             {isLoading ? <Dots>{switchText}</Dots> : switchText}
@@ -61,6 +67,7 @@ export function WrongNetworkModal({ currentChain, onDismiss }: { currentChain: C
           <Button
             height="68px"
             variant="black"
+            style={{ background: '#ff4d4d' }}
             onClick={() =>
               logout().then(() => {
                 setSessionChainId(chainId)
