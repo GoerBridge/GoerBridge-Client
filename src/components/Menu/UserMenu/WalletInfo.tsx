@@ -5,7 +5,6 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
 import useAuth from 'hooks/useAuth'
 import useNativeCurrency from 'hooks/useNativeCurrency'
-import { useGetCakeBalance } from 'hooks/useTokenBalance'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import { useBalance } from 'wagmi'
 import { formatBigNumber } from 'utils/formatBalance'
@@ -34,7 +33,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ onDismiss }) => {
 
   return (
     <>
-      <Box mb="24px" >
+      <Box mb="24px">
         <Text fontSize="16px" fontWeight="600" mb="8px">
           {t('Your Address')}
         </Text>
@@ -43,7 +42,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ onDismiss }) => {
       <Box mb="8px">
         <Flex alignItems="center" mb="8px">
           <ChainLogo chainId={chainId} />
-          <Text fontSize="16px" fontWeight="600" ml="8px" >
+          <Text fontSize="16px" fontWeight="600" ml="8px">
             {chain?.name}
           </Text>
         </Flex>
@@ -125,7 +124,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ onDismiss }) => {
         </Flex>
       </Box> */}
 
-      <Button width="100%" margin="0 auto" onClick={handleLogout} style={{background: '#052C83'}}>
+      <Button width="100%" margin="0 auto" onClick={handleLogout} style={{ background: '#052C83' }}>
         {t('Disconnect Wallet')}
       </Button>
     </>

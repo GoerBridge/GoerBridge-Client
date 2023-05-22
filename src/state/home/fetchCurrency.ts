@@ -18,6 +18,7 @@ export const useFetchAllCurrency = (): {
         project_id: process.env.NEXT_PUBLIC_PROJECT_ID,
       }
       getAllCurrency(params).then((response) => {
+        console.log('all currentcy', response)
         if (response.code === 200) {
           dispatch(setAllCurrency({ allCurrency: response.data }))
           setLoading(false)
@@ -32,15 +33,14 @@ export const useFetchAllCurrency = (): {
   }, [dispatch])
 
   useEffect(() => {
-    fetchAllCurrency()
+    fetchAllCurrency().then()
   }, [fetchAllCurrency])
 
   return { fetchAllCurrency, loading }
 }
 
 export const useAllCurrency = () => {
-  const allCurrency = useSelector((state: AppState) => state.home.allCurrency)
-  return allCurrency
+  return useSelector((state: AppState) => state.home.allCurrency)
 }
 
 export const useFetchAllCurrencyByChain = (
@@ -58,8 +58,6 @@ export const useFetchAllCurrencyByChain = (
     setLoading(true)
     try {
       getCurrencyAttr(fetchCurrencyAttrParams).then((response) => {
-        console.log('fetchCurrencyAttrParams', fetchCurrencyAttrParams)
-        console.log('response', response)
         if (response.code === 200) {
           dispatch(setCurrencyByChain({ currencyByChain: response.data }))
           setLoading(false)
@@ -81,6 +79,5 @@ export const useFetchAllCurrencyByChain = (
 }
 
 export const useCurrencyByChain = () => {
-  const currencyByChain = useSelector((state: AppState) => state.home.currencyByChain)
-  return currencyByChain
+  return useSelector((state: AppState) => state.home.currencyByChain)
 }

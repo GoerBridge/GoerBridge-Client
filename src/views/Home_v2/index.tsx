@@ -22,17 +22,21 @@ import { useRouter } from 'next/dist/client/router'
 import { useFetchTransaction, useTransactionList } from 'state/home/fetchTransaction'
 import { formatBigNumber } from 'utils/formatBalance'
 import ModalChain from 'components/ModalChain'
-import { useWeb3React } from '../../../packages/wagmi/src/useWeb3React'
-import TransactionBridge from './components/TransactionBridge'
+// import {useWeb3React} from '../../../packages/wagmi/src/useWeb3React'
+// import TransactionBridge from './components/TransactionBridge'
+import { useBalance } from 'wagmi'
+import { ChainId } from '@pancakeswap/sdk'
 import WInput from './components/WInput'
 import * as Styles from './styles'
 import SelectChain from './components/SelectChain'
+
 // const blockchainList = useAllBlockchain()
+
 export const allBlockchain = [
   {
     _id: '64649525273b840019c673f8',
     code: 'BinanceSmartChainTest',
-    title: 'BSC Chain',
+    title: 'BSC Chain Testnet',
     scan: 'https://testnet.bscscan.com',
     rpc: 'https://data-seed-prebsc-1-s1.binance.org:8545/',
     active: true,
@@ -40,6 +44,7 @@ export const allBlockchain = [
     project_id: process.env.NEXT_PUBLIC_PROJECT_ID,
     createdAt: 1676130174,
     updatedAt: 1676130174,
+    currency_id: '6464968990b5cb00180aaa85',
     transfers: [5],
   },
   {
@@ -53,6 +58,7 @@ export const allBlockchain = [
     project_id: 'process.env.NEXT_PUBLIC_PROJECT_ID',
     createdAt: 1678094628,
     updatedAt: 1678094628,
+    currency_id: '646b25906e1cd300198eb658',
     transfers: [97],
   },
 ]
@@ -88,43 +94,43 @@ const NetworkSelect = ({ switchNetwork, chainId, blockchainList }) => {
   )
 }
 
-const CurrencySelect = ({ switchCurrency, currencySelect, currencyListByChain, allCurrency }) => {
+const CurrencySelect = ({ fromNetwork, switchCurrency, currencySelect, currencyListByChain, allCurrency }) => {
+  let currency
+  if (currencyListByChain?.length > 0 && allCurrency?.length > 0 && typeof fromNetwork !== 'undefined') {
+    // currencyListByChain?.map((item) => {
+    // currency = allCurrency.find((cur) => {
+    //     if (cur._id === item.currency_id) {
+    //         return {
+    //             ...item,
+    //             ...cur,
+    //         }
+    //     }
+    //     return {}
+    // })
+    // })
+  }
   return (
     <Styles.CurrenciesSelectContentStyle>
-      {currencyListByChain?.length > 0 ? (
-        currencyListByChain?.map((item) => {
-          const currency = allCurrency.find((cur) => {
-            if (cur._id === item._id) {
-              return {
-                ...item,
-                ...cur,
-              }
-            }
-            return {}
-          })
-
-          return (
-            <Box
-              className="curr-item"
-              key={currency._id}
-              style={{
-                justifyContent: 'flex-start',
-                opacity: currency._id !== currencySelect?._id ? 1 : 0.5,
-                cursor: currency._id !== currencySelect?._id ? 'pointer' : 'not-allowed',
-              }}
-              onClick={() => currency._id !== currencySelect?._id && switchCurrency(currency)}
-            >
-              <img src={`/images/currencies/${currency?.code}.png`} alt="logo" />
-              <Text
-                color={currency._id === currencySelect?._id ? 'secondary' : 'text'}
-                bold={currency._id === currencySelect?._id}
-                pl="12px"
-              >
-                {currency.title} ({currency.code})
-              </Text>
-            </Box>
-          )
-        })
+      {typeof currency !== 'undefined' ? (
+        <Box
+          className="curr-item"
+          key={currency._id}
+          style={{
+            justifyContent: 'flex-start',
+            opacity: currency._id !== currencySelect?._id ? 1 : 0.5,
+            cursor: currency._id !== currencySelect?._id ? 'pointer' : 'not-allowed',
+          }}
+          onClick={() => currency._id !== currencySelect?._id && switchCurrency(currency)}
+        >
+          <img src={`/images/currencies/${currency?.code}.png`} alt="logo" />
+          <Text
+            color={currency._id === currencySelect?._id ? 'secondary' : 'text'}
+            bold={currency._id === currencySelect?._id}
+            pl="12px"
+          >
+            {currency.title} ({currency.code})
+          </Text>
+        </Box>
       ) : (
         <Flex alignItems="center">
           <EmptyIcon width={24} />
@@ -138,11 +144,15 @@ const CurrencySelect = ({ switchCurrency, currencySelect, currencyListByChain, a
 }
 
 const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
-  const { account } = useWeb3React()
-  const { chainId } = useActiveWeb3React()
+  // const account = useWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const native = useNativeCurrency()
   const router = useRouter()
   const [isShowPopup, setShowPopup] = useState(null)
+
+  const isBSC = chainId === ChainId.BSC
+  // const bnbBalance = useBalance({ addressOrName: account, chainId: ChainId.BSC })
+  const nativeBalance = useBalance({ addressOrName: account, enabled: !isBSC })
 
   const { pendingChainId, isLoading, canSwitch, switchNetworkAsync } = useSwitchNetwork()
 
@@ -169,7 +179,15 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
   const bridgeContract = useBridgeContract(formValue?.currency?.contract_bridge)
 
   const { balance: getBalance } = useTokenBalance(formValue?.currency?.token_address)
-  const currencyBalance = formatBigNumber(etherBigNumber.from(getBalance.toString()), 6)
+
+  let currencyBalance = 0
+  if (chainId === 5) {
+    if (typeof nativeBalance.data !== 'undefined') {
+      currencyBalance = +formatBigNumber(nativeBalance.data.value, 6)
+    }
+  } else {
+    currencyBalance = +formatBigNumber(etherBigNumber.from(getBalance.toString()), 6)
+  }
 
   const formIsValid =
     !!formError?.fromNetwork ||
@@ -197,7 +215,10 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
 
   // Fetch currency attr
   useEffect(() => {
-    setFetchCurrencyAttrParams({ blockchain_id: formValue.fromNetwork?._id })
+    setFetchCurrencyAttrParams({
+      blockchain_id: formValue.fromNetwork?._id,
+      currency_id: formValue.fromNetwork?.currency_id,
+    })
   }, [formValue.fromNetwork])
 
   // Auto set address when logged in
@@ -247,6 +268,11 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
     try {
       const { fromNetwork, toNetwork, currency, address, sendAmount, receiveAmount } = formValue
 
+      console.log('fromNetwork ::', fromNetwork)
+      console.log('toNetwork ::', toNetwork)
+      console.log('currency ::', currency)
+      console.log('address ::', address)
+      console.log('sendAmount ::', sendAmount)
       if (!fromNetwork?.chainid) {
         setFormError({
           fromNetwork: 'Please select network',
@@ -271,7 +297,6 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
       if (!currency) {
         setFormError({
           sendAmount: 'Please select currency',
-          receiveAmount: 'Please select currency',
         })
         return
       }
@@ -307,6 +332,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
 
         setFetchCurrencyAttrParams({
           blockchain_id: pChain?._id,
+          currency_id: pChain?.currency_id,
         })
 
         switchNetworkAsync(pChain.chainid).then((res) => {
@@ -337,7 +363,6 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
       setShowPopup(null)
     }
   }
-
   return (
     <Styles.StyledHome>
       <Styles.CardBridgeTransfer>
@@ -371,7 +396,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
                       >
                         Max
                       </button>
-                      <Text fontSize={[12, , 14]}> {formValue?.currency ? currencyBalance : '--'}</Text>
+                      <Text fontSize={[12, , 14]}> {currencyBalance > 0 ? currencyBalance : '--'}</Text>
                     </Flex>
                   }
                   inputType="number"
@@ -397,18 +422,21 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
                       }
                     >
                       <CurrencySelect
+                        fromNetwork={formValue.fromNetwork}
                         currencySelect={formValue.currency}
                         currencyListByChain={currencyByChain || []}
                         allCurrency={allCurrency}
                         switchCurrency={(pCurrency) => {
                           const current = currencyByChain?.map((item) => {
+                            const cr = []
                             if (item.currency_id === pCurrency._id) {
-                              return {
+                              const c = {
                                 ...item,
                                 ...pCurrency,
                               }
+                              cr.push(c)
                             }
-                            return []
+                            return cr
                           })
 
                           setFormValue((prev) => ({
@@ -469,18 +497,6 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
                 />
               </div>
             </Box>
-
-            {/* Address
-            <div className="wrap-input-item">
-              <WInput
-                value={formValue.address}
-                labelLeft="Address"
-                errorMess={formError.address}
-                placeholder="0xd96b5........................EF1bF"
-                disabled
-              // onUserInput={(v) => setFormValue((prev) => ({ ...prev, address: v }))}
-              />
-            </div> */}
           </div>
           {formValue.fromNetwork && formValue.currency && formValue.sendAmount > 0 && (
             <div className="card-info">
@@ -505,7 +521,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
                   Estimated Time:
                 </Text>
                 <Text fontSize={['14px', '', '16px']} color="#F98C36">
-                  5 seconds
+                  60 seconds
                 </Text>
               </Flex>
             </div>

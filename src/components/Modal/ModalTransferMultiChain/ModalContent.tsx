@@ -15,17 +15,17 @@ const TransferContentStyled = styled(Flex)`
     max-height: none;
     height: auto;
   }
-  
-   button {
-      background: #052C83;
-      // box-shadow: -2px -2px 2px #1e3238, inset 0px -2px 1px #001015;
-      border-radius: 8px;
-    }
 
-    button:disabled {
-      background: #e0e0eb;
-      color: rgb(143, 155, 179)
-    }
+  button {
+    background: #052c83;
+    // box-shadow: -2px -2px 2px #1e3238, inset 0px -2px 1px #001015;
+    border-radius: 8px;
+  }
+
+  button:disabled {
+    background: #e0e0eb;
+    color: rgb(143, 155, 179);
+  }
 
   .box-transfer {
     // background: #000000;
@@ -137,7 +137,7 @@ export const TransferContent = ({ dataModal, approvalState, handleApprove, loadi
             Estimated Time:
           </Text>
           <Text fontSize={['13px', '', '16px']} color="#F98C36">
-            5 seconds
+            60 seconds
           </Text>
         </Flex>
       </div>
@@ -161,6 +161,7 @@ const TransferSuccessContentStyled = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: #052c83;
 
   > img {
     width: 300px;

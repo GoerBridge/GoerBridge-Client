@@ -38,7 +38,7 @@ export function useApproveCallback(
   const currentAllowance = useTokenAllowance(token, account ?? undefined, spender)
   const pendingApproval = useHasPendingApproval(token?.address, spender)
 
-  console.log(currentAllowance);
+  console.log(currentAllowance)
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
     if (!amountToApprove || !spender) return ApprovalState.UNKNOWN
@@ -149,6 +149,5 @@ export function useApproveCallbackFromInputCurrencyAmount(currencyAmountIn: Curr
 export function useApproveTransfer(token?: any, chainId?: number, account?: string) {
   const currency = useToken(token?.token_address)
   const currencyAmountIn = useCurrencyBalance(account ?? undefined, currency ?? undefined)
-
-  return useApproveCallback(currencyAmountIn, CONTRACT_BRIDGE_ADDRESS[chainId] ?? undefined)
+  return useApproveCallback(currencyAmountIn, token.contract_bridge)
 }
