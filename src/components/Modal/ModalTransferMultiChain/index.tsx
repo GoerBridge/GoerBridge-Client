@@ -49,6 +49,7 @@ const ModalTransferMultiChain: React.FC<InjectedModalProps> = ({ onDismiss, data
       [params.amount, params.transactionFee, params.toBlockchain, params.toAddress],
       {
         gasLimit: calculateGasMargin(estimatedGas),
+        value: fromNetwork.chainid === 5 ? params.amount : 0,
       },
     )
       .then((response) => {

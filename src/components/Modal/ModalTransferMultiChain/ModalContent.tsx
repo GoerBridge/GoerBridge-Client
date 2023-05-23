@@ -142,7 +142,7 @@ export const TransferContent = ({ dataModal, approvalState, handleApprove, loadi
         </Flex>
       </div>
       <Flex justifyContent="center" mt="24px">
-        {approvalState !== ApprovalState.APPROVED ? (
+        {approvalState !== ApprovalState.APPROVED && fromNetwork.chainid !== 5 ? (
           <Button width="100%" height="44px" onClick={handleApprove}>
             Approve
           </Button>

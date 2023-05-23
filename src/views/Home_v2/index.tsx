@@ -268,11 +268,11 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
     try {
       const { fromNetwork, toNetwork, currency, address, sendAmount, receiveAmount } = formValue
 
-      console.log('fromNetwork ::', fromNetwork)
-      console.log('toNetwork ::', toNetwork)
-      console.log('currency ::', currency)
-      console.log('address ::', address)
-      console.log('sendAmount ::', sendAmount)
+      // console.log('fromNetwork ::', fromNetwork)
+      // console.log('toNetwork ::', toNetwork)
+      // console.log('currency ::', currency)
+      // console.log('address ::', address)
+      // console.log('sendAmount ::', sendAmount)
       if (!fromNetwork?.chainid) {
         setFormError({
           fromNetwork: 'Please select network',
