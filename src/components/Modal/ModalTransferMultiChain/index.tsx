@@ -8,6 +8,8 @@ import { useTransactionAdder } from 'state/transactions/hooks'
 import { calculateGasMargin } from 'utils'
 import { logError } from 'utils/sentry'
 import { TransferContent, TransferSuccessContent } from './ModalContent'
+// import {BigNumber} from '@ethersproject/bignumber'
+// import { formatBigNumber } from 'utils/formatBalance'
 
 const ModalTransferMultiChain: React.FC<InjectedModalProps> = ({ onDismiss, dataModal }) => {
   const { fromNetwork, toNetwork, currency, address, sendAmount, chainId, account } = dataModal || {}
@@ -28,14 +30,15 @@ const ModalTransferMultiChain: React.FC<InjectedModalProps> = ({ onDismiss, data
     if (!chainId || !address || !bridgeContract) throw new Error('Missing dependencies')
 
     const methodName = 'receiveTokens'
-
+    console.log('da vao')
     const params = {
-      amount: (+sendAmount * 10 ** 18).toString(),
-      transactionFee: [10, 10],
+      amount: '1000000000000000000000', // (+sendAmount * 10 ** 18).toString(),
+      transactionFee: [10, 0.01],
       toBlockchain: toNetwork.code,
       toAddress: address,
     }
 
+    console.log('params', params)
     const estimatedGas = await bridgeContract.estimateGas.receiveTokens(
       params.amount,
       params.transactionFee,
@@ -49,7 +52,7 @@ const ModalTransferMultiChain: React.FC<InjectedModalProps> = ({ onDismiss, data
       [params.amount, params.transactionFee, params.toBlockchain, params.toAddress],
       {
         gasLimit: calculateGasMargin(estimatedGas),
-        value: fromNetwork.chainid === 5 ? params.amount : 0,
+        value: (10 ** 18).toString(), // fromNetwork.chainid === 5 ? params.amount : 0,
       },
     )
       .then((response) => {

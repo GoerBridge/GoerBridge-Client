@@ -97,17 +97,17 @@ const NetworkSelect = ({ switchNetwork, chainId, blockchainList }) => {
 const CurrencySelect = ({ fromNetwork, switchCurrency, currencySelect, currencyListByChain, allCurrency }) => {
   let currency
   if (currencyListByChain?.length > 0 && allCurrency?.length > 0 && typeof fromNetwork !== 'undefined') {
-    // currencyListByChain?.map((item) => {
-    // currency = allCurrency.find((cur) => {
-    //     if (cur._id === item.currency_id) {
-    //         return {
-    //             ...item,
-    //             ...cur,
-    //         }
-    //     }
-    //     return {}
-    // })
-    // })
+    currencyListByChain?.map((item) => {
+      currency = allCurrency.find((cur) => {
+          if (cur._id === item.currency_id) {
+              return {
+                  ...item,
+                  ...cur,
+              }
+          }
+          return {}
+      })
+    })
   }
   return (
     <Styles.CurrenciesSelectContentStyle>
@@ -428,15 +428,13 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
                         allCurrency={allCurrency}
                         switchCurrency={(pCurrency) => {
                           const current = currencyByChain?.map((item) => {
-                            const cr = []
                             if (item.currency_id === pCurrency._id) {
-                              const c = {
+                              return {
                                 ...item,
                                 ...pCurrency,
                               }
-                              cr.push(c)
                             }
-                            return cr
+                            return {}
                           })
 
                           setFormValue((prev) => ({
