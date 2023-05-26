@@ -18,7 +18,7 @@ export const useFetchAllCurrency = (): {
         project_id: process.env.NEXT_PUBLIC_PROJECT_ID,
       }
       getAllCurrency(params).then((response) => {
-        console.log('all currentcy', response)
+        // console.log('all currentcy', response)
         if (response.code === 200) {
           dispatch(setAllCurrency({ allCurrency: response.data }))
           setLoading(false)
@@ -58,6 +58,7 @@ export const useFetchAllCurrencyByChain = (
     setLoading(true)
     try {
       getCurrencyAttr(fetchCurrencyAttrParams).then((response) => {
+        // console.log('fetchCurrencyAttrParams', fetchCurrencyAttrParams)
         if (response.code === 200) {
           dispatch(setCurrencyByChain({ currencyByChain: response.data }))
           setLoading(false)

@@ -1,5 +1,16 @@
 import { BigNumber as etherBigNumber } from '@ethersproject/bignumber'
-import { ArrowDownIcon, Box, Button, Dropdown, EmptyIcon, Flex, HelpIcon, Text, useModal } from '@pancakeswap/uikit'
+import {
+  ArrowDownIcon,
+  Box,
+  Button,
+  Dropdown,
+  EmptyIcon,
+  Flex,
+  HelpIcon,
+  Text,
+  useModal,
+  useToast,
+} from '@pancakeswap/uikit'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import ModalTransferMultiChain from 'components/Modal/ModalTransferMultiChain'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -16,52 +27,19 @@ import {
 } from 'state/home/fetchCurrency'
 
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { useBridgeContract } from 'hooks/useContract'
-import { useGasFee } from 'hooks/useGasFee'
-import { useRouter } from 'next/dist/client/router'
-import { useFetchTransaction, useTransactionList } from 'state/home/fetchTransaction'
-import { formatBigNumber } from 'utils/formatBalance'
 import ModalChain from 'components/ModalChain'
+import { useBridgeContract } from 'hooks/useContract'
+import { useRouter } from 'next/dist/client/router'
+import { useFetchTransaction } from 'state/home/fetchTransaction'
+import { formatBigNumber } from 'utils/formatBalance'
 // import {useWeb3React} from '../../../packages/wagmi/src/useWeb3React'
 // import TransactionBridge from './components/TransactionBridge'
-import { useBalance } from 'wagmi'
 import { ChainId } from '@pancakeswap/sdk'
+import { allBlockchain } from 'config/configChain'
+import { useBalance } from 'wagmi'
+import SelectChain from './components/SelectChain'
 import WInput from './components/WInput'
 import * as Styles from './styles'
-import SelectChain from './components/SelectChain'
-
-// const blockchainList = useAllBlockchain()
-
-export const allBlockchain = [
-  {
-    _id: '64649525273b840019c673f8',
-    code: 'BinanceSmartChainTest',
-    title: 'BSC Chain Testnet',
-    scan: 'https://testnet.bscscan.com',
-    rpc: 'https://data-seed-prebsc-1-s1.binance.org:8545/',
-    active: true,
-    chainid: 97,
-    project_id: process.env.NEXT_PUBLIC_PROJECT_ID,
-    createdAt: 1676130174,
-    updatedAt: 1676130174,
-    currency_id: '6464968990b5cb00180aaa85',
-    transfers: [5],
-  },
-  {
-    _id: '64649606273b840019c673f9',
-    code: 'GoerliChain',
-    title: 'Goerli Testnet Chain',
-    scan: 'https://testnet-scan.pulsenet.io',
-    rpc: 'https://testnet-rpc-dataseed1.pulsenet.io',
-    active: true,
-    chainid: 5,
-    project_id: 'process.env.NEXT_PUBLIC_PROJECT_ID',
-    createdAt: 1678094628,
-    updatedAt: 1678094628,
-    currency_id: '646b25906e1cd300198eb658',
-    transfers: [97],
-  },
-]
 
 const NetworkSelect = ({ switchNetwork, chainId, blockchainList }) => {
   return (
@@ -96,19 +74,19 @@ const NetworkSelect = ({ switchNetwork, chainId, blockchainList }) => {
 
 const CurrencySelect = ({ fromNetwork, switchCurrency, currencySelect, currencyListByChain, allCurrency }) => {
   let currency
+
   if (currencyListByChain?.length > 0 && allCurrency?.length > 0 && typeof fromNetwork !== 'undefined') {
     currencyListByChain?.map((item) => {
       currency = allCurrency.find((cur) => {
-          if (cur._id === item.currency_id) {
-              return {
-                  ...item,
-                  ...cur,
-              }
-          }
-          return {}
+        if (cur._id === item.currency_id) {
+          return item
+        }
+        return null
       })
+      return currency
     })
   }
+
   return (
     <Styles.CurrenciesSelectContentStyle>
       {typeof currency !== 'undefined' ? (
@@ -149,6 +127,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
   const native = useNativeCurrency()
   const router = useRouter()
   const [isShowPopup, setShowPopup] = useState(null)
+  const { toastError } = useToast()
 
   const isBSC = chainId === ChainId.BSC
   // const bnbBalance = useBalance({ addressOrName: account, chainId: ChainId.BSC })
@@ -175,9 +154,8 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
   })
   const [toChainList, setToChainList] = useState([])
 
-  const gasFee = useGasFee(formValue.currency?.contract_bridge)
+  const [gasFee, setGasFee] = useState(null)
   const bridgeContract = useBridgeContract(formValue?.currency?.contract_bridge)
-
   const { balance: getBalance } = useTokenBalance(formValue?.currency?.token_address)
 
   let currencyBalance = 0
@@ -203,6 +181,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
 
   const allCurrency = useAllCurrency()
   const currencyByChain = useCurrencyByChain()
+
   // const transactionList = useTransactionList()
 
   // Fetch transaction
@@ -240,7 +219,6 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
   // Auto select fromNetWork, toNetWork
   useEffect(() => {
     const { chainId: paramChainId } = router.query
-
     if (paramChainId) {
       const chain = allBlockchain?.find((item) => item.chainid === +paramChainId)
       const toChain = allBlockchain.filter((item) => chain.transfers.includes(item.chainid))
@@ -268,36 +246,13 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
     try {
       const { fromNetwork, toNetwork, currency, address, sendAmount, receiveAmount } = formValue
 
-      // console.log('fromNetwork ::', fromNetwork)
-      // console.log('toNetwork ::', toNetwork)
-      // console.log('currency ::', currency)
-      // console.log('address ::', address)
-      // console.log('sendAmount ::', sendAmount)
-      if (!fromNetwork?.chainid) {
-        setFormError({
-          fromNetwork: 'Please select network',
-        })
-        return
-      }
-
       if (!toNetwork?.chainid) {
-        setFormError({
-          toNetwork: 'Please select network',
-        })
-        return
-      }
-
-      if (!address) {
-        setFormError({
-          address: 'Please enter address',
-        })
+        toastError('Error', 'Please select network')
         return
       }
 
       if (!currency) {
-        setFormError({
-          sendAmount: 'Please select currency',
-        })
+        toastError('Error', 'Please select currency')
         return
       }
 
@@ -308,17 +263,16 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
         return
       }
 
-      const minTokenAmount = await bridgeContract.getMinTokenAmount(toNetwork?.code)
-
-      if (+sendAmount < +minTokenAmount.toString()) {
-        setFormError({
-          sendAmount: `Please enter amount at least ${+minTokenAmount.toString()}`,
-        })
-        return
-      }
+      // const minTokenAmount = await bridgeContract.getMinTokenAmount(toNetwork?.code)
+      // if (+sendAmount < +minTokenAmount.toString()) {
+      //   setFormError({
+      //     sendAmount: `Please enter amount at least ${+minTokenAmount.toString()}`,
+      //   })
+      //   return
+      // }
 
       setFormError({})
-      onPresentTransferModal({ ...formValue, chainId, account, gasFee, native })
+      onPresentTransferModal({ ...formValue, chainId, account, native })
     } catch (error) {
       console.log(error)
     }
@@ -363,6 +317,52 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
       setShowPopup(null)
     }
   }
+
+  useEffect(() => {
+    async function getFeeGas() {
+      if (bridgeContract) {
+        const _gasFee = await bridgeContract?.FEE_NATIVE()
+        setGasFee((+_gasFee / 10 ** 18).toString())
+      }
+    }
+    getFeeGas()
+  }, [bridgeContract, formValue])
+
+  const onTurnAround = async () => {
+    if (formValue.toNetwork) {
+      switchNetworkAsync(formValue.toNetwork.chainid).then((res) => {
+        if (res) {
+          setFormValue((prev) => ({
+            ...prev,
+            fromNetwork: formValue.toNetwork,
+            toNetwork: formValue.fromNetwork,
+            currency: undefined,
+          }))
+          setFetchCurrencyAttrParams({
+            blockchain_id: formValue.toNetwork?._id,
+            currency_id: formValue.toNetwork?.currency_id,
+          })
+        }
+      })
+    }
+
+    // setFetchCurrencyAttrParams({
+    //   blockchain_id: pChain?._id,
+    //   currency_id: pChain?.currency_id,
+    // })
+
+    // switchNetworkAsync(pChain.chainid).then((res) => {
+    //   if (res) {
+    //     setFormValue((prev) => ({
+    //       ...prev,
+    //       fromNetwork: pChain,
+    //       toNetwork: undefined,
+    //       currency: undefined,
+    //     }))
+    //   }
+    // })
+  }
+
   return (
     <Styles.StyledHome>
       <Styles.CardBridgeTransfer>
@@ -374,7 +374,6 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
               onSelect={() => setShowPopup('FROM')}
               selectTitle="From"
             />
-
             {/* Send amount */}
             <Box background="#f5f7fc" paddingY="10px" paddingX="10px" borderRadius="15px" mb={2} mt={3}>
               <div className="wrap-input-item">
@@ -427,20 +426,14 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
                         currencyListByChain={currencyByChain || []}
                         allCurrency={allCurrency}
                         switchCurrency={(pCurrency) => {
-                          const current = currencyByChain?.map((item) => {
-                            if (item.currency_id === pCurrency._id) {
-                              return {
-                                ...item,
-                                ...pCurrency,
-                              }
-                            }
-                            return {}
-                          })
-
                           setFormValue((prev) => ({
                             ...prev,
-                            currency: current[0],
+                            currency: {
+                              ...currencyByChain[0],
+                              ...pCurrency,
+                            },
                           }))
+
                           setFormError({
                             ...formError,
                             sendAmount: '',
@@ -458,7 +451,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
                       setFormValue((prev) => ({
                         ...prev,
                         sendAmount: v,
-                        receiveAmount: +v - +v * (+formValue.currency?.system_fee / 100),
+                        receiveAmount: +v,
                       }))
                     }
                   }}
@@ -468,7 +461,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
             </Box>
             {/* To */}
             <Flex alignItems="center" justifyContent="center" mb={2}>
-              <Button style={{ background: 'transparent', boxShadow: 'none' }}>
+              <Button style={{ background: 'transparent', boxShadow: 'none' }} onClick={onTurnAround}>
                 <img src="/images/icon-arrow.svg" alt="arrow" />
               </Button>
             </Flex>
@@ -498,14 +491,14 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
           </div>
           {formValue.fromNetwork && formValue.currency && formValue.sendAmount > 0 && (
             <div className="card-info">
-              <Flex justifyContent="space-between" mb="8px">
+              {/* <Flex justifyContent="space-between" mb="8px">
                 <Text fontSize={['14px', '', '16px']} color="#052C83">
                   System Fee ({formValue.currency?.system_fee || '--'}%):
                 </Text>
                 <Text fontSize={['14px', '', '16px']} color="#F98C36">
                   {+formValue.sendAmount * (+formValue.currency?.system_fee / 100)}
                 </Text>
-              </Flex>
+              </Flex> */}
               <Flex justifyContent="space-between" mb="8px">
                 <Text fontSize={['14px', '', '16px']} color="#052C83">
                   Gas Fee:

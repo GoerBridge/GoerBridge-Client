@@ -50,8 +50,8 @@ const TransferContentStyled = styled(Flex)`
   }
 `
 
-export const TransferContent = ({ dataModal, approvalState, handleApprove, loading, handleTransfer }) => {
-  const { fromNetwork, toNetwork, currency, address, sendAmount, receiveAmount, gasFee, native } = dataModal || {}
+export const TransferContent = ({ dataModal, approvalState, handleApprove, loading, handleTransfer, gasFee }) => {
+  const { fromNetwork, toNetwork, currency, address, sendAmount, receiveAmount, native } = dataModal || {}
 
   return (
     <TransferContentStyled>
@@ -116,14 +116,14 @@ export const TransferContent = ({ dataModal, approvalState, handleApprove, loadi
         </Flex>
       </div>
       <div className="card-info">
-        <Flex justifyContent="space-between" mb="5px">
+        {/* <Flex justifyContent="space-between" mb="5px">
           <Text fontSize={['13px', '', '16px']} color="#008037">
             System Fee ({currency?.system_fee || '--'}%):
           </Text>
           <Text fontSize={['13px', '', '16px']} color="#F98C36">
             {+sendAmount * (+currency?.system_fee / 100)}
           </Text>
-        </Flex>
+        </Flex> */}
         <Flex justifyContent="space-between" mb="5px">
           <Text fontSize={['13px', '', '16px']} color="#008037">
             Gas Fee:
@@ -144,10 +144,18 @@ export const TransferContent = ({ dataModal, approvalState, handleApprove, loadi
       <Flex justifyContent="center" mt="24px">
         {approvalState !== ApprovalState.APPROVED && fromNetwork.chainid !== 5 ? (
           <Button width="100%" height="44px" onClick={handleApprove}>
+            {loading && <LoadingIcon src="/images/loading.gif" alt="loading" />}
             Approve
           </Button>
         ) : (
-          <Button width="100%" height="44px" disabled={loading} onClick={handleTransfer}>
+          <Button
+            width="100%"
+            height="44px"
+            disabled={loading}
+            onClick={handleTransfer}
+            style={{ position: 'relative' }}
+          >
+            {loading && <LoadingIcon src="/images/loading.gif" alt="loading" />}
             Confirm
           </Button>
         )}
@@ -156,12 +164,19 @@ export const TransferContent = ({ dataModal, approvalState, handleApprove, loadi
   )
 }
 
+const LoadingIcon = styled('img')`
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  left: 15px;
+`
+
 const TransferSuccessContentStyled = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #052c83;
+  background: #fff;
 
   > img {
     width: 300px;
@@ -177,7 +192,7 @@ export const TransferSuccessContent = ({ onDismiss }) => {
         Transfer successfully!
       </Text>
       <Flex width="100%">
-        <Button width="100%" onClick={onDismiss}>
+        <Button width="100%" onClick={onDismiss} style={{ background: '#052C83' }}>
           Done
         </Button>
       </Flex>

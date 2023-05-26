@@ -25,6 +25,7 @@ export const useFetchTransaction = (): {
       setLoading(true)
       try {
         getTransactionList({ ...paramsTransaction, fromAddress: address, toAddress: address }).then((response) => {
+          console.log('response', response)
           if (response.code === 200) {
             dispatch(setTransactionList({ transactionList: response.data.rows }))
             setLoading(false)

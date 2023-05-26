@@ -1,11 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { InjectedModalProps, Modal, useToast } from '@pancakeswap/uikit'
+import BigNumber from 'bignumber.js'
 import { useApproveTransfer } from 'hooks/useApproveCallback'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useBridgeContract } from 'hooks/useContract'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { calculateGasMargin } from 'utils'
+import { getDecimalAmount } from 'utils/formatBalance'
 import { logError } from 'utils/sentry'
 import { TransferContent, TransferSuccessContent } from './ModalContent'
 // import {BigNumber} from '@ethersproject/bignumber'
@@ -24,48 +26,61 @@ const ModalTransferMultiChain: React.FC<InjectedModalProps> = ({ onDismiss, data
   const bridgeContract = useBridgeContract(currency.contract_bridge)
   const { callWithGasPrice } = useCallWithGasPrice()
   const addTransaction = useTransactionAdder()
+  const [gasFee, setGasFee] = useState(null)
+
+  useEffect(() => {
+    async function getFeeGas() {
+      if (bridgeContract) {
+        const _gasFee = await bridgeContract?.FEE_NATIVE()
+        setGasFee((+_gasFee / 10 ** 18).toString())
+      }
+    }
+    getFeeGas()
+  }, [bridgeContract])
 
   async function onTransfer() {
     setLoading(true)
     if (!chainId || !address || !bridgeContract) throw new Error('Missing dependencies')
 
     const methodName = 'receiveTokens'
-    console.log('da vao')
+
     const params = {
-      amount: '1000000000000000000000', // (+sendAmount * 10 ** 18).toString(),
-      transactionFee: [10, 0.01],
+      amount: getDecimalAmount(new BigNumber(sendAmount), 18).toString(),
       toBlockchain: toNetwork.code,
       toAddress: address,
     }
 
-    console.log('params', params)
+    let gasValue = gasFee
+    if (+chainId === 5) {
+      gasValue = +sendAmount + +gasFee
+    }
     const estimatedGas = await bridgeContract.estimateGas.receiveTokens(
       params.amount,
-      params.transactionFee,
       params.toBlockchain,
       params.toAddress,
-    )
-
-    callWithGasPrice(
-      bridgeContract,
-      methodName,
-      [params.amount, params.transactionFee, params.toBlockchain, params.toAddress],
       {
-        gasLimit: calculateGasMargin(estimatedGas),
-        value: (10 ** 18).toString(), // fromNetwork.chainid === 5 ? params.amount : 0,
+        value: getDecimalAmount(new BigNumber(gasValue), 18).toString(),
       },
     )
-      .then((response) => {
-        addTransaction(response, {
-          summary: `Transfer ${currency.code} from ${fromNetwork.code} to ${toNetwork.code}`,
-          translatableSummary: {
-            text: 'Transfer %currency% from %fromChain% to %toChain%',
-            data: { currency: currency.code, fromChain: fromNetwork.code, toChain: toNetwork.code },
-          },
-          type: 'bridge-transfer',
-        })
-        setLoading(false)
-        setTransferSuccess(true)
+
+    callWithGasPrice(bridgeContract, methodName, [params.amount, params.toBlockchain, params.toAddress], {
+      gasLimit: calculateGasMargin(estimatedGas),
+      value: getDecimalAmount(new BigNumber(gasValue), 18).toString(), // fromNetwork.chainid === 5 ? params.amount : 0,
+    })
+      .then(async (response) => {
+        const resWait = await response.wait()
+        if (resWait) {
+          addTransaction(response, {
+            summary: `Transfer ${currency.code} from ${fromNetwork.code} to ${toNetwork.code}`,
+            translatableSummary: {
+              text: 'Transfer %currency% from %fromChain% to %toChain%',
+              data: { currency: currency.code, fromChain: fromNetwork.code, toChain: toNetwork.code },
+            },
+            type: 'bridge-transfer',
+          })
+          setLoading(false)
+          setTransferSuccess(true)
+        }
       })
       .catch((error: any) => {
         logError(error)
@@ -93,6 +108,7 @@ const ModalTransferMultiChain: React.FC<InjectedModalProps> = ({ onDismiss, data
           handleApprove={approve}
           loading={loading}
           handleTransfer={onTransfer}
+          gasFee={gasFee}
         />
       ) : (
         <TransferSuccessContent onDismiss={onDismiss} />
