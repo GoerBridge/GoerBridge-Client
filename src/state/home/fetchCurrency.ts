@@ -57,7 +57,10 @@ export const useFetchAllCurrencyByChain = (
   const fetchAllCurrencyByChain = useCallback(async () => {
     setLoading(true)
     try {
-      getCurrencyAttr(fetchCurrencyAttrParams).then((response) => {
+      getCurrencyAttr({
+        ...fetchCurrencyAttrParams,
+        project_id: process.env.NEXT_PUBLIC_PROJECT_ID,
+      }).then((response) => {
         // console.log('fetchCurrencyAttrParams', fetchCurrencyAttrParams)
         if (response.code === 200) {
           dispatch(setCurrencyByChain({ currencyByChain: response.data }))

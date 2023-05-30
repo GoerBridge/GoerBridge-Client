@@ -74,17 +74,9 @@ const NetworkSelect = ({ switchNetwork, chainId, blockchainList }) => {
 
 const CurrencySelect = ({ fromNetwork, switchCurrency, currencySelect, currencyListByChain, allCurrency }) => {
   let currency
-
-  if (currencyListByChain?.length > 0 && allCurrency?.length > 0 && typeof fromNetwork !== 'undefined') {
-    currencyListByChain?.map((item) => {
-      currency = allCurrency.find((cur) => {
-        if (cur._id === item.currency_id) {
-          return item
-        }
-        return null
-      })
-      return currency
-    })
+  console.log('currencyListByChain', currencyListByChain)
+  if (currencyListByChain?.length > 0 && typeof fromNetwork !== 'undefined') {
+    currency = currencyListByChain[0]
   }
 
   return (
@@ -196,7 +188,6 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
   useEffect(() => {
     setFetchCurrencyAttrParams({
       blockchain_id: formValue.fromNetwork?._id,
-      currency_id: formValue.fromNetwork?.currency_id,
     })
   }, [formValue.fromNetwork])
 
@@ -286,7 +277,6 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
 
         setFetchCurrencyAttrParams({
           blockchain_id: pChain?._id,
-          currency_id: pChain?.currency_id,
         })
 
         switchNetworkAsync(pChain.chainid).then((res) => {
@@ -340,7 +330,6 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
           }))
           setFetchCurrencyAttrParams({
             blockchain_id: formValue.toNetwork?._id,
-            currency_id: formValue.toNetwork?.currency_id,
           })
         }
       })
