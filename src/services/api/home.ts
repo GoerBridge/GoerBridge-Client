@@ -16,7 +16,7 @@ export const getAllCurrency = async (params) =>
 
 export const getCurrencyAttr = async (params) =>
   request({
-    url: `/currencyAttr/list`,
+    url: `/currency/list`,
     method: 'GET',
     params,
   })
