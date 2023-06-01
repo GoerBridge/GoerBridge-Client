@@ -5,8 +5,8 @@ import styled from 'styled-components'
 const TableBaseStyle = styled.div`
   padding: 24px 16px;
   border-radius: 12px;
-  background: #111b1e;
-  border: 1px solid rgba(0, 128, 55, 0.5);
+  background: #fff;
+  border: 1px solid #ddd;
   overflow: hidden;
 
   ${({ theme }) => theme.mediaQueries.lg} {
@@ -16,13 +16,12 @@ const TableBaseStyle = styled.div`
   .ant-table {
     background: transparent;
     border: unset;
-
     .ant-table-thead .ant-table-cell,
     .ant-table-tbody .ant-table-cell {
-      color: #ffffff;
+      color: #000;
       font-weight: 500;
       font-size: 14px;
-      background: #111b1e;
+      background: #fff;
 
       ${({ theme }) => theme.mediaQueries.lg} {
         font-size: 16px;
@@ -30,17 +29,17 @@ const TableBaseStyle = styled.div`
     }
     .ant-table-thead {
       .ant-table-cell {
-        border-bottom: 1px solid #383e48;
+        border-bottom: 1px solid #ddd;
       }
     }
     .ant-table-tbody {
       .ant-table-row:hover {
         .ant-table-cell {
-          background: #111b1e;
+          background: #ddd;
         }
       }
       .ant-table-cell {
-        border-bottom: 1px solid #383e48;
+        border-bottom: 1px solid #ddd;
       }
     }
     .ant-pagination {

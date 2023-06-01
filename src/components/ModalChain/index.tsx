@@ -24,6 +24,7 @@ const ModalChain: React.FC<Props> = ({ isOpen, onRequestClose, onAfterOpen, data
           key={chain.chainid}
           style={{
             display: 'flex',
+            alignItems: 'center',
             justifyContent: 'flex-start',
             border: '1px solid #ccc',
             padding: '10px 15px',

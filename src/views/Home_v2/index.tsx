@@ -393,7 +393,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
                   placeholder="0.00"
                   rightInput={
                     <Dropdown
-                      position="top-left"
+                      position="top-right"
                       target={
                         <Styles.RightInputButton>
                           <Box className="wIcon">

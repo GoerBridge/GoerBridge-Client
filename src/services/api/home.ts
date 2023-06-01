@@ -21,9 +21,10 @@ export const getCurrencyAttr = async (params) =>
     params,
   })
 
-export const getTransactionList = async (params) =>
-  request({
+export const getTransactionList = async (params) => {
+  return request({
     url: `/transaction/list`,
     method: 'GET',
     params,
   })
+}

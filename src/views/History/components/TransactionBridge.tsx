@@ -1,15 +1,15 @@
-import styled from 'styled-components'
-import Link from 'next/link'
-import { Text, Grid } from '@pancakeswap/uikit'
+import { Grid, Text } from '@pancakeswap/uikit'
 import TableBase from 'components/Table/TableBase'
-import { formatAmount, formatDate, formatCode } from 'helpers'
+import { formatAmount, formatCode, formatDate } from 'helpers'
+import Link from 'next/link'
+import styled from 'styled-components'
 
 const TransactionBridgeStyle = styled.div`
   max-width: 1290px;
   margin: 0 auto;
   .head {
-    display: flex;
-    justify-content: space-between;
+    /* display: flex;
+    justify-content: space-between; */
     margin-bottom: 16px;
 
     > * {
@@ -29,7 +29,7 @@ const TransactionBridgeStyle = styled.div`
       text-align: center;
       color: #fff;
 
-      box-shadow: -2px -2px 2px #1e3238, inset 0px -2px 1px #001015;
+      /* box-shadow: -2px -2px 2px #1e3238, inset 0px -2px 1px #001015; */
       border-radius: 8px;
 
       &.success {
@@ -39,7 +39,7 @@ const TransactionBridgeStyle = styled.div`
         background: #f98c36;
       }
       &.pending {
-        background: #d2d2db;
+        background: #666666;
       }
       &.error {
         background: #ae0c0c;
@@ -207,17 +207,14 @@ const TransactionBridge = ({ transactionList, chainList }) => {
       render: (text) => <div className="data-created">{formatDate(+text * 1000, 'YYYY/MM/DD   hh:ss')}</div>,
     },
   ]
+
+  // const { setParamsTransaction } = useFetchTransaction()
+
   return (
     <TransactionBridgeStyle>
       <div className="head">
-        <Text fontSize={[16, , 20]} fontWeight="700">
-          Recent transactions
-        </Text>
-        <Link href="/transactions" passHref>
-          <Text as="a" color="#000" fontSize={[16, , 20]}>
-            View all transactions
-          </Text>
-        </Link>
+        <Text fontSize="30px">History</Text>
+        {/* <Filter dataSearch={{ network: chainList }} setParams={setParamsTransaction} /> */}
       </div>
       <TableBase
         className="table-custom"

@@ -16,20 +16,21 @@ const FilterStyled = styled.div`
   .search-txh,
   .search-select .ant-select-selector {
     height: ${SEARCH_HEIGHT};
-    background: #111b1e;
+    background: #fff;
     border: 1px solid #383e48;
     border-radius: 8px;
+    color: #000;
     input {
-      color: #fff;
+      color: #000;
       ::placeholder {
-        color: #f8f8f8;
+        color: #000;
         opacity: 1; /* Firefox */
       }
       :-ms-input-placeholder {
-        color: #f8f8f8;
+        color: #000;
       }
       ::-ms-input-placeholder {
-        color: #f8f8f8;
+        color: #000;
       }
 
       font-size: 12px;
@@ -40,7 +41,7 @@ const FilterStyled = styled.div`
     }
 
     .ant-select-selection-item {
-      color: #fff;
+      color: #000;
       line-height: 42px;
       font-size: 12px;
 

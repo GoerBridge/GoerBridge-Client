@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Flex, Logo } from '@pancakeswap/uikit'
+import { Flex, Logo, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { NetworkSwitcher } from 'components/NetworkSwitcher'
 import { useRouter } from 'next/router'
 import UserWalletWithModal from './UserWalletWithModal'
@@ -55,6 +55,7 @@ const Footer = styled.div`
 
 const Menu = ({ children }) => {
   const router = useRouter()
+  const { isDesktop } = useMatchBreakpoints()
 
   return (
     <WrapMenu>
@@ -63,10 +64,12 @@ const Menu = ({ children }) => {
           <Logo href="/" />
         </Flex>
         <Flex alignItems="center" style={{ justifyContent: 'flex-end', gap: 10 }}>
-          <Flex onClick={() => router.push('/history')} alignItems="center" className="historyMn">
-            {' '}
-            <img src="/images/history.svg" alt="history" /> History
-          </Flex>
+          {isDesktop && (
+            <Flex onClick={() => router.push('/history')} alignItems="center" className="historyMn">
+              {' '}
+              <img src="/images/history.svg" alt="history" /> History
+            </Flex>
+          )}
           <NetworkSwitcher />
           <Flex width="200px" justifyContent="flex-end">
             <UserWalletWithModal />

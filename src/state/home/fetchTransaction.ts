@@ -1,16 +1,16 @@
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { AppState } from 'state'
 import { getTransactionList } from 'services/api/home'
+import { AppState } from 'state'
 import { setTransactionList } from './actions'
-import { useWeb3React } from '../../../packages/wagmi/src/useWeb3React'
 
 export const useFetchTransaction = (): {
   fetchTransaction: () => void
   loading: boolean
   setParamsTransaction: any
 } => {
-  const { account } = useWeb3React()
+  const { account } = useActiveWeb3React()
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(false)
   const [paramsTransaction, setParamsTransaction] = useState({
@@ -18,14 +18,14 @@ export const useFetchTransaction = (): {
     pageSize: 10,
     fromAddress: '',
     toAddress: '',
+    project_id: '',
   })
 
   const fetchTransaction = useCallback(
     async (address?: string) => {
       setLoading(true)
       try {
-        getTransactionList({ ...paramsTransaction, fromAddress: address, toAddress: address }).then((response) => {
-          console.log('response', response)
+        getTransactionList({ ...paramsTransaction }).then((response) => {
           if (response.code === 200) {
             dispatch(setTransactionList({ transactionList: response.data.rows }))
             setLoading(false)
