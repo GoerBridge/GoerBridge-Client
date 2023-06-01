@@ -168,7 +168,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
     !!formError?.receiveAmount
 
   useFetchAllCurrency()
-  const { setParamsTransaction } = useFetchTransaction()
+  // const { setParamsTransaction } = useFetchTransaction()
   const { setFetchCurrencyAttrParams } = useFetchAllCurrencyByChain({ blockchain_id: '' })
 
   const allCurrency = useAllCurrency()
@@ -177,12 +177,12 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
   // const transactionList = useTransactionList()
 
   // Fetch transaction
-  useEffect(() => {
-    setParamsTransaction((prev) => ({
-      ...prev,
-      pageSize: 3,
-    }))
-  }, [])
+  // useEffect(() => {
+  //   setParamsTransaction((prev) => ({
+  //     ...prev,
+  //     pageSize: 3,
+  //   }))
+  // }, [])
 
   // Fetch currency attr
   useEffect(() => {
@@ -201,10 +201,10 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
       ...formError,
       address: '',
     })
-    setParamsTransaction((prev) => ({
-      ...prev,
-      pageSize: 3,
-    }))
+    // setParamsTransaction((prev) => ({
+    //   ...prev,
+    //   pageSize: 3,
+    // }))
   }, [account])
 
   // Auto select fromNetWork, toNetWork
