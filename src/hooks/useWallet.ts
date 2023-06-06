@@ -9,6 +9,7 @@ export const useWallet = () => {
   const { t } = useTranslation()
   const { connectors } = useConnect()
   const { login } = useAuth()
+  console.log('wallets', wallets)
 
   const finalWallets = useMemo(() => {
     return wallets.map((config) => {

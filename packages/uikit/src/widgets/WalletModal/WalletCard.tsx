@@ -16,8 +16,8 @@ interface Props<T> {
 }
 
 const WalletButton = styled.div`
-  width: 70px;
-  height: 70px;
+  width: 50px;
+  height: 50px;
   cursor: pointer;
   img {
     width: 100%;
@@ -76,7 +76,7 @@ const WalletCard: React.FC<React.PropsWithChildren<Props<any>>> = ({ login, wall
 
   return (
     <WalletButton variant="tertiary" {...linkAction} id={`wallet-connect-${title.toLowerCase()}`}>
-      {typeof Icon === "string" ? <img src={Icon} width="40px" alt="" /> : <Icon width="40px" mb="8px" />}
+      {typeof Icon === "string" ? <img src={Icon} width="40px" alt="" /> : <Icon width="60px" mb="8px" />}
     </WalletButton>
   );
 };

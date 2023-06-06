@@ -65,7 +65,7 @@ function getPreferredConfig<T>(walletConfig: WalletConfig<T>[]) {
   ];
 }
 
-function ConnectModal<T>({ login, onDismiss = () => null, displayCount = 3, t, wallets: connectors }: Props<T>) {
+function ConnectModal<T>({ login, onDismiss = () => null, displayCount = 4, t, wallets: connectors }: Props<T>) {
   const [showMore, setShowMore] = useState(false);
   const theme = useTheme();
   const sortedConfig = getPreferredConfig(connectors);
@@ -88,7 +88,7 @@ function ConnectModal<T>({ login, onDismiss = () => null, displayCount = 3, t, w
       </ModalHeader>
       <ModalBody minWidth={["320px", null, "340px"]}>
         <WalletWrapper p="24px 0 32px" overflowY="auto">
-          <Grid gridTemplateColumns="1fr" width="100%" maxWidth="400px" margin="0 auto">
+          <Grid gridTemplateColumns="1fr 1fr" style={{ gap: 20 }} width="100%" maxWidth="400px" margin="0 auto">
             {displayListConfig.map((wallet) => (
               <Flex key={wallet.title} justifyContent="center">
                 <Flex flexDirection="column" alignItems="center">

@@ -24,42 +24,42 @@ export enum ConnectorNames {
 }
 
 export const wallets: WalletConfig<ConnectorNames>[] = [
-  // {
-  //   title: 'Trust Wallet',
-  //   icon: '/images/trust_wallet_big_round.png',
-  //   connectorId: ConnectorNames.Injected,
-  //   installed:
-  //     typeof window !== 'undefined' &&
-  //     (Boolean(window.ethereum?.isTrust) ||
-  //       // @ts-ignore
-  //       Boolean(window.ethereum?.isTrustWallet)),
-  //   priority: 1,
-  //   href: `https://link.trustwallet.com/open_url?coin_id=20000714&url=${process.env.NEXT_PUBLIC_APP_URL}/`,
-  //   downloadLink: {
-  //     desktop: 'https://chrome.google.com/webstore/detail/trust-wallet/egjidjbpglichdcondbcbdnbeeppgdph/related',
-  //   },
-  // },
+  {
+    title: 'Trust Wallet',
+    icon: '/images/trust_wallet_big_round.png',
+    connectorId: ConnectorNames.Injected,
+    installed:
+      typeof window !== 'undefined' &&
+      (Boolean(window.ethereum?.isTrust) ||
+        // @ts-ignore
+        Boolean(window.ethereum?.isTrustWallet)),
+    priority: 4,
+    href: `https://link.trustwallet.com/open_url?coin_id=20000714&url=${process.env.NEXT_PUBLIC_APP_URL}/`,
+    downloadLink: {
+      desktop: 'https://chrome.google.com/webstore/detail/trust-wallet/egjidjbpglichdcondbcbdnbeeppgdph/related',
+    },
+  },
   {
     title: 'Metamask',
     icon: '/images/metamask_big_round.png',
     installed: typeof window !== 'undefined' && Boolean(window.ethereum?.isMetaMask),
     connectorId: ConnectorNames.MetaMask,
-    priority: 2,
+    priority: 1,
     href: `https://metamask.app.link/dapp/${process.env.NEXT_PUBLIC_APP_URL?.split('//')?.[1]}/`,
   },
-  // {
-  //   title: 'Binance Wallet',
-  //   icon: BinanceChainIcon,
-  //   installed: typeof window !== 'undefined' && Boolean(window.BinanceChain),
-  //   connectorId: ConnectorNames.BSC,
-  //   priority: 2,
-  // },
-  // {
-  //   title: 'Coinbase Wallet',
-  //   icon: CoinbaseWalletIcon,
-  //   connectorId: ConnectorNames.WalletLink,
-  //   priority: 3,
-  // },
+  {
+    title: 'Binance Wallet',
+    icon: BinanceChainIcon,
+    installed: typeof window !== 'undefined' && Boolean(window.BinanceChain),
+    connectorId: ConnectorNames.BSC,
+    priority: 2,
+  },
+  {
+    title: 'Coinbase Wallet',
+    icon: CoinbaseWalletIcon,
+    connectorId: ConnectorNames.WalletLink,
+    priority: 3,
+  },
 
   // {
   //   title: 'WalletConnect',
