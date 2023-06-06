@@ -87,7 +87,7 @@ const CurrencySelect = ({ fromNetwork, switchCurrency, currencySelect, currencyL
           key={currency._id}
           style={{
             justifyContent: 'flex-start',
-            opacity: currency._id !== currencySelect?._id ? 1 : 0.5,
+            opacity: currency._id !== currencySelect?._id ? 1 : 0.85,
             cursor: currency._id !== currencySelect?._id ? 'pointer' : 'not-allowed',
           }}
           onClick={() => currency._id !== currencySelect?._id && switchCurrency(currency)}

@@ -120,11 +120,22 @@ const TransactionBridge = ({ transactionList, chainList }) => {
       title: 'Status',
       dataIndex: 'status',
       render: (data) => {
-        return (
-          <div className={`status ${data === 'CREATED' ? 'success' : 'pending'}`}>
-            {data === 'CREATED' ? 'Success' : 'Pending'}
-          </div>
-        )
+        let status = 'pending'
+        switch (data) {
+          case 'PROCESSING':
+            status = 'processing'
+            break
+          case 'FAIL':
+            status = 'error'
+            break
+          case 'COMPLETED':
+            status = 'success'
+            break
+          default:
+            status = 'pending'
+            break
+        }
+        return <div className={`status ${status}`}>{data === 'CREATED' ? 'PENDING' : data}</div>
       },
     },
     {

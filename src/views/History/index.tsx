@@ -13,7 +13,7 @@ function History() {
   useEffect(() => {
     setParamsTransaction({
       page: 1,
-      pageSize: 10,
+      pageSize: 30,
       fromAddress: account, // '0x45fd4A320b2130FB43805f74F6D19878D86dad54',
       toAddress: account, // '0x45fd4A320b2130FB43805f74F6D19878D86dad54',
       project_id: process.env.NEXT_PUBLIC_PROJECT_ID,
