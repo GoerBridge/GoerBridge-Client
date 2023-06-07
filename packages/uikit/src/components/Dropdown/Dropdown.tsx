@@ -30,7 +30,7 @@ const DropdownContent = styled.div<{ position: Position }>`
   top: ${getTop};
   left: ${getLeft};
   right: ${getRight};
-  background-color: ${({ theme }) => theme.nav.background};
+  background-color: #fff;
   box-shadow: 0px 5px 7px rgb(101, 101, 101, 32%);
   padding: 16px;
   max-height: 0px;

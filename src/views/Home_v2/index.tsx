@@ -74,7 +74,6 @@ const NetworkSelect = ({ switchNetwork, chainId, blockchainList }) => {
 
 const CurrencySelect = ({ fromNetwork, switchCurrency, currencySelect, currencyListByChain, allCurrency }) => {
   let currency
-  console.log('currencyListByChain', currencyListByChain)
   if (currencyListByChain?.length > 0 && typeof fromNetwork !== 'undefined') {
     currency = currencyListByChain[0]
   }
@@ -87,18 +86,18 @@ const CurrencySelect = ({ fromNetwork, switchCurrency, currencySelect, currencyL
           key={currency._id}
           style={{
             justifyContent: 'flex-start',
-            opacity: currency._id !== currencySelect?._id ? 1 : 0.85,
+            opacity: currency._id !== currencySelect?._id ? 1 : 0.5,
             cursor: currency._id !== currencySelect?._id ? 'pointer' : 'not-allowed',
           }}
           onClick={() => currency._id !== currencySelect?._id && switchCurrency(currency)}
         >
-          <img src={`/images/currencies/${currency?.code}.png`} alt="logo" />
+          <img src={`/images/currencies/${currency?.title}.png`} alt="logo" />
           <Text
             color={currency._id === currencySelect?._id ? 'secondary' : 'text'}
             bold={currency._id === currencySelect?._id}
             pl="12px"
           >
-            {currency.title} ({currency.code})
+            {currency.title}
           </Text>
         </Box>
       ) : (
@@ -262,8 +261,13 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
       //   return
       // }
 
+      const listSymboyCurrentcy = []
+      allCurrency.map((item) => {
+        listSymboyCurrentcy[item.blockchain_id] = item.title
+        return listSymboyCurrentcy
+      })
       setFormError({})
-      onPresentTransferModal({ ...formValue, chainId, account, native })
+      onPresentTransferModal({ ...formValue, chainId, account, native, listSymboyCurrentcy })
     } catch (error) {
       console.log(error)
     }
@@ -380,11 +384,15 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
                           marginRight: '10px',
                           background: '#627feb',
                           cursor: 'pointer',
+                          borderRadius: '6px',
                         }}
                       >
                         Max
                       </button>
-                      <Text fontSize={[12, , 14]}> {currencyBalance > 0 ? currencyBalance : '--'}</Text>
+                      <Text fontSize={[12, , 14]} style={{ color: '#000' }}>
+                        {' '}
+                        {currencyBalance > 0 ? currencyBalance : '--'}
+                      </Text>
                     </Flex>
                   }
                   inputType="number"
@@ -398,7 +406,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
                         <Styles.RightInputButton>
                           <Box className="wIcon">
                             {formValue.currency ? (
-                              <img src={`/images/currencies/${formValue?.currency?.code}.png`} alt="" />
+                              <img src={`/images/currencies/${formValue?.currency?.title}.png`} alt="" />
                             ) : (
                               <HelpIcon />
                             )}

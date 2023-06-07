@@ -51,8 +51,11 @@ const TransferContentStyled = styled(Flex)`
 `
 
 export const TransferContent = ({ dataModal, approvalState, handleApprove, loading, handleTransfer, gasFee }) => {
-  const { fromNetwork, toNetwork, currency, address, sendAmount, receiveAmount, native } = dataModal || {}
-
+  const { fromNetwork, toNetwork, currency, address, sendAmount, receiveAmount, native, listSymboyCurrentcy } =
+    dataModal || {}
+  console.log('fromNetwork', fromNetwork)
+  console.log('toNetwork', toNetwork)
+  console.log('listSymboyCurrentcy', listSymboyCurrentcy)
   return (
     <TransferContentStyled>
       <div className="box-transfer">
@@ -69,7 +72,7 @@ export const TransferContent = ({ dataModal, approvalState, handleApprove, loadi
             </Text>
           </Flex>
           <Text fontSize={[14, , 16]} textAlign="right">
-            -{sendAmount} {currency.code}
+            -{sendAmount} {listSymboyCurrentcy[fromNetwork._id]}
           </Text>
         </Flex>{' '}
         <Flex justifyContent="space-between">
@@ -98,7 +101,7 @@ export const TransferContent = ({ dataModal, approvalState, handleApprove, loadi
             <Text fontSize={[14, , 16]}>{toNetwork.title}</Text>
           </Flex>
           <Text fontSize={[14, , 16]} textAlign="right">
-            +{receiveAmount} {currency.code}
+            +{receiveAmount} {listSymboyCurrentcy[toNetwork._id]}
           </Text>
         </Flex>
         <Flex justifyContent="space-between">
