@@ -54,8 +54,6 @@ export const TransferContent = ({ dataModal, approvalState, handleApprove, loadi
   const { fromNetwork, toNetwork, currency, address, sendAmount, receiveAmount, native, listSymboyCurrentcy } =
     dataModal || {}
 
-  const systemFee = (+sendAmount * +currency?.system_fee) / 100
-  console.log('fee', receiveAmount - systemFee)
   return (
     <TransferContentStyled>
       <div className="box-transfer">

@@ -1,5 +1,6 @@
 import { Grid, Text } from '@pancakeswap/uikit'
 import TableBase from 'components/Table/TableBase'
+import { useAllCurrency, useFetchAllCurrency } from 'state/home/fetchCurrency'
 import { formatAmount, formatCode, formatDate } from 'helpers'
 import Link from 'next/link'
 import styled from 'styled-components'
@@ -86,6 +87,9 @@ const TransactionBridgeStyle = styled.div`
   }
 `
 const TransactionBridge = ({ transactionList, chainList }) => {
+  useFetchAllCurrency()
+  const allCurrency = useAllCurrency()
+  console.log('allCurrency', allCurrency)
   const columns = [
     {
       title: 'No',
@@ -98,9 +102,10 @@ const TransactionBridge = ({ transactionList, chainList }) => {
       title: 'Send',
       dataIndex: 'fromAmount',
       render: (data, record) => {
+        // formatAmount(data, { tokenPrecision: true, decimals: 18 })
         return (
           <Text fontSize={[14, , 16]}>
-            {formatAmount(data, { tokenPrecision: true, decimals: 18 })} {record?.currency_code}
+            {data / 10 ** 18} {record?.fromChain === 'GoerliChain' ? 'gETH' : record.currency_code}
           </Text>
         )
       },
@@ -111,7 +116,7 @@ const TransactionBridge = ({ transactionList, chainList }) => {
       render: (data, record) => {
         return (
           <Text fontSize={[14, , 16]}>
-            {formatAmount(data, { tokenPrecision: true, decimals: 18 })} {record?.currency_code}
+            {data / 10 ** 18} {record?.toChain === 'GoerliChain' ? 'gETH' : record.currency_code}
           </Text>
         )
       },
