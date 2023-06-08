@@ -226,7 +226,10 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
     setFormValue((prev) => ({
       ...prev,
       sendAmount: +currencyBalance,
-      receiveAmount: +currencyBalance * 0.95,
+      receiveAmount:
+        +formValue.currency?.system_fee > 0
+          ? Math.round(((+currencyBalance * (100 - +formValue.currency?.system_fee)) / 100) * 10000) / 10000
+          : +currencyBalance,
     }))
   }
 
@@ -448,7 +451,10 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
                       setFormValue((prev) => ({
                         ...prev,
                         sendAmount: v,
-                        receiveAmount: +v,
+                        receiveAmount:
+                          +formValue.currency?.system_fee > 0
+                            ? Math.round(((+v * (100 - +formValue.currency?.system_fee)) / 100) * 10000) / 10000
+                            : +v,
                       }))
                     }
                   }}
@@ -488,14 +494,14 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
           </div>
           {formValue.fromNetwork && formValue.currency && formValue.sendAmount > 0 && (
             <div className="card-info">
-              {/* <Flex justifyContent="space-between" mb="8px">
+              <Flex justifyContent="space-between" mb="8px">
                 <Text fontSize={['14px', '', '16px']} color="#052C83">
-                  System Fee ({formValue.currency?.system_fee || '--'}%):
+                  System Fee ({formValue.currency?.system_fee || 0}%):
                 </Text>
                 <Text fontSize={['14px', '', '16px']} color="#F98C36">
-                  {+formValue.sendAmount * (+formValue.currency?.system_fee / 100)}
+                  {(+formValue.sendAmount * +formValue.currency?.system_fee) / 100}
                 </Text>
-              </Flex> */}
+              </Flex>
               <Flex justifyContent="space-between" mb="8px">
                 <Text fontSize={['14px', '', '16px']} color="#052C83">
                   Gas Fee:

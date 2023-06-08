@@ -53,9 +53,9 @@ const TransferContentStyled = styled(Flex)`
 export const TransferContent = ({ dataModal, approvalState, handleApprove, loading, handleTransfer, gasFee }) => {
   const { fromNetwork, toNetwork, currency, address, sendAmount, receiveAmount, native, listSymboyCurrentcy } =
     dataModal || {}
-  console.log('fromNetwork', fromNetwork)
-  console.log('toNetwork', toNetwork)
-  console.log('listSymboyCurrentcy', listSymboyCurrentcy)
+
+  const systemFee = (+sendAmount * +currency?.system_fee) / 100
+  console.log('fee', receiveAmount - systemFee)
   return (
     <TransferContentStyled>
       <div className="box-transfer">
@@ -101,7 +101,11 @@ export const TransferContent = ({ dataModal, approvalState, handleApprove, loadi
             <Text fontSize={[14, , 16]}>{toNetwork.title}</Text>
           </Flex>
           <Text fontSize={[14, , 16]} textAlign="right">
-            +{receiveAmount} {listSymboyCurrentcy[toNetwork._id]}
+            +
+            {+currency?.system_fee > 0
+              ? Math.round(((sendAmount * (100 - +currency?.system_fee)) / 100) * 10000) / 10000
+              : sendAmount}{' '}
+            {listSymboyCurrentcy[toNetwork._id]}
           </Text>
         </Flex>
         <Flex justifyContent="space-between">
@@ -119,14 +123,14 @@ export const TransferContent = ({ dataModal, approvalState, handleApprove, loadi
         </Flex>
       </div>
       <div className="card-info">
-        {/* <Flex justifyContent="space-between" mb="5px">
+        <Flex justifyContent="space-between" mb="5px">
           <Text fontSize={['13px', '', '16px']} color="#008037">
-            System Fee ({currency?.system_fee || '--'}%):
+            System Fee ({currency?.system_fee || 0}%):
           </Text>
           <Text fontSize={['13px', '', '16px']} color="#F98C36">
             {+sendAmount * (+currency?.system_fee / 100)}
           </Text>
-        </Flex> */}
+        </Flex>
         <Flex justifyContent="space-between" mb="5px">
           <Text fontSize={['13px', '', '16px']} color="#008037">
             Gas Fee:
