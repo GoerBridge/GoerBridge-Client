@@ -1,4 +1,4 @@
-import { Flex, Button } from '@pancakeswap/uikit'
+import { Flex, Button, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useActiveHandle } from 'hooks/useEagerConnect.bmp'
 import { useWallet } from 'hooks/useWallet'
 import styled from 'styled-components'
@@ -9,10 +9,10 @@ export const StyledUserMenu = styled(Flex)`
   align-items: center;
   cursor: pointer;
   background-color: #fff;
-  border-radius:10px ;
-   /* width: 205px;
+  border-radius: 10px;
+  /* width: 205px;
   height: 36px; */
-  padding:6px 10px;
+  padding: 6px 10px;
   margin-left: 0;
   /* position: relative; */
 
@@ -29,17 +29,17 @@ export const StyledUserMenu = styled(Flex)`
   } */
 
   img {
-   height:20px ;
+    height: 20px;
   }
 `
 export const LabelText = styled.div`
   font-size: 14px;
-  background:#EDF1F7 ;
+  background: #edf1f7;
   color: #000;
   font-weight: 600;
-  padding:5px 15px ;
-  margin-left: 16px;
-  border-radius:5px ;
+  padding: 5px 15px;
+  // margin-left: 16px;
+  border-radius: 5px;
   ${({ theme }) => theme.mediaQueries.sm} {
     font-size: 16px;
     margin-right: 4px;
@@ -50,6 +50,7 @@ export const LabelText = styled.div`
 const ConnectWallet = ({ account, onPresentWalletModal, ...props }: any) => {
   const handleActive = useActiveHandle()
   const { onPresentConnectModal } = useWallet()
+  const { isDesktop } = useMatchBreakpoints()
 
   const handleClick = () => {
     if (account) {
@@ -65,18 +66,13 @@ const ConnectWallet = ({ account, onPresentWalletModal, ...props }: any) => {
   if (account) {
     return (
       <StyledUserMenu onClick={handleClick}>
-        {accountEllipsis && <img src="/images/icon-metamask.svg" alt="" />}
+        {accountEllipsis && isDesktop ? <img src="/images/icon-metamask.svg" alt="" /> : ''}
         <LabelText>{accountEllipsis}</LabelText>
       </StyledUserMenu>
     )
   }
 
-  return (
-    <Button onClick={handleClick}>
-      Connect Wallet
-    </Button>
-
-  )
+  return <Button onClick={handleClick}>Connect Wallet</Button>
 }
 
 export default ConnectWallet

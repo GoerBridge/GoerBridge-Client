@@ -33,7 +33,7 @@ const WrapMenu = styled.div`
     display: inline-flex;
     position: relative;
     z-index: 10;
-    padding: 5px 15px;
+    padding: 8px 15px;
     border-radius: 10px;
     background-color: #fff;
     gap: 10px;
@@ -64,12 +64,10 @@ const Menu = ({ children }) => {
           <Logo href="/" />
         </Flex>
         <Flex alignItems="center" style={{ justifyContent: 'flex-end', gap: 10 }}>
-          {isDesktop && (
-            <Flex onClick={() => router.push('/history')} alignItems="center" className="historyMn">
-              {' '}
-              <img src="/images/history.svg" alt="history" /> History
-            </Flex>
-          )}
+          <Flex onClick={() => router.push('/history')} alignItems="center" className="historyMn">
+            {' '}
+            <img src="/images/history.svg" alt="history" /> {isDesktop ? 'History' : ''}
+          </Flex>
           <NetworkSwitcher />
           <Flex width="200px" justifyContent="flex-end">
             <UserWalletWithModal />
