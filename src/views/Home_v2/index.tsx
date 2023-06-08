@@ -388,6 +388,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
                           background: '#627feb',
                           cursor: 'pointer',
                           borderRadius: '6px',
+                          color: '#fff',
                         }}
                       >
                         Max
