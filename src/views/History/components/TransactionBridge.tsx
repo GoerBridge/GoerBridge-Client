@@ -104,9 +104,17 @@ const TransactionBridge = ({ transactionList, chainList }) => {
       render: (data, record) => {
         // formatAmount(data, { tokenPrecision: true, decimals: 18 })
         return (
-          <Text fontSize={[14, , 16]}>
-            {data / 10 ** 18} {record?.fromChain === 'GoerliChain' ? 'gETH' : record.currency_code}
-          </Text>
+          <div className="data-from">
+            <Text fontSize={[14, , 16]}>
+              {data / 10 ** 18} {record?.fromChain === 'GoerliChain' ? 'gETH' : record.currency_code}
+            </Text>
+            <Grid gridTemplateColumns="repeat(2, 1fr)" gridColumnGap="12px" mt={['8px', , '16px']}>
+              <Text className="custom-text">Network:</Text>
+              <Text className="custom-text" textAlign="right">
+                {record.fromChain ? formatCode(record.fromChain, 15, 6) : '--'}
+              </Text>
+            </Grid>
+          </div>
         )
       },
     },
@@ -115,9 +123,17 @@ const TransactionBridge = ({ transactionList, chainList }) => {
       dataIndex: 'toAmount',
       render: (data, record) => {
         return (
-          <Text fontSize={[14, , 16]}>
-            {data / 10 ** 18} {record?.toChain === 'GoerliChain' ? 'gETH' : record.currency_code}
-          </Text>
+          <div className="data-from">
+            <Text fontSize={[14, , 16]}>
+              {data / 10 ** 18} {record?.toChain === 'GoerliChain' ? 'gETH' : record.currency_code}
+            </Text>
+            <Grid gridTemplateColumns="repeat(2, 1fr)" gridColumnGap="12px" mt={['8px', , '16px']}>
+              <Text className="custom-text">Network:</Text>
+              <Text className="custom-text" textAlign="right">
+                {record.toChain ? formatCode(record.toChain, 15, 6) : '--'}
+              </Text>
+            </Grid>
+          </div>
         )
       },
     },
@@ -181,12 +197,6 @@ const TransactionBridge = ({ transactionList, chainList }) => {
                 </Text>
               </Link>
             </Grid>
-            <Grid gridTemplateColumns="repeat(2, 1fr)" gridColumnGap="12px" mt={['8px', , '16px']}>
-              <Text className="custom-text">Network:</Text>
-              <Text className="custom-text" textAlign="right">
-                {record.fromChain ? formatCode(record.fromChain, 15, 6) : '--'}
-              </Text>
-            </Grid>
           </div>
         )
       },
@@ -234,12 +244,6 @@ const TransactionBridge = ({ transactionList, chainList }) => {
                   --
                 </Text>
               )}
-            </Grid>
-            <Grid gridTemplateColumns="repeat(2, 1fr)" gridColumnGap="12px" mt={['8px', , '16px']}>
-              <Text className="custom-text">Network:</Text>
-              <Text className="custom-text" textAlign="right">
-                {record.toChain ? formatCode(record.toChain, 15, 6) : '--'}
-              </Text>
             </Grid>
           </div>
         )
