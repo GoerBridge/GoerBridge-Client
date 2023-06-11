@@ -154,23 +154,37 @@ const TransactionBridge = ({ transactionList, chainList }) => {
             <Grid gridTemplateColumns="repeat(2, 1fr)" gridColumnGap="12px">
               <Text className="custom-text">Address:</Text>
               <Link href={`${currentChain.scan}/address/${record.fromAddress}`} passHref>
-                <Text as="a" className="custom-text" textAlign="right" target="_blank" rel="noopener noreferrer">
-                  {record.fromAddress ? formatCode(record.fromAddress, 6, 0) : '--'}
+                <Text
+                  as="a"
+                  className="custom-text"
+                  textAlign="right"
+                  style={{ color: '#1677ff' }}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {record.fromAddress ? formatCode(record.fromAddress, 6, 6) : '--'}
                 </Text>
               </Link>
             </Grid>
             <Grid gridTemplateColumns="repeat(2, 1fr)" gridColumnGap="12px" mt={['8px', , '16px']}>
               <Text className="custom-text">Txh:</Text>
               <Link href={`${currentChain.scan}/tx/${record.fromHash}`} passHref>
-                <Text as="a" className="custom-text" textAlign="right" target="_blank" rel="noopener noreferrer">
-                  {record.fromHash ? formatCode(record.fromHash, 6, 0) : '--'}
+                <Text
+                  as="a"
+                  className="custom-text"
+                  textAlign="right"
+                  style={{ color: '#1677ff' }}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {record.fromHash ? formatCode(record.fromHash, 6, 6) : '--'}
                 </Text>
               </Link>
             </Grid>
             <Grid gridTemplateColumns="repeat(2, 1fr)" gridColumnGap="12px" mt={['8px', , '16px']}>
               <Text className="custom-text">Network:</Text>
               <Text className="custom-text" textAlign="right">
-                {record.fromChain ? formatCode(record.fromChain, 15, 0) : '--'}
+                {record.fromChain ? formatCode(record.fromChain, 15, 6) : '--'}
               </Text>
             </Grid>
           </div>
@@ -188,8 +202,15 @@ const TransactionBridge = ({ transactionList, chainList }) => {
             <Grid gridTemplateColumns="repeat(2, 1fr)" gridColumnGap="12px">
               <Text className="custom-text">Address:</Text>
               <Link href={`${currentChain?.scan}/address/${record.toAddress}`} passHref>
-                <Text as="a" className="custom-text" textAlign="right" target="_blank" rel="noopener noreferrer">
-                  {record.toAddress ? formatCode(record.toAddress, 6, 0) : '--'}
+                <Text
+                  as="a"
+                  className="custom-text"
+                  textAlign="right"
+                  style={{ color: '#1677ff' }}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {record.toAddress ? formatCode(record.toAddress, 6, 6) : '--'}
                 </Text>
               </Link>
             </Grid>
@@ -197,8 +218,15 @@ const TransactionBridge = ({ transactionList, chainList }) => {
               <Text className="custom-text">Txh:</Text>
               {record.toHash ? (
                 <Link href={`${currentChain.scan}/tx/${record.toHash}`} passHref>
-                  <Text as="a" className="custom-text" textAlign="right" target="_blank" rel="noopener noreferrer">
-                    {formatCode(record.toHash, 6, 0)}
+                  <Text
+                    as="a"
+                    className="custom-text"
+                    style={{ color: '#1677ff' }}
+                    textAlign="right"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {formatCode(record.toHash, 6, 6)}
                   </Text>
                 </Link>
               ) : (
@@ -210,7 +238,7 @@ const TransactionBridge = ({ transactionList, chainList }) => {
             <Grid gridTemplateColumns="repeat(2, 1fr)" gridColumnGap="12px" mt={['8px', , '16px']}>
               <Text className="custom-text">Network:</Text>
               <Text className="custom-text" textAlign="right">
-                {record.toChain ? formatCode(record.toChain, 15, 0) : '--'}
+                {record.toChain ? formatCode(record.toChain, 15, 6) : '--'}
               </Text>
             </Grid>
           </div>
