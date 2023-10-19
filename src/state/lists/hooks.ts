@@ -191,8 +191,7 @@ function combineMaps(map1: TokenAddressMap, map2: TokenAddressMap): TokenAddress
     [ChainId.GOERLI]: { ...map1[ChainId.GOERLI], ...map2[ChainId.GOERLI] },
     [ChainId.BSC]: { ...map1[ChainId.BSC], ...map2[ChainId.BSC] },
     [ChainId.BSC_TESTNET]: { ...map1[ChainId.BSC_TESTNET], ...map2[ChainId.BSC_TESTNET] },
-    [ChainId.PULSE]: { ...map1[ChainId.PULSE], ...map2[ChainId.PULSE] },
-    [ChainId.OPV]: { ...map1[ChainId.OPV], ...map2[ChainId.OPV] },
+    [ChainId.BASE_GOERLI_ETH]: { ...map1[ChainId.BASE_GOERLI_ETH], ...map2[ChainId.BASE_GOERLI_ETH] },
     [ChainId.POLYGON_MUMBAI]: { ...map1[ChainId.POLYGON_MUMBAI], ...map2[ChainId.POLYGON_MUMBAI] },
   }
 }

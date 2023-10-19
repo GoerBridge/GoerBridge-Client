@@ -59,8 +59,7 @@ export const EMPTY_LIST: TokenAddressMap = {
   [ChainId.GOERLI]: {},
   [ChainId.BSC]: {},
   [ChainId.BSC_TESTNET]: {},
-  [ChainId.PULSE]: {},
-  [ChainId.OPV]: {},
+  [ChainId.BASE_GOERLI_ETH]: {},
   [ChainId.POLYGON_MUMBAI]: {},
 }
 
