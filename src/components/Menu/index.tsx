@@ -9,6 +9,9 @@ const MENU_HEIGHT = 140
 const WrapMenu = styled.div`
   overflow: hidden;
   .nav {
+    .logo {
+      max-height: 50px;
+    }
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -60,7 +63,7 @@ const Menu = ({ children }) => {
     <WrapMenu>
       <div className="nav">
         <Flex>
-          <Logo href="/" />
+          <Logo className="logo" href="/" />
         </Flex>
         <Flex alignItems="center" style={{ justifyContent: 'flex-end', gap: 10 }}>
           <Flex onClick={() => router.push('/history')} alignItems="center" className="historyMn">

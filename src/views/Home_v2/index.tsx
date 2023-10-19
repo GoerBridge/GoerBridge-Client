@@ -11,7 +11,7 @@ import {
   useModal,
   useToast,
 } from '@pancakeswap/uikit'
-import { ChainLogo } from 'components/Logo/ChainLogo'
+// import { ChainLogo } from 'components/Logo/ChainLogo'
 import ModalTransferMultiChain from 'components/Modal/ModalTransferMultiChain'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useNativeCurrency from 'hooks/useNativeCurrency'

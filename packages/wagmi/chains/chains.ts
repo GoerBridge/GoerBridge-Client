@@ -115,40 +115,21 @@ export const bscTest: Chain = {
   testnet: true,
 }
 
-export const opv: Chain = {
-  id: 1680,
-  name: 'OPV Chain',
-  network: 'opv',
+export const baseGoerli: Chain = {
+  id: 84531,
+  name: 'Base_Goerli',
+  network: 'Base_Goerli',
   nativeCurrency: {
     decimals: 18,
-    name: 'OPV',
-    symbol: 'OPV',
+    name: 'Base_Goerli',
+    symbol: 'bETH',
   },
   rpcUrls: {
-    public: 'https://testnet-rpc-dataseed1.opvchain.com',
-    default: 'https://testnet-rpc-dataseed1.opvchain.com',
+    public: 'https://goerli.base.org',
+    default: 'https://goerli.base.org',
   },
   blockExplorers: {
-    default: { name: 'OpvScan', url: 'https://testnet.opvchain.com' },
-  },
-  testnet: true,
-}
-
-export const pulse: Chain = {
-  id: 30393,
-  name: 'PULSE Chain Testnet',
-  network: 'pulse-testnet',
-  nativeCurrency: {
-    decimals: 18,
-    name: 'PULSE Chain Testnet',
-    symbol: 'tPULSE',
-  },
-  rpcUrls: {
-    public: 'https://testnet-rpc-dataseed1.pulsenet.io',
-    default: 'https://testnet-rpc-dataseed1.pulsenet.io',
-  },
-  blockExplorers: {
-    default: { name: 'PulseScan', url: 'https://testnet-scan.pulsenet.io/' },
+    default: { name: 'Base_Goerli', url: 'https://goerli.basescan.org/' },
   },
   testnet: true,
 }

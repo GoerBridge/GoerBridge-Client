@@ -18,18 +18,18 @@ const StyledLink = styled("a")`
   /* height: 100% */
   display: flex;
   align-items: center;
-  /* .mobile-icon {
+  .mobile-icon {
     width: 42px;
-    ${({ theme }) => theme.mediaQueries.lg} {
+    ${({ theme }) => theme.mediaQueries.md} {
       display: none;
     }
-  } */
+  }
   .desktop-icon {
     width: 100%;
-    max-width: 200px;
-    /* display: none; */
-    ${({ theme }) => theme.mediaQueries.lg} {
-      /* display: block; */
+    max-width: 150px;
+    display: none;
+    ${({ theme }) => theme.mediaQueries.md} {
+      display: block;
       max-width: 300px;
     }
   }
@@ -51,7 +51,7 @@ const Logo: React.FC<any> = ({ href }) => {
   const isAbsoluteUrl = href.startsWith("http");
   const innerLogo = (
     <>
-      {/* <LogoIcon className="mobile-icon" /> */}
+      <LogoIcon className="mobile-icon" />
       <LogoWithTextIcon className="desktop-icon" />
     </>
   );

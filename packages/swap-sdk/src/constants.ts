@@ -10,8 +10,7 @@ export enum ChainId {
   GOERLI = 5,
   BSC = 56,
   BSC_TESTNET = 97,
-  PULSE = 30393,
-  OPV = 1680,
+  BASE_GOERLI_ETH = 84531,
   POLYGON_MUMBAI = 80001,
 }
 
@@ -144,6 +143,7 @@ export const NATIVE: Record<
   }
 > = {
   [ChainId.ETHEREUM]: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+  [ChainId.BASE_GOERLI_ETH]: { name: 'Base Ether', symbol: 'ETH', decimals: 18 },
   [ChainId.RINKEBY]: { name: 'Rinkeby Ether', symbol: 'RIN', decimals: 18 },
   [ChainId.GOERLI]: { name: 'Goerli Ether', symbol: 'GETH', decimals: 18 },
   [ChainId.BSC]: {
