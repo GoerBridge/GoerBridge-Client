@@ -29,7 +29,7 @@ const TransactionBridgeStyle = styled.div`
       text-align: center;
       color: #fff;
 
-      box-shadow: -2px -2px 2px #1e3238, inset 0px -2px 1px #001015;
+      // box-shadow: -2px -2px 2px #1e3238, inset 0px -2px 1px #001015;
       border-radius: 8px;
 
       &.success {

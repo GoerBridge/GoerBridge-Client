@@ -50,8 +50,17 @@ const TransferContentStyled = styled(Flex)`
   }
 `
 
-export const TransferContent = ({ dataModal, approvalState, handleApprove, loading, handleTransfer, gasFee }) => {
+export const TransferContent = ({
+  dataModal,
+  approvalState,
+  handleApprove,
+  loading,
+  handleTransfer,
+  gasFee,
+  tokenFeePercent,
+}) => {
   const { fromNetwork, toNetwork, currency, address, sendAmount, receiveAmount, native } = dataModal || {}
+  // console.log('TransferContent address==>', address);
 
   return (
     <TransferContentStyled>
@@ -98,7 +107,7 @@ export const TransferContent = ({ dataModal, approvalState, handleApprove, loadi
             <Text fontSize={[14, , 16]}>{toNetwork.title}</Text>
           </Flex>
           <Text fontSize={[14, , 16]} textAlign="right">
-            +{receiveAmount} {currency.code}
+            +{receiveAmount * (1 - tokenFeePercent)} {currency.code}
           </Text>
         </Flex>
         <Flex justifyContent="space-between">
@@ -116,14 +125,14 @@ export const TransferContent = ({ dataModal, approvalState, handleApprove, loadi
         </Flex>
       </div>
       <div className="card-info">
-        {/* <Flex justifyContent="space-between" mb="5px">
+        <Flex justifyContent="space-between" mb="5px">
           <Text fontSize={['13px', '', '16px']} color="#008037">
-            System Fee ({currency?.system_fee || '--'}%):
+            System Fee ({tokenFeePercent ? tokenFeePercent * 100 : '--'}%):
           </Text>
           <Text fontSize={['13px', '', '16px']} color="#F98C36">
-            {+sendAmount * (+currency?.system_fee / 100)}
+            {+sendAmount * +tokenFeePercent}
           </Text>
-        </Flex> */}
+        </Flex>
         <Flex justifyContent="space-between" mb="5px">
           <Text fontSize={['13px', '', '16px']} color="#008037">
             Gas Fee:
@@ -142,7 +151,8 @@ export const TransferContent = ({ dataModal, approvalState, handleApprove, loadi
         </Flex>
       </div>
       <Flex justifyContent="center" mt="24px">
-        {approvalState !== ApprovalState.APPROVED && fromNetwork.chainid !== 5 ? (
+        {approvalState !== ApprovalState.APPROVED &&
+        currency.token_address !== '0x0000000000000000000000000000000000000000' ? (
           <Button width="100%" height="44px" onClick={handleApprove}>
             {loading && <LoadingIcon src="/images/loading.gif" alt="loading" />}
             Approve

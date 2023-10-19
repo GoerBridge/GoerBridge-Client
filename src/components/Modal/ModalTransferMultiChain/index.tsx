@@ -15,6 +15,7 @@ import { TransferContent, TransferSuccessContent } from './ModalContent'
 
 const ModalTransferMultiChain: React.FC<InjectedModalProps> = ({ onDismiss, dataModal }) => {
   const { fromNetwork, toNetwork, currency, address, sendAmount, chainId, account } = dataModal || {}
+  // console.log('dataModal ====>', dataModal);
 
   const { toastError } = useToast()
   const { t } = useTranslation()
@@ -27,33 +28,40 @@ const ModalTransferMultiChain: React.FC<InjectedModalProps> = ({ onDismiss, data
   const { callWithGasPrice } = useCallWithGasPrice()
   const addTransaction = useTransactionAdder()
   const [gasFee, setGasFee] = useState(null)
+  const [tokenFeePercent, setGasFeeTokenPercent] = useState(null)
 
   useEffect(() => {
     async function getFeeGas() {
       if (bridgeContract) {
         const _gasFee = await bridgeContract?.FEE_NATIVE()
+        const _tokenFeePercent = await bridgeContract?.feePercentageBridge()
         setGasFee((+_gasFee / 10 ** 18).toString())
+        setGasFeeTokenPercent((+_tokenFeePercent / 1000).toString())
       }
     }
     getFeeGas()
   }, [bridgeContract])
+  // console.log('tokenFeePercent===>', tokenFeePercent);
 
   async function onTransfer() {
     setLoading(true)
+
     if (!chainId || !address || !bridgeContract) throw new Error('Missing dependencies')
 
     const methodName = 'receiveTokens'
+
+    let gasValue = gasFee
+    if (currency?.token_address === '0x0000000000000000000000000000000000000000') {
+      gasValue = +sendAmount + +gasFee
+    }
 
     const params = {
       amount: getDecimalAmount(new BigNumber(sendAmount), 18).toString(),
       toBlockchain: toNetwork.code,
       toAddress: address,
+      receiveTokens: gasValue,
     }
 
-    let gasValue = gasFee
-    if (+chainId === 5) {
-      gasValue = +sendAmount + +gasFee
-    }
     const estimatedGas = await bridgeContract.estimateGas.receiveTokens(
       params.amount,
       params.toBlockchain,
@@ -109,6 +117,7 @@ const ModalTransferMultiChain: React.FC<InjectedModalProps> = ({ onDismiss, data
           loading={loading}
           handleTransfer={onTransfer}
           gasFee={gasFee}
+          tokenFeePercent={tokenFeePercent}
         />
       ) : (
         <TransferSuccessContent onDismiss={onDismiss} />

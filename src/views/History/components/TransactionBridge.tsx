@@ -29,7 +29,7 @@ const TransactionBridgeStyle = styled.div`
       text-align: center;
       color: #fff;
 
-      box-shadow: -2px -2px 2px #1e3238, inset 0px -2px 1px #001015;
+      // box-shadow: -2px -2px 2px #1e3238, inset 0px -2px 1px #001015;
       border-radius: 8px;
 
       &.success {
@@ -120,11 +120,25 @@ const TransactionBridge = ({ transactionList, chainList }) => {
       title: 'Status',
       dataIndex: 'status',
       render: (data) => {
-        return (
-          <div className={`status ${data === 'CREATED' ? 'success' : 'pending'}`}>
-            {data === 'CREATED' ? 'Success' : 'Pending'}
-          </div>
-        )
+        const status = () => {
+          let statusData = 'pending'
+          switch (data) {
+            case 'CREATED':
+              statusData = 'pending'
+              break
+            case 'pending':
+              statusData = 'pending'
+              break
+            case 'FAIL':
+              statusData = 'error'
+              break
+            default:
+              statusData = 'success'
+              break
+          }
+          return statusData
+        }
+        return <div className={`status ${status()}`}>{data}</div>
       },
     },
     {

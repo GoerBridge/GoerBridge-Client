@@ -34,7 +34,7 @@ const TransactionBridgeStyle = styled.div`
       min-width: 105px;
       height: 30px;
       line-height: 30px;
-      box-shadow: -2px -2px 2px #1e3238, inset 0px -2px 1px #001015;
+      // box-shadow: -2px -2px 2px #d2d2db, inset 0px -2px 1px #d2d2db;
       border-radius: 8px;
       &.success {
         background: #008037;

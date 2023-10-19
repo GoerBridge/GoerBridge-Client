@@ -54,7 +54,7 @@ export const CardBridgeTransfer = styled.div`
       margin-left: 10px;
       background: #111b1e;
       border: unset;
-      box-shadow: -2px -2px 2px #1e3238, inset 0px -2px 1px #001015;
+      // box-shadow: -2px -2px 2px #1e3238, inset 0px -2px 1px #001015;
       border-radius: 8px;
       cursor: pointer;
     }
@@ -73,7 +73,7 @@ export const CardBridgeTransfer = styled.div`
       width: 100%;
       height: 44px;
       background: #008037;
-      box-shadow: -2px -2px 2px #1e3238, inset 0px -2px 1px #001015;
+      // box-shadow: -2px -2px 2px #1e3238, inset 0px -2px 1px #001015;
       border-radius: 8px;
     }
   }
@@ -89,7 +89,7 @@ export const RightInputButton = styled.div`
   height: 44px;
 
   background: #008037;
-  box-shadow: -2px -2px 2px #1e3238, inset 0px -2px 1px #001015;
+  // box-shadow: -2px -2px 2px #1e3238, inset 0px -2px 1px #001015;
   border-radius: 8px;
   border: unset;
 

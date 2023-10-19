@@ -11,7 +11,7 @@ function History() {
   useEffect(() => {
     setParamsTransaction((prev) => ({
       ...prev,
-      pageSize: 3,
+      pageSize: 10,
     }))
   }, [])
   const transactionList = useTransactionList()

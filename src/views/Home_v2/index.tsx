@@ -41,66 +41,111 @@ import SelectChain from './components/SelectChain'
 import WInput from './components/WInput'
 import * as Styles from './styles'
 
-const NetworkSelect = ({ switchNetwork, chainId, blockchainList }) => {
-  return (
-    <Styles.NetworkSelectContentStyle>
-      {blockchainList?.map((chain) => {
-        return (
-          <Box
-            className="network-item"
-            key={chain.chainid}
-            style={{
-              justifyContent: 'flex-start',
-              opacity: chain.chainid !== chainId ? 1 : 0.5,
-              cursor: chain.chainid !== chainId ? 'pointer' : 'not-allowed',
-            }}
-            onClick={() => chain.chainid !== chainId && switchNetwork(chain)}
-          >
-            <ChainLogo chainId={chain.chainid} />
-            <Text
-              color={chain.chainid === chainId ? 'secondary' : 'text'}
-              bold={chain.chainid === chainId}
-              pl="12px"
-              fontSize={[12, , 14]}
-            >
-              {chain.title}
-            </Text>
-          </Box>
-        )
-      })}
-    </Styles.NetworkSelectContentStyle>
-  )
-}
+// const NetworkSelect = ({ switchNetwork, chainId, blockchainList }) => {
+//   return (
+//     <Styles.NetworkSelectContentStyle>
+//       {blockchainList?.map((chain) => {
+//         return (
+//           <Box
+//             className="network-item"
+//             key={chain.chainid}
+//             style={{
+//               justifyContent: 'flex-start',
+//               opacity: chain.chainid !== chainId ? 1 : 0.5,
+//               cursor: chain.chainid !== chainId ? 'pointer' : 'not-allowed',
+//             }}
+//             onClick={() => chain.chainid !== chainId && switchNetwork(chain)}
+//           >
+//             <ChainLogo chainId={chain.chainid} />
+//             <Text
+//               color={chain.chainid === chainId ? 'secondary' : 'text'}
+//               bold={chain.chainid === chainId}
+//               pl="12px"
+//               fontSize={[12, , 14]}
+//             >
+//               {chain.title}
+//             </Text>
+//           </Box>
+//         )
+//       })}
+//     </Styles.NetworkSelectContentStyle>
+//   )
+// }
 
-const CurrencySelect = ({ fromNetwork, switchCurrency, currencySelect, currencyListByChain, allCurrency }) => {
-  let currency
-  console.log('currencyListByChain', currencyListByChain)
-  if (currencyListByChain?.length > 0 && typeof fromNetwork !== 'undefined') {
-    currency = currencyListByChain[0]
-  }
+const CurrencySelect = ({ fromNetwork, switchCurrency, currencySelect, currencyListByChain }) => {
+  // let currency
+  // // console.log('currencyListByChain', currencyListByChain)
+  // if (currencyListByChain?.length > 0 && typeof fromNetwork !== 'undefined') {
+  //   currency = currencyListByChain[0]
+  // }
 
   return (
+    // <Styles.CurrenciesSelectContentStyle>
+    //   {typeof currency !== 'undefined' ? (
+    //     <Box
+    //       className="curr-item"
+    //       key={currency._id}
+    //       style={{
+    //         justifyContent: 'flex-start',
+    //         opacity: currency._id !== currencySelect?._id ? 1 : 0.5,
+    //         cursor: currency._id !== currencySelect?._id ? 'pointer' : 'not-allowed',
+    //       }}
+    //       onClick={() => currency._id !== currencySelect?._id && switchCurrency(currency)}
+    //     >
+    //       <img src={`/images/currencies/${currency?.code}.png`} alt="logo" />
+    //       <Text
+    //         color={currency._id === currencySelect?._id ? 'secondary' : 'text'}
+    //         bold={currency._id === currencySelect?._id}
+    //         pl="12px"
+    //       >
+    //         {currency.title} ({currency.code})
+    //       </Text>
+    //     </Box>
+    //   ) : (
+    //     <Flex alignItems="center">
+    //       <EmptyIcon width={24} />
+    //       <Text as="p" ml="16px" fontSize={[12, 14]} fontWeight={500}>
+    //         There Are No Data
+    //       </Text>
+    //     </Flex>
+    //   )}
+    // </Styles.CurrenciesSelectContentStyle>
     <Styles.CurrenciesSelectContentStyle>
-      {typeof currency !== 'undefined' ? (
-        <Box
-          className="curr-item"
-          key={currency._id}
-          style={{
-            justifyContent: 'flex-start',
-            opacity: currency._id !== currencySelect?._id ? 1 : 0.5,
-            cursor: currency._id !== currencySelect?._id ? 'pointer' : 'not-allowed',
-          }}
-          onClick={() => currency._id !== currencySelect?._id && switchCurrency(currency)}
-        >
-          <img src={`/images/currencies/${currency?.code}.png`} alt="logo" />
-          <Text
-            color={currency._id === currencySelect?._id ? 'secondary' : 'text'}
-            bold={currency._id === currencySelect?._id}
-            pl="12px"
-          >
-            {currency.title} ({currency.code})
-          </Text>
-        </Box>
+      {currencyListByChain?.length > 0 ? (
+        currencyListByChain?.map((item) => {
+          const currency = item
+          // const currency = allCurrency.find((cur) => {
+          //   if (cur._id === item._id) {
+          //     return {
+          //       ...item,
+          //       ...cur,
+          //     }
+          //   }
+          //   return {}
+          // })
+
+          return (
+            <Box
+              className="curr-item"
+              key={currency._id}
+              style={{
+                justifyContent: 'flex-start',
+                opacity: currency._id !== currencySelect?._id ? 1 : 0.5,
+                cursor: currency._id !== currencySelect?._id ? 'pointer' : 'not-allowed',
+              }}
+              onClick={() => currency._id !== currencySelect?._id && switchCurrency(currency)}
+            >
+              <img src={`/images/currencies/${currency?.code}.png`} alt="logo" />
+              <Text
+                color={currency._id === currencySelect?._id ? 'secondary' : 'text'}
+                bold={currency._id === currencySelect?._id}
+                pl="12px"
+              >
+                {currency.title} ({currency.code})
+              </Text>
+            </Box>
+          )
+        })
       ) : (
         <Flex alignItems="center">
           <EmptyIcon width={24} />
@@ -125,7 +170,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
   // const bnbBalance = useBalance({ addressOrName: account, chainId: ChainId.BSC })
   const nativeBalance = useBalance({ addressOrName: account, enabled: !isBSC })
 
-  const { pendingChainId, isLoading, canSwitch, switchNetworkAsync } = useSwitchNetwork()
+  const { switchNetworkAsync } = useSwitchNetwork()
 
   const [formValue, setFormValue] = useState({
     fromNetwork: undefined,
@@ -151,13 +196,17 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
   const { balance: getBalance } = useTokenBalance(formValue?.currency?.token_address)
 
   let currencyBalance = 0
-  if (chainId === 5) {
+  // console.log('formValue?.currency?.token_address==>', formValue?.currency?.token_address);
+
+  if (formValue?.currency?.token_address === '0x0000000000000000000000000000000000000000') {
     if (typeof nativeBalance.data !== 'undefined') {
       currencyBalance = +formatBigNumber(nativeBalance.data.value, 6)
     }
   } else {
     currencyBalance = +formatBigNumber(etherBigNumber.from(getBalance.toString()), 6)
   }
+
+  // console.log('currencyBalance===>', currencyBalance);
 
   const formIsValid =
     !!formError?.fromNetwork ||
@@ -173,6 +222,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
 
   const allCurrency = useAllCurrency()
   const currencyByChain = useCurrencyByChain()
+  // console.log('currencyByChain===>', currencyByChain);
 
   // const transactionList = useTransactionList()
 
@@ -418,7 +468,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
                           setFormValue((prev) => ({
                             ...prev,
                             currency: {
-                              ...currencyByChain[0],
+                              // ...currencyByChain[0],
                               ...pCurrency,
                             },
                           }))
