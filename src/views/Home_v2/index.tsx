@@ -72,7 +72,7 @@ import * as Styles from './styles'
 //   )
 // }
 
-const CurrencySelect = ({ fromNetwork, switchCurrency, currencySelect, currencyListByChain }) => {
+const CurrencySelect = ({ fromNetwork, switchCurrency, currencySelect, currencyListByChain, allCurrency }) => {
   // let currency
   // // console.log('currencyListByChain', currencyListByChain)
   // if (currencyListByChain?.length > 0 && typeof fromNetwork !== 'undefined') {
@@ -170,7 +170,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
   // const bnbBalance = useBalance({ addressOrName: account, chainId: ChainId.BSC })
   const nativeBalance = useBalance({ addressOrName: account, enabled: !isBSC })
 
-  const { switchNetworkAsync } = useSwitchNetwork()
+  const { pendingChainId, isLoading, canSwitch, switchNetworkAsync } = useSwitchNetwork()
 
   const [formValue, setFormValue] = useState({
     fromNetwork: undefined,
