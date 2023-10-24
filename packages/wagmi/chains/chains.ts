@@ -114,6 +114,28 @@ export const bscTest: Chain = {
   },
   testnet: true,
 }
+export const baseGoerliEth: Chain = {
+  id: 84531,
+  name: 'Base Goerli Testnet',
+  network: 'Base_Goerli',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'Base Goerli Native Token',
+    symbol: 'ETH',
+  },
+  rpcUrls: {
+    public: 'https://goerli.base.org/',
+    default: 'https://goerli.base.org/',
+  },
+  blockExplorers: {
+    default: { name: 'Basescan', url: 'https://goerli.basescan.org/' },
+  },
+  multicall: {
+    address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+    blockCreated: 17422483,
+  },
+  testnet: true,
+}
 
 export const opv: Chain = {
   id: 1680,
