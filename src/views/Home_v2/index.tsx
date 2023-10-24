@@ -35,8 +35,8 @@ import { formatBigNumber } from 'utils/formatBalance'
 // import {useWeb3React} from '../../../packages/wagmi/src/useWeb3React'
 // import TransactionBridge from './components/TransactionBridge'
 import { ChainId } from '@pancakeswap/sdk'
-import { allBlockchain } from 'config/configChain'
 import { useBalance } from 'wagmi'
+import { useAllBlockchain } from 'state/home/fetchAllBlockChain'
 import SelectChain from './components/SelectChain'
 import WInput from './components/WInput'
 import * as Styles from './styles'
@@ -219,8 +219,10 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
   useFetchAllCurrency()
   const { setParamsTransaction } = useFetchTransaction()
   const { setFetchCurrencyAttrParams } = useFetchAllCurrencyByChain({ blockchain_id: '' })
-
+  const allBlockchain = useAllBlockchain()
   const allCurrency = useAllCurrency()
+  console.log('allCurrency', allCurrency)
+
   const currencyByChain = useCurrencyByChain()
   // console.log('currencyByChain===>', currencyByChain);
 
@@ -260,9 +262,15 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
   // Auto select fromNetWork, toNetWork
   useEffect(() => {
     const { chainId: paramChainId } = router.query
-    if (paramChainId) {
+    console.log('allBlockchain', allBlockchain)
+    console.log('paramChainId', formValue.currency, allBlockchain)
+
+    if (paramChainId && allBlockchain?.length > 0) {
       const chain = allBlockchain?.find((item) => item.chainid === +paramChainId)
-      const toChain = allBlockchain.filter((item) => chain.transfers.includes(item.chainid))
+      const toChain = allBlockchain?.filter(
+        (item) => item.chainId !== +paramChainId && formValue.currency?.blockchain_id !== item.id,
+      )
+      console.log('toChain', toChain)
 
       setFormValue({
         ...formValue,
@@ -271,7 +279,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
       })
       setToChainList(toChain)
     }
-  }, [router.query.chainId])
+  }, [router.query.chainId, formValue.currency, allBlockchain])
 
   const handleMaxSendAmount = () => {
     setFormValue((prev) => ({
@@ -322,7 +330,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
   const onClosePopupChain = (pChain: any) => {
     if (pChain?.chainid) {
       if (isShowPopup === 'FROM') {
-        const chainList = allBlockchain.filter((item) => pChain.transfers.includes(item.chainid))
+        const chainList = allBlockchain.filter((item) => pChain.blockchainId !== item.chainid)
         setToChainList(chainList)
 
         setFetchCurrencyAttrParams({
@@ -463,7 +471,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
                         fromNetwork={formValue.fromNetwork}
                         currencySelect={formValue.currency}
                         currencyListByChain={currencyByChain || []}
-                        allCurrency={allCurrency}
+                        // allCurrency={allCurrency}
                         switchCurrency={(pCurrency) => {
                           setFormValue((prev) => ({
                             ...prev,
