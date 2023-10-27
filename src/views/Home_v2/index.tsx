@@ -11,7 +11,6 @@ import {
   useModal,
   useToast,
 } from '@pancakeswap/uikit'
-// import { ChainLogo } from 'components/Logo/ChainLogo'
 import ModalTransferMultiChain from 'components/Modal/ModalTransferMultiChain'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useNativeCurrency from 'hooks/useNativeCurrency'
@@ -19,12 +18,7 @@ import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import useTokenBalance from 'hooks/useTokenBalance'
 import { useEffect, useState } from 'react'
 // import { useAllBlockchain } from 'state/home/fetchAllBlockChain'
-import {
-  useAllCurrency,
-  useCurrencyByChain,
-  useFetchAllCurrency,
-  useFetchAllCurrencyByChain,
-} from 'state/home/fetchCurrency'
+import { useCurrencyByChain, useFetchAllCurrency, useFetchAllCurrencyByChain } from 'state/home/fetchCurrency'
 
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import ModalChain from 'components/ModalChain'
@@ -35,8 +29,12 @@ import { formatBigNumber } from 'utils/formatBalance'
 // import {useWeb3React} from '../../../packages/wagmi/src/useWeb3React'
 // import TransactionBridge from './components/TransactionBridge'
 import { ChainId } from '@pancakeswap/sdk'
-import { useBalance } from 'wagmi'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import useCatchTxError from 'hooks/useCatchTxError'
 import { useAllBlockchain } from 'state/home/fetchAllBlockChain'
+import multicall from 'utils/multicall'
+import { useBalance } from 'wagmi'
+import BridgeABI from '../../config/abi/Bridge.json'
 import SelectChain from './components/SelectChain'
 import WInput from './components/WInput'
 import * as Styles from './styles'
@@ -165,7 +163,8 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
   const router = useRouter()
   const [isShowPopup, setShowPopup] = useState(null)
   const { toastError } = useToast()
-
+  const { fetchWithCatchTxError, loading: isConfirming } = useCatchTxError()
+  const { callWithGasPrice } = useCallWithGasPrice()
   const isBSC = chainId === ChainId.BSC
   // const bnbBalance = useBalance({ addressOrName: account, chainId: ChainId.BSC })
   const nativeBalance = useBalance({ addressOrName: account, enabled: !isBSC })
@@ -189,6 +188,28 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
     receiveAmount: '',
     contract: '',
   })
+  useEffect(() => {
+    return () => {
+      setFormValue({
+        fromNetwork: undefined,
+        toNetwork: undefined,
+        currency: undefined,
+        address: undefined,
+        sendAmount: undefined,
+        receiveAmount: undefined,
+      })
+      setFormError({
+        fromNetwork: '',
+        toNetwork: '',
+        currency: '',
+        address: '',
+        sendAmount: '',
+        receiveAmount: '',
+        contract: '',
+      })
+    }
+  }, [])
+
   const [toChainList, setToChainList] = useState([])
 
   const [gasFee, setGasFee] = useState(null)
@@ -220,14 +241,19 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
   const { setParamsTransaction } = useFetchTransaction()
   const { setFetchCurrencyAttrParams } = useFetchAllCurrencyByChain({ blockchain_id: '' })
   const allBlockchain = useAllBlockchain()
-  const allCurrency = useAllCurrency()
-  console.log('allCurrency', allCurrency)
-
   const currencyByChain = useCurrencyByChain()
-  // console.log('currencyByChain===>', currencyByChain);
+  const getToChain = async () => {
+    const receipt = await multicall(BridgeABI, [
+      { address: formValue.currency.contract_bridge, name: 'listBlockchain', params: [] },
+    ])
+    setToChainList(receipt[0]?.[0])
+  }
 
-  // const transactionList = useTransactionList()
-
+  useEffect(() => {
+    if (formValue?.currency?.contract_bridge) {
+      getToChain()
+    }
+  }, [formValue?.currency?.contract_bridge])
   // Fetch transaction
   useEffect(() => {
     setParamsTransaction((prev) => ({
@@ -262,22 +288,14 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
   // Auto select fromNetWork, toNetWork
   useEffect(() => {
     const { chainId: paramChainId } = router.query
-    console.log('allBlockchain', allBlockchain)
-    console.log('paramChainId', formValue.currency, allBlockchain)
-
     if (paramChainId && allBlockchain?.length > 0) {
       const chain = allBlockchain?.find((item) => item.chainid === +paramChainId)
-      const toChain = allBlockchain?.filter(
-        (item) => item.chainId !== +paramChainId && formValue.currency?.blockchain_id !== item.id,
-      )
-      console.log('toChain', toChain)
 
       setFormValue({
         ...formValue,
         fromNetwork: chain,
         // toNetwork: allBlockchain?.find((item) => item.chainid !== +paramChainId),
       })
-      setToChainList(toChain)
     }
   }, [router.query.chainId, formValue.currency, allBlockchain])
 
@@ -475,6 +493,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
                         switchCurrency={(pCurrency) => {
                           setFormValue((prev) => ({
                             ...prev,
+                            toNetwork: undefined,
                             currency: {
                               // ...currencyByChain[0],
                               ...pCurrency,
@@ -584,7 +603,15 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
       <ModalChain
         isOpen={isShowPopup === 'FROM' || isShowPopup === 'TO'}
         data={{
-          blockchainList: isShowPopup === 'FROM' ? allBlockchain : toChainList,
+          blockchainList:
+            isShowPopup === 'FROM'
+              ? allBlockchain
+              : toChainList
+              ? toChainList?.map((item) => {
+                  const chain = allBlockchain.find((i) => i.code === item)
+                  return chain
+                })
+              : [],
           chainId,
           titlePopup: isShowPopup === 'TO' ? 'Select Destination Chain' : 'Select Source Chain',
         }}
