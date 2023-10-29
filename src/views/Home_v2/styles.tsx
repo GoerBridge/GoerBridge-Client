@@ -17,7 +17,7 @@ export const CardBridgeTransfer = styled.div`
     flex-direction: column;
     justify-content: center;
 
-    ${({theme}) => theme.mediaQueries.sm} {
+    ${({ theme }) => theme.mediaQueries.sm} {
       padding: 24px;
     }
 
@@ -42,7 +42,7 @@ export const CardBridgeTransfer = styled.div`
   .content {
     padding: 24px 16px;
 
-    ${({theme}) => theme.mediaQueries.sm} {
+    ${({ theme }) => theme.mediaQueries.sm} {
       padding: 24px;
     }
 
@@ -66,7 +66,7 @@ export const CardBridgeTransfer = styled.div`
       border-radius: 8px;
       cursor: pointer;
 
-      ${({theme}) => theme.mediaQueries.sm} {
+      ${({ theme }) => theme.mediaQueries.sm} {
         font-size: 16px;
       }
     }
@@ -76,7 +76,7 @@ export const CardBridgeTransfer = styled.div`
         width: 100%;
       }
       /* margin-bottom: 12px;
-      ${({theme}) => theme.mediaQueries.sm} {
+      ${({ theme }) => theme.mediaQueries.sm} {
         margin-bottom: 32px;
       } */
     }
@@ -88,18 +88,18 @@ export const CardBridgeTransfer = styled.div`
       width: 100%;
       height: 44px;
       font-size: 14px;
-      background: #052C83;
+      background: #052c83;
       // box-shadow: -2px -2px 2px #1e3238, inset 0px -2px 1px #001015;
       border-radius: 8px;
 
-      ${({theme}) => theme.mediaQueries.sm} {
+      ${({ theme }) => theme.mediaQueries.sm} {
         font-size: 16px;
       }
     }
 
     button:disabled {
       background: #e0e0eb;
-      color: rgb(143, 155, 179)
+      color: rgb(143, 155, 179);
     }
   }
 `
@@ -118,7 +118,7 @@ export const RightInputButton = styled.div`
   border: unset;
   cursor: pointer;
 
-  ${({theme}) => theme.mediaQueries.sm} {
+  ${({ theme }) => theme.mediaQueries.sm} {
     height: 44px;
     padding: 4px 16px;
   }
@@ -129,20 +129,20 @@ export const RightInputButton = styled.div`
     > svg {
       width: 1px;
       path {
-        stroke:#000 ;
+        stroke: #000;
       }
-      ${({theme}) => theme.mediaQueries.sm} {
+      ${({ theme }) => theme.mediaQueries.sm} {
         width: auto;
       }
     }
   }
 
   .wIcon {
-     margin-right: 6px;
-     width: 24px;
-     height: 24px;
+    margin-right: 6px;
+    width: 24px;
+    height: 24px;
 
-    ${({theme}) => theme.mediaQueries.sm} {
+    ${({ theme }) => theme.mediaQueries.sm} {
       width: 20px;
       height: 20px;
     }
@@ -159,9 +159,9 @@ export const RightInputButton = styled.div`
   }
   .jPoDQE {
     width: 15px;
-     height: 15px;
-     opacity: 0.5;
-    ${({theme}) => theme.mediaQueries.sm} {
+    height: 15px;
+    opacity: 0.5;
+    ${({ theme }) => theme.mediaQueries.sm} {
       width: 15px;
       height: 15px;
     }
@@ -193,7 +193,7 @@ export const NetworkSelectContentStyle = styled.div`
     align-items: center;
     border: 0;
     /* background: transparent; */
-    color: ${({theme}) => theme.colors.textSubtle};
+    color: ${({ theme }) => theme.colors.textSubtle};
     cursor: pointer;
     display: flex;
     font-size: 16px;
@@ -208,7 +208,7 @@ export const NetworkSelectContentStyle = styled.div`
     border-radius: 12px;
 
     &:hover:not(:disabled) {
-      background-color: ${({theme}) => theme.colors.tertiary};
+      background-color: ${({ theme }) => theme.colors.tertiary};
     }
 
     &:active:not(:disabled) {
@@ -225,7 +225,7 @@ export const CurrenciesSelectContentStyle = styled.div`
     align-items: center;
     border: 0;
     /* background: transparent; */
-    color: ${({theme}) => theme.colors.textSubtle};
+    color: ${({ theme }) => theme.colors.textSubtle};
     cursor: pointer;
     display: flex;
     font-size: 16px;
@@ -240,12 +240,13 @@ export const CurrenciesSelectContentStyle = styled.div`
     border-radius: 12px;
 
     &:hover:not(:disabled) {
-      background-color: ${({theme}) => theme.colors.tertiary};
+      // background-color: ${({ theme }) => theme.colors.backgroundDisabled};
     }
 
     &:active:not(:disabled) {
       opacity: 0.85;
       transform: translateY(1px);
+      // background-color: ${({ theme }) => theme.colors.backgroundDisabled};
     }
 
     img {
