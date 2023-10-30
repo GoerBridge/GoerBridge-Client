@@ -241,6 +241,8 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
   const { setParamsTransaction } = useFetchTransaction()
   const { setFetchCurrencyAttrParams } = useFetchAllCurrencyByChain({ blockchain_id: '' })
   const allBlockchain = useAllBlockchain()
+  console.log('allBlockchain ============', allBlockchain)
+
   const currencyByChain = useCurrencyByChain()
   const getToChain = async () => {
     const receipt = await multicall(BridgeABI, [
@@ -349,7 +351,6 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
     if (pChain?.chainid) {
       if (isShowPopup === 'FROM') {
         const chainList = allBlockchain.filter((item) => pChain.blockchainId !== item.chainid)
-        setToChainList(chainList)
 
         setFetchCurrencyAttrParams({
           blockchain_id: pChain?._id,
@@ -604,13 +605,14 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
         data={{
           blockchainList:
             isShowPopup === 'FROM'
-              ? allBlockchain
-              : toChainList
-              ? toChainList?.map((item) => {
+              ? allBlockchain || []
+              : toChainList?.map((item) => {
                   const chain = allBlockchain.find((i) => i.code === item)
-                  return chain
-                })
-              : [],
+                  if (chain) {
+                    return chain
+                  }
+                  return {}
+                }) || [],
           chainId,
           titlePopup: isShowPopup === 'TO' ? 'Select Destination Chain' : 'Select Source Chain',
         }}
