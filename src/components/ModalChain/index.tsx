@@ -15,13 +15,14 @@ interface Props {
 
 const ModalChain: React.FC<Props> = ({ isOpen, onRequestClose, onAfterOpen, data }) => {
   const { blockchainList, chainId, titlePopup } = data
+  console.log('blockchainList', blockchainList)
 
   const _renderContent = () => {
     return blockchainList?.map((chain) => {
       return (
         <Box
           className="network-item"
-          key={chain.chainid}
+          key={chain?.chainid}
           style={{
             display: 'flex',
             justifyContent: 'flex-start',
@@ -29,20 +30,20 @@ const ModalChain: React.FC<Props> = ({ isOpen, onRequestClose, onAfterOpen, data
             padding: '10px 15px',
             borderRadius: '10px',
             marginBottom: '15px',
-            opacity: chain.chainid !== chainId ? 1 : 0.5,
-            cursor: chain.chainid !== chainId ? 'pointer' : 'not-allowed',
+            opacity: chain?.chainid !== chainId ? 1 : 0.5,
+            cursor: chain?.chainid !== chainId ? 'pointer' : 'not-allowed',
           }}
           onClick={() => onRequestClose(chain)}
         >
-          <ChainLogo chainId={chain.chainid} />
+          <ChainLogo chainId={chain?.chainid} />
 
           <Text
-            color={chain.chainid === chainId ? 'secondary' : 'text'}
-            bold={chain.chainid === chainId}
+            color={chain?.chainid === chainId ? 'secondary' : 'text'}
+            bold={chain?.chainid === chainId}
             pl="12px"
             fontSize={[12, , 14]}
           >
-            {chain.title}
+            {chain?.title}
           </Text>
         </Box>
       )
