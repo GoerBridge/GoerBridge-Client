@@ -137,6 +137,29 @@ export const baseGoerliEth: Chain = {
   testnet: true,
 }
 
+export const creditChain: Chain = {
+  id: 4400,
+  name: 'Credit Smart Chain',
+  network: 'CREDIT',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'CREDIT mainnet',
+    symbol: 'CREDIT',
+  },
+  rpcUrls: {
+    public: 'https://rpc.creditsmartchain.com/',
+    default: 'https://rpc.creditsmartchain.com/',
+  },
+  blockExplorers: {
+    default: { name: 'Scan creditsmartchain', url: 'https://scan.creditsmartchain.com/' },
+  },
+  multicall: {
+    address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+    blockCreated: 17422483,
+  },
+  testnet: true,
+}
+
 export const baseGoerli: Chain = {
   id: 84531,
   name: 'Base_Goerli',
