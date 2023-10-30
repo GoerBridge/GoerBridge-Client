@@ -13,8 +13,8 @@ import { USDT } from '@pancakeswap/tokens'
 
 const CHAINS =
   process.env.NEXT_PUBLIC_NODE_ENV === 'production'
-    ? [bsc, creditChain]
-    : [bscTest, goerli, sepolia, baseGoerliEth]
+    ? [bsc, goerli, sepolia, baseGoerliEth, creditChain]
+    : [bscTest, goerli, sepolia, baseGoerliEth, creditChain, bsc]
 
 const getNodeRealUrl = (networkName: string) => {
   let host = null
