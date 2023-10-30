@@ -70,7 +70,7 @@ import * as Styles from './styles'
 //   )
 // }
 
-const CurrencySelect = ({ fromNetwork, switchCurrency, currencySelect, currencyListByChain, allCurrency }) => {
+const CurrencySelect = ({ fromNetwork, switchCurrency, currencySelect, currencyListByChain }) => {
   // let currency
   // // console.log('currencyListByChain', currencyListByChain)
   // if (currencyListByChain?.length > 0 && typeof fromNetwork !== 'undefined') {
@@ -489,7 +489,6 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
                         fromNetwork={formValue.fromNetwork}
                         currencySelect={formValue.currency}
                         currencyListByChain={currencyByChain || []}
-                        // allCurrency={allCurrency}
                         switchCurrency={(pCurrency) => {
                           setFormValue((prev) => ({
                             ...prev,
