@@ -34,6 +34,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { useAllBlockchain } from 'state/home/fetchAllBlockChain'
 import multicall from 'utils/multicall'
 import { useBalance } from 'wagmi'
+import { isChainSupported } from 'utils/wagmi'
 import BridgeABI from '../../config/abi/Bridge.json'
 import SelectChain from './components/SelectChain'
 import WInput from './components/WInput'
@@ -602,7 +603,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
         data={{
           blockchainList:
             isShowPopup === 'FROM'
-              ? allBlockchain || []
+              ? allBlockchain.filter((item) => isChainSupported(item.chainid)) || []
               : toChainList?.map((item) => {
                   const chain = allBlockchain.find((i) => i.code === item)
                   if (chain) {
