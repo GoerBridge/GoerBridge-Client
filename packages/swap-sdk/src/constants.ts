@@ -12,6 +12,7 @@ export enum ChainId {
   BSC_TESTNET = 97,
   BASE_GOERLI_ETH = 84531,
   POLYGON_MUMBAI = 80001,
+  CREDIT = 4400,
 }
 
 export enum TradeType {

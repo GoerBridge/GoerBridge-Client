@@ -262,6 +262,15 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
     }))
   }, [])
 
+  useEffect(() => {
+    if (allBlockchain) {
+      setFormValue((prev) => ({
+        ...prev,
+        fromNetwork: allBlockchain?.find((item) => item?.chainId === chainId),
+      }))
+    }
+  }, [chainId, allBlockchain])
+
   // Fetch currency attr
   useEffect(() => {
     setFetchCurrencyAttrParams({
@@ -370,6 +379,11 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
           fromNetwork: '',
         })
         setShowPopup(null)
+        setFormValue((prev) => ({
+          ...prev,
+          toNetwork: undefined,
+          currency: undefined,
+        }))
       } else {
         setFormValue((prev) => ({ ...prev, toNetwork: pChain }))
         setFormError({
@@ -434,7 +448,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
           <div className="form">
             {/* From */}
             <SelectChain
-              data={{ chainid: formValue?.fromNetwork?.chainid, title: formValue?.fromNetwork?.title }}
+              data={{ chainid: chainId, title: allBlockchain?.find((item) => item.chainid === chainId)?.title }}
               onSelect={() => setShowPopup('FROM')}
               selectTitle="From"
             />

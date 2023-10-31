@@ -6,6 +6,7 @@ export const SUPPORT_ONLY_BSC = [
   ChainId.GOERLI,
   ChainId.ETHEREUM,
   ChainId.BASE_GOERLI_ETH,
+  ChainId.CREDIT,
 ]
 export const SUPPORT_FARMS = [ChainId.BSC, ChainId.BSC_TESTNET, ChainId.GOERLI]
 

@@ -22,7 +22,13 @@ export function UnsupportedNetworkModal({ pageSupportedChains }: { pageSupported
   const { t } = useTranslation()
 
   return (
-    <Modal title={t('Check your network')} hideCloseButton headerBackground="transparent" maxWidth="600px" style={{backgroundColor: '#e6eefe'}}>
+    <Modal
+      title={t('Check your network')}
+      hideCloseButton
+      headerBackground="transparent"
+      maxWidth="600px"
+      style={{ backgroundColor: '#e6eefe' }}
+    >
       <Grid style={{ gap: '16px' }}>
         <Text textAlign="center">
           Currently this page only supported in <br />
@@ -40,7 +46,7 @@ export function UnsupportedNetworkModal({ pageSupportedChains }: { pageSupported
           <Button
             height="68px"
             isLoading={isLoading}
-            style={{background: '#052C83'}}
+            style={{ background: '#052C83' }}
             onClick={() => {
               if (chains.map((c) => c.id).includes(chainId)) {
                 switchNetworkAsync(chainId)
@@ -60,8 +66,8 @@ export function UnsupportedNetworkModal({ pageSupportedChains }: { pageSupported
           <Button
             width="100%"
             height="68px"
-            variant='black'
-            style={{background: '#ff4d4d'}}
+            variant="black"
+            style={{ background: '#ff4d4d' }}
             onClick={() =>
               logout().then(() => {
                 switchNetworkLocal(ChainId.BSC)
