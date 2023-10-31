@@ -15,7 +15,6 @@ interface Props {
 
 const ModalChain: React.FC<Props> = ({ isOpen, onRequestClose, onAfterOpen, data }) => {
   const { blockchainList, chainId, titlePopup } = data
-  console.log('blockchainList', blockchainList)
 
   const _renderContent = () => {
     return blockchainList?.map((chain) => {

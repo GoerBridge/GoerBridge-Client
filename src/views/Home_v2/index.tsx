@@ -34,6 +34,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { useAllBlockchain } from 'state/home/fetchAllBlockChain'
 import multicall from 'utils/multicall'
 import { useBalance } from 'wagmi'
+import { isChainSupported } from 'utils/wagmi'
 import BridgeABI from '../../config/abi/Bridge.json'
 import SelectChain from './components/SelectChain'
 import WInput from './components/WInput'
@@ -241,14 +242,11 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
   const { setParamsTransaction } = useFetchTransaction()
   const { setFetchCurrencyAttrParams } = useFetchAllCurrencyByChain({ blockchain_id: '' })
   const allBlockchain = useAllBlockchain()
-  console.log('allBlockchain ============', allBlockchain)
 
   const currencyByChain = useCurrencyByChain()
   const getToChain = async () => {
-    const receipt = await multicall(BridgeABI, [
-      { address: formValue.currency.contract_bridge, name: 'listBlockchain', params: [] },
-    ])
-    setToChainList(receipt[0]?.[0])
+    const listToBlockchain = await bridgeContract.listBlockchain()
+    setToChainList(listToBlockchain)
   }
 
   useEffect(() => {
@@ -263,6 +261,15 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
       pageSize: 3,
     }))
   }, [])
+
+  useEffect(() => {
+    if (allBlockchain) {
+      setFormValue((prev) => ({
+        ...prev,
+        fromNetwork: allBlockchain?.find((item) => item?.chainId === chainId),
+      }))
+    }
+  }, [chainId, allBlockchain])
 
   // Fetch currency attr
   useEffect(() => {
@@ -372,6 +379,11 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
           fromNetwork: '',
         })
         setShowPopup(null)
+        setFormValue((prev) => ({
+          ...prev,
+          toNetwork: undefined,
+          currency: undefined,
+        }))
       } else {
         setFormValue((prev) => ({ ...prev, toNetwork: pChain }))
         setFormError({
@@ -436,7 +448,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
           <div className="form">
             {/* From */}
             <SelectChain
-              data={{ chainid: formValue?.fromNetwork?.chainid, title: formValue?.fromNetwork?.title }}
+              data={{ chainid: chainId, title: allBlockchain?.find((item) => item.chainid === chainId)?.title }}
               onSelect={() => setShowPopup('FROM')}
               selectTitle="From"
             />
@@ -605,7 +617,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
         data={{
           blockchainList:
             isShowPopup === 'FROM'
-              ? allBlockchain || []
+              ? allBlockchain.filter((item) => isChainSupported(item.chainid)) || []
               : toChainList?.map((item) => {
                   const chain = allBlockchain.find((i) => i.code === item)
                   if (chain) {

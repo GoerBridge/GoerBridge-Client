@@ -1,20 +1,15 @@
+import { SafeConnector } from '@gnosis.pm/safe-apps-wagmi'
+import { bsc, creditChain } from '@pancakeswap/wagmi/chains'
 import { BinanceWalletConnector } from '@pancakeswap/wagmi/connectors/binanceWallet'
-import { bsc, bscTest, mainnet, goerli, baseGoerliEth, creditChain } from '@pancakeswap/wagmi/chains'
-import { configureChains, createClient } from 'wagmi'
 import memoize from 'lodash/memoize'
+import { configureChains, createClient } from 'wagmi'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
-import { SafeConnector } from '@gnosis.pm/safe-apps-wagmi'
-import { sepolia } from 'wagmi/chains'
-import { USDT } from '@pancakeswap/tokens'
 
-const CHAINS =
-  process.env.NEXT_PUBLIC_NODE_ENV === 'production'
-    ? [bsc, goerli, sepolia, baseGoerliEth, creditChain]
-    : [bscTest, goerli, sepolia, baseGoerliEth, creditChain, bsc]
+const CHAINS = process.env.NEXT_PUBLIC_NODE_ENV === 'production' ? [bsc, creditChain] : [bsc, creditChain]
 
 const getNodeRealUrl = (networkName: string) => {
   let host = null

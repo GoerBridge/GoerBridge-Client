@@ -146,7 +146,6 @@ const TransactionBridge = ({ transactionList, chainList }) => {
       dataIndex: 'from',
       render: (_, record) => {
         const currentChain = chainList.find((item) => item?.code === record?.fromChain)
-
         return (
           <div className="data-from">
             <Grid gridTemplateColumns="repeat(2, 1fr)" gridColumnGap="12px">
