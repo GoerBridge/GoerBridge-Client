@@ -241,14 +241,11 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
   const { setParamsTransaction } = useFetchTransaction()
   const { setFetchCurrencyAttrParams } = useFetchAllCurrencyByChain({ blockchain_id: '' })
   const allBlockchain = useAllBlockchain()
-  console.log('allBlockchain ============', allBlockchain)
 
   const currencyByChain = useCurrencyByChain()
   const getToChain = async () => {
-    const receipt = await multicall(BridgeABI, [
-      { address: formValue.currency.contract_bridge, name: 'listBlockchain', params: [] },
-    ])
-    setToChainList(receipt[0]?.[0])
+    const listToBlockchain = await bridgeContract.listBlockchain()
+    setToChainList(listToBlockchain)
   }
 
   useEffect(() => {
