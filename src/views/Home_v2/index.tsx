@@ -34,6 +34,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { useAllBlockchain } from 'state/home/fetchAllBlockChain'
 import multicall from 'utils/multicall'
 import { useBalance } from 'wagmi'
+import { isChainSupported } from 'utils/wagmi'
 import BridgeABI from '../../config/abi/Bridge.json'
 import SelectChain from './components/SelectChain'
 import WInput from './components/WInput'
@@ -261,6 +262,15 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
     }))
   }, [])
 
+  useEffect(() => {
+    if (allBlockchain) {
+      setFormValue((prev) => ({
+        ...prev,
+        fromNetwork: allBlockchain?.find((item) => item?.chainId === chainId),
+      }))
+    }
+  }, [chainId, allBlockchain])
+
   // Fetch currency attr
   useEffect(() => {
     setFetchCurrencyAttrParams({
@@ -369,6 +379,11 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
           fromNetwork: '',
         })
         setShowPopup(null)
+        setFormValue((prev) => ({
+          ...prev,
+          toNetwork: undefined,
+          currency: undefined,
+        }))
       } else {
         setFormValue((prev) => ({ ...prev, toNetwork: pChain }))
         setFormError({
@@ -433,7 +448,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
           <div className="form">
             {/* From */}
             <SelectChain
-              data={{ chainid: formValue?.fromNetwork?.chainid, title: formValue?.fromNetwork?.title }}
+              data={{ chainid: chainId, title: allBlockchain?.find((item) => item.chainid === chainId)?.title }}
               onSelect={() => setShowPopup('FROM')}
               selectTitle="From"
             />
@@ -602,7 +617,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
         data={{
           blockchainList:
             isShowPopup === 'FROM'
-              ? allBlockchain || []
+              ? allBlockchain.filter((item) => isChainSupported(item.chainid)) || []
               : toChainList?.map((item) => {
                   const chain = allBlockchain.find((i) => i.code === item)
                   if (chain) {
