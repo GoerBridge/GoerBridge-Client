@@ -78,7 +78,7 @@ const Menu = ({ children }) => {
       </div>
       <InnerBody>{children}</InnerBody>
       <Footer>
-        Copyright by{' '}
+        Powered by{' '}
         <a href={process.env.NEXT_PUBLIC_APP_URL ?? '/'} style={{ color: '#052C83' }}>
           GoerBridge.com
         </a>

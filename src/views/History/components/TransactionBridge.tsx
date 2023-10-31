@@ -150,7 +150,7 @@ const TransactionBridge = ({ transactionList, chainList }) => {
           <div className="data-from">
             <Grid gridTemplateColumns="repeat(2, 1fr)" gridColumnGap="12px">
               <Text className="custom-text">Address:</Text>
-              <Link href={`${currentChain.scan}/address/${record.fromAddress}`} passHref>
+              <Link href={`${currentChain?.scan}/address/${record.fromAddress}`} passHref>
                 <Text as="a" className="custom-text" textAlign="right" target="_blank" rel="noopener noreferrer">
                   {record.fromAddress ? formatCode(record.fromAddress, 6, 0) : '--'}
                 </Text>
@@ -158,7 +158,7 @@ const TransactionBridge = ({ transactionList, chainList }) => {
             </Grid>
             <Grid gridTemplateColumns="repeat(2, 1fr)" gridColumnGap="12px" mt={['8px', , '16px']}>
               <Text className="custom-text">Txh:</Text>
-              <Link href={`${currentChain.scan}/tx/${record.fromHash}`} passHref>
+              <Link href={`${currentChain?.scan}/tx/${record.fromHash}`} passHref>
                 <Text as="a" className="custom-text" textAlign="right" target="_blank" rel="noopener noreferrer">
                   {record.fromHash ? formatCode(record.fromHash, 6, 0) : '--'}
                 </Text>
@@ -193,7 +193,7 @@ const TransactionBridge = ({ transactionList, chainList }) => {
             <Grid gridTemplateColumns="repeat(2, 1fr)" gridColumnGap="12px" mt={['8px', , '16px']}>
               <Text className="custom-text">Txh:</Text>
               {record.toHash ? (
-                <Link href={`${currentChain.scan}/tx/${record.toHash}`} passHref>
+                <Link href={`${currentChain?.scan}/tx/${record.toHash}`} passHref>
                   <Text as="a" className="custom-text" textAlign="right" target="_blank" rel="noopener noreferrer">
                     {formatCode(record.toHash, 6, 0)}
                   </Text>
