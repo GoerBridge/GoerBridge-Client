@@ -6,6 +6,7 @@ import TransactionBridge from './components/TransactionBridge'
 
 function History() {
   const { setParamsTransaction } = useFetchTransaction()
+  console.log('allBlockchain', allBlockchain)
 
   // Fetch transaction
   useEffect(() => {
