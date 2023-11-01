@@ -159,7 +159,7 @@ const CurrencySelect = ({ fromNetwork, switchCurrency, currencySelect, currencyL
 
 const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
   // const account = useWeb3React()
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId, isConnected } = useActiveWeb3React()
   const native = useNativeCurrency()
   const router = useRouter()
   const [isShowPopup, setShowPopup] = useState(null)
@@ -238,9 +238,8 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
     !!formError?.sendAmount ||
     !!formError?.receiveAmount
 
-  useFetchAllCurrency()
   const { setParamsTransaction } = useFetchTransaction()
-  const { setFetchCurrencyAttrParams } = useFetchAllCurrencyByChain({ blockchain_id: '' })
+  const { setFetchCurrencyAttrParams } = useFetchAllCurrencyByChain({ blockchain_id: formValue.fromNetwork?._id })
   const allBlockchain = useAllBlockchain()
 
   const currencyByChain = useCurrencyByChain()
@@ -448,7 +447,10 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
           <div className="form">
             {/* From */}
             <SelectChain
-              data={{ chainid: chainId, title: allBlockchain?.find((item) => item.chainid === chainId)?.title }}
+              data={{
+                chainid: isConnected ? chainId : undefined,
+                title: isConnected ? allBlockchain?.find((item) => item.chainid === chainId)?.title : undefined,
+              }}
               onSelect={() => setShowPopup('FROM')}
               selectTitle="From"
             />

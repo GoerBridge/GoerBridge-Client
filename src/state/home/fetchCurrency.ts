@@ -10,7 +10,6 @@ export const useFetchAllCurrency = (): {
 } => {
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(false)
-
   const fetchAllCurrency = useCallback(async () => {
     setLoading(true)
     try {
@@ -76,8 +75,10 @@ export const useFetchAllCurrencyByChain = (
   }, [dispatch, fetchCurrencyAttrParams])
 
   useEffect(() => {
-    fetchAllCurrencyByChain()
-  }, [fetchAllCurrencyByChain, fetchCurrencyAttrParams])
+    if (params.blockchain_id) {
+      fetchAllCurrencyByChain()
+    }
+  }, [fetchCurrencyAttrParams, params.blockchain_id])
 
   return { fetchAllCurrencyByChain, loading, setFetchCurrencyAttrParams }
 }
