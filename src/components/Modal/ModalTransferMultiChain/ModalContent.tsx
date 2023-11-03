@@ -138,7 +138,7 @@ export const TransferContent = ({
             Gas Fee:
           </Text>
           <Text fontSize={['13px', '', '16px']} color="#F98C36">
-            {gasFee || '--'} {native?.symbol}
+            {gasFee || '--'} {currency.code}
           </Text>
         </Flex>
         <Flex justifyContent="space-between" mb="5px">
