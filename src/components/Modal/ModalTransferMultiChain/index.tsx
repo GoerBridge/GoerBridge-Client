@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { InjectedModalProps, Modal, useToast } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import { useApproveTransfer } from 'hooks/useApproveCallback'
+import { useApproveCallback, useApproveTransfer } from 'hooks/useApproveCallback'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useBridgeContract } from 'hooks/useContract'
 import { useEffect, useState } from 'react'
@@ -9,6 +9,9 @@ import { useTransactionAdder } from 'state/transactions/hooks'
 import { calculateGasMargin } from 'utils'
 import { getDecimalAmount } from 'utils/formatBalance'
 import { logError } from 'utils/sentry'
+import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
+import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
+import { useCurrency } from 'hooks/Tokens'
 import { TransferContent, TransferSuccessContent } from './ModalContent'
 // import {BigNumber} from '@ethersproject/bignumber'
 // import { formatBigNumber } from 'utils/formatBalance'
@@ -16,15 +19,16 @@ import { TransferContent, TransferSuccessContent } from './ModalContent'
 const ModalTransferMultiChain: React.FC<InjectedModalProps> = ({ onDismiss, dataModal }) => {
   const { fromNetwork, toNetwork, currency, address, sendAmount, chainId, account } = dataModal || {}
   // console.log('dataModal ====>', dataModal);
-
   const { toastError } = useToast()
   const { t } = useTranslation()
 
+  const _currency = useCurrency(currency.token_address)
+  const bridgeContract = useBridgeContract(currency.contract_bridge)
   const [loading, setLoading] = useState<boolean>(false)
   const [transferSuccess, setTransferSuccess] = useState<boolean>(false)
-  const [approvalState, approve] = useApproveTransfer(currency, chainId, account)
+  const independentAmount: CurrencyAmount<Currency> | undefined = tryParseAmount(`${sendAmount}`, _currency as Currency)
+  const [approvalState, approve] = useApproveCallback(independentAmount, bridgeContract.address)
 
-  const bridgeContract = useBridgeContract(currency.contract_bridge)
   const { callWithGasPrice } = useCallWithGasPrice()
   const addTransaction = useTransactionAdder()
   const [gasFee, setGasFee] = useState(null)
@@ -35,7 +39,7 @@ const ModalTransferMultiChain: React.FC<InjectedModalProps> = ({ onDismiss, data
       if (bridgeContract) {
         const _gasFee = await bridgeContract?.FEE_NATIVE()
         const _tokenFeePercent = await bridgeContract?.feePercentageBridge()
-        setGasFee((+_gasFee / 10 ** 18).toString())
+        setGasFee((+_gasFee / 10 ** (_currency?.decimals || 18)).toString())
         setGasFeeTokenPercent((+_tokenFeePercent / 1000).toString())
       }
     }
@@ -45,7 +49,6 @@ const ModalTransferMultiChain: React.FC<InjectedModalProps> = ({ onDismiss, data
 
   async function onTransfer() {
     setLoading(true)
-
     if (!chainId || !address || !bridgeContract) throw new Error('Missing dependencies')
 
     const methodName = 'receiveTokens'
@@ -61,15 +64,19 @@ const ModalTransferMultiChain: React.FC<InjectedModalProps> = ({ onDismiss, data
       toAddress: address,
       receiveTokens: gasValue,
     }
-
-    const estimatedGas = await bridgeContract.estimateGas.receiveTokens(
-      params.amount,
-      params.toBlockchain,
-      params.toAddress,
-      {
-        value: getDecimalAmount(new BigNumber(gasValue), 18).toString(),
-      },
-    )
+    let estimatedGas
+    try {
+      estimatedGas = await bridgeContract.estimateGas.receiveTokens(
+        params.amount,
+        params.toBlockchain,
+        params.toAddress,
+        {
+          value: getDecimalAmount(new BigNumber(gasValue), 18).toString(),
+        },
+      )
+    } catch (error) {
+      console.log('errror', error)
+    }
 
     callWithGasPrice(bridgeContract, methodName, [params.amount, params.toBlockchain, params.toAddress], {
       gasLimit: calculateGasMargin(estimatedGas),

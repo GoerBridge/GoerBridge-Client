@@ -35,6 +35,8 @@ import { useAllBlockchain } from 'state/home/fetchAllBlockChain'
 import multicall from 'utils/multicall'
 import { useBalance } from 'wagmi'
 import { isChainSupported } from 'utils/wagmi'
+import BigNumber from 'bignumber.js'
+import { useCurrency } from 'hooks/Tokens'
 import BridgeABI from '../../config/abi/Bridge.json'
 import SelectChain from './components/SelectChain'
 import WInput from './components/WInput'
@@ -212,6 +214,9 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
   }, [])
 
   const [toChainList, setToChainList] = useState([])
+  const [minTokenAmount, setMinTokenAmount] = useState(0)
+
+  const _currency = useCurrency(formValue?.currency?.token_address)
 
   const [gasFee, setGasFee] = useState(null)
   const bridgeContract = useBridgeContract(formValue?.currency?.contract_bridge)
@@ -306,6 +311,26 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
       })
     }
   }, [router.query.chainId, formValue.currency, allBlockchain])
+
+  const getMinTokenAmount = async () => {
+    const min = await bridgeContract?.getMinTokenAmount(formValue.toNetwork.code)
+    setMinTokenAmount(Number(min?.toString() / 10 ** 18))
+  }
+
+  useEffect(() => {
+    if (minTokenAmount && formValue.sendAmount < minTokenAmount) {
+      setFormError((prev) => ({
+        ...prev,
+        sendAmount: `Please enter amount at least ${+minTokenAmount.toString()}`,
+      }))
+    }
+  }, [minTokenAmount, formValue.sendAmount])
+
+  useEffect(() => {
+    if (formValue?.toNetwork?.code) {
+      getMinTokenAmount()
+    }
+  }, [formValue.currency, bridgeContract, formValue.toNetwork?.code])
 
   const handleMaxSendAmount = () => {
     setFormValue((prev) => ({
@@ -462,6 +487,10 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
                   labelLeft="Send amount"
                   labelRight={
                     <Flex>
+                      <Text color="#00000090" fontSize={[12, , 14]}>
+                        {' '}
+                        {currencyBalance > 0 ? currencyBalance : '--'}
+                      </Text>
                       <button
                         type="button"
                         onClick={handleMaxSendAmount}
@@ -469,13 +498,14 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
                           fontSize: '12px',
                           border: 0,
                           marginRight: '10px',
+                          marginLeft: 10,
                           background: '#627feb',
                           cursor: 'pointer',
+                          borderRadius: 8,
                         }}
                       >
                         Max
                       </button>
-                      <Text fontSize={[12, , 14]}> {currencyBalance > 0 ? currencyBalance : '--'}</Text>
                     </Flex>
                   }
                   inputType="number"
@@ -584,7 +614,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
                   Gas Fee:
                 </Text>
                 <Text fontSize={['14px', '', '16px']} color="#F98C36">
-                  {gasFee || '--'} {native?.symbol}
+                  {gasFee || '--'} {formValue.currency?.code}
                 </Text>
               </Flex>
               <Flex justifyContent="space-between" mb="8px">

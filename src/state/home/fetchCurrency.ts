@@ -75,7 +75,11 @@ export const useFetchAllCurrencyByChain = (
   }, [dispatch, fetchCurrencyAttrParams])
 
   useEffect(() => {
+    console.log('params.blockchain_id', params.blockchain_id)
+
     if (params.blockchain_id) {
+      console.log('params.blockchain_id22=======', params.blockchain_id)
+
       fetchAllCurrencyByChain()
     }
   }, [fetchCurrencyAttrParams, params.blockchain_id])
