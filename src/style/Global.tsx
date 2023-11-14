@@ -15,8 +15,8 @@ const GlobalStyle = createGlobalStyle`
     // background-color: #f1f3fb;
     background-image: url('/images/background/bg.png');
     background-repeat:no-repeat; 
-    background-position: center;
-    background-size: cover;
+    background-position: center top;
+    background-size: 100% auto;
     img {
       height: auto;
       max-width: 100%;
