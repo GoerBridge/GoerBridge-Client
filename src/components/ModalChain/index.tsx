@@ -62,7 +62,7 @@ const ModalChain: React.FC<Props> = ({ isOpen, onRequestClose, onAfterOpen, data
       <ContentModal>
         <div className="modal-header">
           <div className="title">
-            <Text fontWeight={600} fontSize="15px" color="#2E3A59">
+            <Text fontWeight={600} fontSize="15px">
               {titlePopup}
             </Text>
           </div>

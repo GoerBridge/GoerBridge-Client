@@ -197,7 +197,7 @@ const TransactionBridge = ({ transactionList, chainList }) => {
           Recent transactions
         </Text>
         <Link href="/transactions" passHref>
-          <Text as="a" color="#008037" fontSize={[16, , 20]}>
+          <Text as="a" fontSize={[16, , 20]}>
             View all transactions
           </Text>
         </Link>
