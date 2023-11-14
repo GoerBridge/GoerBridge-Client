@@ -504,7 +504,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
                           borderRadius: 8,
                         }}
                       >
-                        Max
+                        <div style={{ color: '#FFF' }}>Max</div>
                       </button>
                     </Flex>
                   }
@@ -636,7 +636,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
           <div className="form-action">
             {account ? (
               <Button onClick={handleTransfer} disabled={formIsValid}>
-                {formValue.sendAmount === 'Insufficient balance' ? 'Insufficient balance' : 'Cross-Chain Transfer'}
+                {formValue.sendAmount === 'Insufficient balance' ? 'Insufficient balance' : 'Teleport'}
               </Button>
             ) : (
               <ConnectWalletButton />
@@ -649,9 +649,9 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
         data={{
           blockchainList:
             isShowPopup === 'FROM'
-              ? allBlockchain.filter((item) => isChainSupported(item.chainid)) || []
+              ? allBlockchain?.filter((item) => isChainSupported(item.chainid)) || []
               : toChainList?.map((item) => {
-                  const chain = allBlockchain.find((i) => i.code === item)
+                  const chain = allBlockchain?.find((i) => i.code === item)
                   if (chain) {
                     return chain
                   }

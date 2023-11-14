@@ -9,10 +9,10 @@ export const StyledUserMenu = styled(Flex)`
   align-items: center;
   cursor: pointer;
   background-color: #fff;
-  border-radius:10px ;
-   /* width: 205px;
+  border-radius: 10px;
+  /* width: 205px;
   height: 36px; */
-  padding:6px 10px;
+  padding: 6px 10px;
   margin-left: 0;
   /* position: relative; */
 
@@ -29,17 +29,17 @@ export const StyledUserMenu = styled(Flex)`
   } */
 
   img {
-   height:20px ;
+    height: 20px;
   }
 `
 export const LabelText = styled.div`
   font-size: 14px;
-  background:#EDF1F7 ;
-  color: #000;
+  background: #edf1f7;
+  // color: #000;
   font-weight: 600;
-  padding:5px 15px ;
+  padding: 5px 15px;
   margin-left: 16px;
-  border-radius:5px ;
+  border-radius: 5px;
   ${({ theme }) => theme.mediaQueries.sm} {
     font-size: 16px;
     margin-right: 4px;
@@ -73,9 +73,8 @@ const ConnectWallet = ({ account, onPresentWalletModal, ...props }: any) => {
 
   return (
     <Button onClick={handleClick}>
-      Connect Wallet
+      <div style={{ color: '#FFF' }}>Connect Wallet</div>
     </Button>
-
   )
 }
 
