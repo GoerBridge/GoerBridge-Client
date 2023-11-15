@@ -29,17 +29,17 @@ import { ChainLogo } from './Logo/ChainLogo'
 export const StyledUserMenu = styled(Flex)`
   align-items: center;
   cursor: pointer;
-  display: inline-flex; 
+  display: inline-flex;
   padding: 4px 8px;
   padding-left: 60px;
   position: relative;
   z-index: 10;
-  padding:5px 15px;
+  padding: 5px 15px;
   border-radius: 10px;
-  background-color:#fff ;
-  gap:10px;
+  background-color: #ffffff60;
+  gap: 10px;
   img {
-   width:30px;   
+    width: 30px;
   }
 `
 const NetworkSelectContentStyle = styled.div`

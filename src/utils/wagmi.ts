@@ -9,7 +9,7 @@ import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 
-const CHAINS = process.env.NEXT_PUBLIC_NODE_ENV === 'production' ? [bsc, creditChain] : [bsc, creditChain]
+export const CHAINS = process.env.NEXT_PUBLIC_NODE_ENV === 'production' ? [bsc, creditChain] : [bsc, creditChain]
 
 const getNodeRealUrl = (networkName: string) => {
   let host = null

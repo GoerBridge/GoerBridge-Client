@@ -15,7 +15,7 @@ function SelectChain({ data, onSelect, selectTitle }: Props) {
   return (
     <SelectWrap onClick={onSelect}>
       <Text>{selectTitle}</Text>
-      <Flex bg="#f5f7fc" p={2} style={{ borderRadius: 10, minWidth: 220 }} justifyContent="space-between">
+      <Flex bg="#f5f7fc60" p={2} style={{ borderRadius: 10, minWidth: 220 }} justifyContent="space-between">
         <ChainLogo chainId={chainid} />
         <Text>{title || ' Select Network'}</Text>
         <ArrowDownIcon color="red" />
