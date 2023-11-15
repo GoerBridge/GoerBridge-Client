@@ -66,7 +66,7 @@ const Menu = ({ children }) => {
         <Flex>
           <Logo className="logo" href="/" />
         </Flex>
-        <Flex alignItems="center" style={{ justifyContent: 'flex-end', gap: 10 }}>
+        <Flex alignItems="center" style={{ justifyContent: 'flex-end', gap: 5 }}>
           <Flex onClick={() => router.push('/history')} alignItems="center" className="historyMn">
             {' '}
             <img src="/images/history.svg" alt="history" /> History

@@ -34,7 +34,7 @@ export const StyledUserMenu = styled(Flex)`
   padding-left: 60px;
   position: relative;
   z-index: 10;
-  padding: 5px 15px;
+  padding: 5px 5px;
   border-radius: 10px;
   background-color: #ffffff60;
   gap: 10px;
