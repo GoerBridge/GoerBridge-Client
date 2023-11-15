@@ -19,7 +19,7 @@ const TableBaseStyle = styled.div`
 
     .ant-table-thead .ant-table-cell,
     .ant-table-tbody .ant-table-cell {
-      color: #000;
+      color: #052c83;
       font-weight: 500;
       font-size: 14px;
       // background: #111b1e;
@@ -30,7 +30,7 @@ const TableBaseStyle = styled.div`
     }
     .ant-table-thead {
       .ant-table-cell {
-        border-bottom: 1px solid #383e48;
+        border-bottom: 1px solid #052c83;
       }
     }
     .ant-table-tbody {

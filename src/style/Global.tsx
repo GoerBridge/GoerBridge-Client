@@ -9,11 +9,14 @@ declare module 'styled-components' {
 const GlobalStyle = createGlobalStyle`
   * {
     font-family: 'Roboto';
+    color:#1a0c2e
   }
   body {
     // background-color: #f1f3fb;
-    background: linear-gradient(rgb(243,241,241) 0%,rgb(253 250 250) 31.77%);
-
+    background-image: url('/images/background/bg.png');
+    background-repeat:no-repeat; 
+    background-position: center top;
+    background-size: 100% auto;
     img {
       height: auto;
       max-width: 100%;

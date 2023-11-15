@@ -54,6 +54,7 @@ const InnerBody = styled.div`
 const Footer = styled.div`
   padding: 40px 10px;
   text-align: center;
+  color: #fff;
 `
 
 const Menu = ({ children }) => {
@@ -79,8 +80,8 @@ const Menu = ({ children }) => {
       <InnerBody>{children}</InnerBody>
       <Footer>
         Powered by{' '}
-        <a href={process.env.NEXT_PUBLIC_APP_URL ?? '/'} style={{ color: '#052C83' }}>
-          GoerBridge.com
+        <a href={process.env.NEXT_PUBLIC_APP_URL ?? '/'} target="_blank" style={{ color: '#5ce1e6' }} rel="noreferrer">
+          Teleportstation.com
         </a>
       </Footer>
     </WrapMenu>
