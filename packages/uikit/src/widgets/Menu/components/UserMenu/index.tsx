@@ -81,8 +81,8 @@ const UserMenu: React.FC<UserMenuProps> = ({ overlay, children, disabled, placem
   }, [isMobile, targetRef, tooltipRef, setIsOpen]);
 
   return (
-    <Flex position="relative" alignItems="center" ref={setTargetRef} {...props}>
-      <div onClick={() => setIsOpen((s) => !s)} role="presentation">
+    <Flex position="relative" alignItems="center" ref={setTargetRef} minWidth={40} {...props}>
+      <div onClick={() => setIsOpen((s) => !s)} role="presentation" style={{ minWidth: 40 }}>
         {children}
       </div>
       {!disabled && (

@@ -193,11 +193,11 @@ const TransactionBridge = ({ transactionList, chainList }) => {
   return (
     <TransactionBridgeStyle>
       <div className="head">
-        <Text fontSize={[16, , 20]} fontWeight="700">
+        <Text fontSize={[16, , 20]} fontWeight="700" color="#FFF">
           Recent transactions
         </Text>
         <Link href="/transactions" passHref>
-          <Text as="a" fontSize={[16, , 20]}>
+          <Text as="a" fontSize={[16, , 20]} color="#FFF">
             View all transactions
           </Text>
         </Link>
