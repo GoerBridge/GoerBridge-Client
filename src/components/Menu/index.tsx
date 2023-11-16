@@ -36,7 +36,7 @@ const WrapMenu = styled.div`
     display: inline-flex;
     position: relative;
     z-index: 10;
-    padding: 5px 15px;
+    padding: 7px 15px;
     border-radius: 10px;
     background-color: #ffffff60;
     gap: 10px;
