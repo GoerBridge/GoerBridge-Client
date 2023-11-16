@@ -1,11 +1,12 @@
 import Transactions from 'views/Transactions'
+import { bsc, creditChain } from '../../packages/wagmi/chains/chains'
 
-const pageSupportedChains = process.env.NEXT_PUBLIC_NODE_ENV === 'development' ? [5, 97, 84531] : [1, 56]
+const CHAINS = process.env.NEXT_PUBLIC_NODE_ENV === 'production' ? [bsc.id, creditChain.id] : [bsc.id, creditChain.id]
 
 const IndexPage = () => {
-  return <Transactions pageSupportedChains={pageSupportedChains} />
+  return <Transactions pageSupportedChains={CHAINS} />
 }
 
-IndexPage.chains = pageSupportedChains
+IndexPage.chains = CHAINS
 
 export default IndexPage

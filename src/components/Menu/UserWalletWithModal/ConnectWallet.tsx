@@ -37,8 +37,8 @@ export const LabelText = styled.div`
   background: #ffffff60;
   // color: #000;
   font-weight: 600;
-  padding: 5px 15px;
-  margin-left: 16px;
+  padding: 5px 10px;
+  margin-left: 10px;
   border-radius: 5px;
   ${({ theme }) => theme.mediaQueries.sm} {
     font-size: 16px;
