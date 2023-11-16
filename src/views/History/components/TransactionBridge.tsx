@@ -245,11 +245,11 @@ const TransactionBridge = ({ transactionList, chainList }) => {
         <Text fontSize={[16, , 20]} fontWeight="700" color="rgb(92, 225, 230)">
           Recent transactions
         </Text>
-        <Link href="/transactions" passHref>
+        {/* <Link href="/transactions" passHref>
           <Text as="a" fontSize={[16, , 20]} color="rgb(92, 225, 230)">
             View all transactions
           </Text>
-        </Link>
+        </Link> */}
       </div>
       <TableBase
         className="table-custom"
