@@ -293,7 +293,7 @@ const TransactionBridge = ({ pageSupportedChains }) => {
       <Link href="/" passHref>
         <a className="backlink">
           <BackIcon width="14px" />
-          <Text color="#ffffff99" fontSize="20px" fontWeight="700" ml="12px">
+          <Text color="#fff" fontSize="20px" fontWeight="700" ml="12px">
             History
           </Text>
         </a>
