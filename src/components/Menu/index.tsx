@@ -36,9 +36,9 @@ const WrapMenu = styled.div`
     display: inline-flex;
     position: relative;
     z-index: 10;
-    padding: 5px 15px;
+    padding: 7px 15px;
     border-radius: 10px;
-    background-color: #fff;
+    background-color: #ffffff60;
     gap: 10px;
   }
 `
@@ -66,7 +66,7 @@ const Menu = ({ children }) => {
         <Flex>
           <Logo className="logo" href="/" />
         </Flex>
-        <Flex alignItems="center" style={{ justifyContent: 'flex-end', gap: 10 }}>
+        <Flex alignItems="center" style={{ justifyContent: 'flex-end', gap: 5 }}>
           <Flex onClick={() => router.push('/history')} alignItems="center" className="historyMn">
             {' '}
             <img src="/images/history.svg" alt="history" /> History

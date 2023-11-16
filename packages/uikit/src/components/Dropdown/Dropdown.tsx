@@ -12,13 +12,13 @@ const getTop = ({ position }: PositionProps) => {
 };
 const getLeft = ({ position }: PositionProps) => {
   if (position === "top-left") {
-    return "0";
+    return "-150px";
   }
   return "auto";
 };
 const getRight = ({ position }: PositionProps) => {
   if (position === "top-right") {
-    return "0";
+    return "-150px";
   }
   return "auto";
 };
