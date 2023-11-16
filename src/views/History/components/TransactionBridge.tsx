@@ -74,7 +74,31 @@ const TransactionBridgeStyle = styled.div`
     // color: #343131;
     font-weight: 500;
     font-size: 14px;
-    background: #fff;
+    background: #ffffff99;
+  }
+  .ant-table-wrapper .ant-table:not(.ant-table-bordered) .ant-table-tbody > tr.ant-table-row:hover > td:first-child,
+  .ant-table-wrapper
+    .ant-table:not(.ant-table-bordered)
+    .ant-table-tbody
+    > tr
+    > td.ant-table-cell-row-hover:first-child,
+  .ant-table-wrapper
+    .ant-table:not(.ant-table-bordered)
+    .ant-table-tbody
+    > tr.ant-table-row.ant-table-row-selected
+    > td:first-child {
+    border-start-start-radius: 0px;
+    border-end-start-radius: 0px;
+  }
+  .ant-table-wrapper .ant-table:not(.ant-table-bordered) .ant-table-tbody > tr.ant-table-row:hover > td:last-child,
+  .ant-table-wrapper .ant-table:not(.ant-table-bordered) .ant-table-tbody > tr > td.ant-table-cell-row-hover:last-child,
+  .ant-table-wrapper
+    .ant-table:not(.ant-table-bordered)
+    .ant-table-tbody
+    > tr.ant-table-row.ant-table-row-selected
+    > td:last-child {
+    border-start-end-radius: 0px;
+    border-end-end-radius: 0px;
   }
   .ImCmd {
     font-weight: 300;
