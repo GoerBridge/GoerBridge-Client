@@ -71,7 +71,7 @@ export const TransferContent = ({
         <Flex justifyContent="space-between" mb={[12, 24]}>
           <Flex alignItems="center">
             <Box className="wIcon" mr="6px">
-              <ChainLogo chainId={fromNetwork.chainid} />
+              <ChainLogo chainId={fromNetwork?.chainid} />
             </Box>
             <Text fontSize={[14, , 16]} ml={[0, , '10px']}>
               {fromNetwork.title}
@@ -186,7 +186,7 @@ const TransferSuccessContentStyled = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #fff;
+  background: #ffffff99;
 
   > img {
     width: 300px;
