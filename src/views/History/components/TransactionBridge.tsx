@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Text, Grid } from '@pancakeswap/uikit'
 import TableBase from 'components/Table/TableBase'
 import { formatAmount, formatDate, formatCode } from 'helpers'
+import dayjs from 'dayjs'
 
 const TransactionBridgeStyle = styled.div`
   max-width: 1290px;
@@ -236,7 +237,16 @@ const TransactionBridge = ({ transactionList, chainList }) => {
     {
       title: 'Created',
       dataIndex: 'createdAt',
-      render: (text) => <div className="data-created">{formatDate(+text * 1000, 'YYYY/MM/DD   hh:ss')}</div>,
+      render: (text, record) => (
+        <div className="data-created">{dayjs(record.createdAt * 1000).format('YYYY/MM/DD  hh:mm:ss')}</div>
+      ),
+    },
+    {
+      title: 'Updated',
+      dataIndex: 'updatedAt',
+      render: (text, record) => (
+        <div className="data-created">{dayjs(record.updatedAt * 1000).format('YYYY/MM/DD  hh:mm:ss')}</div>
+      ),
     },
   ]
   return (

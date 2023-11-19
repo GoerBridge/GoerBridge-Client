@@ -21,9 +21,9 @@ import { usePollBlockNumber } from 'state/block/hooks'
 import { usePollCoreFarmData } from 'state/farms/hooks'
 import { useFetchAllBlockchain } from 'state/home/fetchAllBlockChain'
 import { Blocklist, Updaters } from '..'
+import Providers from '../Providers'
 import { SentryErrorBoundary } from '../components/ErrorBoundary'
 import Menu from '../components/Menu'
-import Providers from '../Providers'
 import GlobalStyle from '../style/Global'
 
 const EasterEgg = dynamic(() => import('components/EasterEgg'), { ssr: false })
@@ -56,7 +56,6 @@ function MPGlobalHooks() {
   useFetchAllBlockchain()
   return null
 }
-
 function MyApp(props: AppProps<{ initialReduxState: any }>) {
   const { pageProps, Component } = props
   const store = useStore(pageProps.initialReduxState)
