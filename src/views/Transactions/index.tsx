@@ -79,7 +79,7 @@ const TransactionBridgeStyle = styled.div`
 
       .ant-pagination-prev,
       .ant-pagination-next {
-        background: #fff;
+        background: #ffffff99;
         border-radius: 50%;
 
         > button {
@@ -137,7 +137,15 @@ const TransactionBridgeStyle = styled.div`
         }
       }
     }
-
+    .ant-pagination .ant-pagination-item-active {
+      background: #ffffff99;
+    }
+    .ant-table .ant-table-tbody .ant-table-cell {
+      background: #ffffff99;
+    }
+    .ant-table-wrapper .ant-table-thead > tr > th {
+      background: #ffffff99;
+    }
     .custom-text {
       font-size: 14px;
 
@@ -285,7 +293,7 @@ const TransactionBridge = ({ pageSupportedChains }) => {
       <Link href="/" passHref>
         <a className="backlink">
           <BackIcon width="14px" />
-          <Text fontSize="20px" fontWeight="700" ml="12px">
+          <Text color="#fff" fontSize="20px" fontWeight="700" ml="12px">
             History
           </Text>
         </a>

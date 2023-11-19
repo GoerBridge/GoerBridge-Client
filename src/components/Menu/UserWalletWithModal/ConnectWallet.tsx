@@ -8,7 +8,7 @@ export const StyledUserMenu = styled(Flex)`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  background-color: #fff;
+  background-color: #ffffff60;
   border-radius: 10px;
   /* width: 205px;
   height: 36px; */
@@ -34,11 +34,11 @@ export const StyledUserMenu = styled(Flex)`
 `
 export const LabelText = styled.div`
   font-size: 14px;
-  background: #edf1f7;
+  background: #ffffff60;
   // color: #000;
   font-weight: 600;
-  padding: 5px 15px;
-  margin-left: 16px;
+  padding: 5px 10px;
+  margin-left: 10px;
   border-radius: 5px;
   ${({ theme }) => theme.mediaQueries.sm} {
     font-size: 16px;

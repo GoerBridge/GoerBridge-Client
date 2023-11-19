@@ -18,7 +18,7 @@ import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import useTokenBalance from 'hooks/useTokenBalance'
 import { useEffect, useState } from 'react'
 // import { useAllBlockchain } from 'state/home/fetchAllBlockChain'
-import { useCurrencyByChain, useFetchAllCurrency, useFetchAllCurrencyByChain } from 'state/home/fetchCurrency'
+import { useCurrencyByChain, useFetchAllCurrencyByChain } from 'state/home/fetchCurrency'
 
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import ModalChain from 'components/ModalChain'
@@ -34,9 +34,12 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { useAllBlockchain } from 'state/home/fetchAllBlockChain'
 import multicall from 'utils/multicall'
 import { useBalance } from 'wagmi'
-import { isChainSupported } from 'utils/wagmi'
+import { CHAINS, isChainSupported } from 'utils/wagmi'
 import BigNumber from 'bignumber.js'
 import { useCurrency } from 'hooks/Tokens'
+// eslint-disable-next-line lodash/import-scope
+import _ from 'lodash'
+import { bsc, creditChain } from '@pancakeswap/wagmi/chains'
 import BridgeABI from '../../config/abi/Bridge.json'
 import SelectChain from './components/SelectChain'
 import WInput from './components/WInput'
@@ -243,14 +246,20 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
     !!formError?.sendAmount ||
     !!formError?.receiveAmount
 
-  const { setParamsTransaction } = useFetchTransaction()
-  const { setFetchCurrencyAttrParams } = useFetchAllCurrencyByChain({ blockchain_id: formValue.fromNetwork?._id })
   const allBlockchain = useAllBlockchain()
+  const { setParamsTransaction } = useFetchTransaction()
+  const { setFetchCurrencyAttrParams } = useFetchAllCurrencyByChain({
+    blockchain_id: formValue.fromNetwork?._id || allBlockchain?.find((item) => item.chainid === chainId)?._id,
+  })
 
   const currencyByChain = useCurrencyByChain()
   const getToChain = async () => {
     const listToBlockchain = await bridgeContract.listBlockchain()
-    setToChainList(listToBlockchain)
+    const supportedToChain = _.intersection(
+      [bsc, creditChain].map((item) => item.network),
+      listToBlockchain,
+    )
+    setToChainList(supportedToChain)
   }
 
   useEffect(() => {
@@ -274,13 +283,15 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
       }))
     }
   }, [chainId, allBlockchain])
-
+  const currentFromChain = allBlockchain?.find((item) => item?.chainId === chainId)
   // Fetch currency attr
   useEffect(() => {
-    setFetchCurrencyAttrParams({
-      blockchain_id: formValue.fromNetwork?._id,
-    })
-  }, [formValue.fromNetwork])
+    if (formValue.fromNetwork?._id) {
+      setFetchCurrencyAttrParams({
+        blockchain_id: formValue.fromNetwork?._id || currentFromChain._id,
+      })
+    }
+  }, [formValue.fromNetwork, currentFromChain, allBlockchain])
 
   // Auto set address when logged in
   useEffect(() => {
@@ -480,7 +491,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
               selectTitle="From"
             />
             {/* Send amount */}
-            <Box background="#f5f7fc" paddingY="10px" paddingX="10px" borderRadius="15px" mb={2} mt={3}>
+            <Box background="#f5f7fc60" paddingY="10px" paddingX="10px" borderRadius="15px" mb={2} mt={3}>
               <div className="wrap-input-item">
                 <WInput
                   value={formValue.sendAmount}
@@ -582,7 +593,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
               selectTitle="To"
             />
             {/* Receive amount */}
-            <Box background="#f5f7fc" paddingY="10px" paddingX="10px" borderRadius="15px" mb={4} mt={3}>
+            <Box background="#f5f7fc60" paddingY="10px" paddingX="10px" borderRadius="15px" mb={4} mt={3}>
               <div className="wrap-input-item">
                 <WInput
                   value={formValue.receiveAmount}
@@ -645,6 +656,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
         </div>
       </Styles.CardBridgeTransfer>
       <ModalChain
+        currency={formValue.currency}
         isOpen={isShowPopup === 'FROM' || isShowPopup === 'TO'}
         data={{
           blockchainList:

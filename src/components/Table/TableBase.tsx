@@ -6,7 +6,7 @@ const TableBaseStyle = styled.div`
   padding: 24px 16px;
   border-radius: 12px;
   // background: #111b1e;
-  border: 1px solid #032a82;
+  border: 1px solid rgb(92, 225, 230);
   overflow: hidden;
 
   ${({ theme }) => theme.mediaQueries.lg} {
@@ -30,7 +30,7 @@ const TableBaseStyle = styled.div`
     }
     .ant-table-thead {
       .ant-table-cell {
-        border-bottom: 1px solid #052c83;
+        border-bottom: 1px solid rgb(92, 225, 230);
       }
     }
     .ant-table-tbody {

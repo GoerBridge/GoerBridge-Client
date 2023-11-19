@@ -7,7 +7,8 @@ export const CardBridgeTransfer = styled.div`
   width: 100%;
   max-width: 630px;
   margin: 0 auto 48px;
-  background: rgb(255, 255, 255);
+  background: rgb(255, 255, 255, 0.6);
+
   border: 1px solid rgb(218 220 223);
   border-radius: 16px;
   .head {

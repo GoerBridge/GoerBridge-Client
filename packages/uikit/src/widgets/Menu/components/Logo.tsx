@@ -57,7 +57,7 @@ const Logo: React.FC<any> = ({ href }) => {
   );
 
   return (
-    <Flex width="100%" height="100%" mr="12px">
+    <Flex width="100%" height="100%" mr="6px">
       {isAbsoluteUrl ? (
         <StyledLink as="a" href={href} aria-label="">
           {innerLogo}

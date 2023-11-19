@@ -11,12 +11,22 @@ interface Props {
   onAfterOpen?: () => void
   content?: any
   data?: any
+  currency?: any
 }
 
-const ModalChain: React.FC<Props> = ({ isOpen, onRequestClose, onAfterOpen, data }) => {
+const ModalChain: React.FC<Props> = ({ isOpen, onRequestClose, onAfterOpen, data, currency }) => {
   const { blockchainList, chainId, titlePopup } = data
 
   const _renderContent = () => {
+    if (blockchainList.length === 0) {
+      return (
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <Text color="red" bold pl="12px" fontSize={[18, , 24]}>
+            {!currency ? 'Please Sellect Currency !!!' : 'Not found supported chains'}
+          </Text>
+        </div>
+      )
+    }
     return blockchainList?.map((chain) => {
       return (
         <Box

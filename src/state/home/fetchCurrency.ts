@@ -52,12 +52,11 @@ export const useFetchAllCurrencyByChain = (
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(false)
   const [fetchCurrencyAttrParams, setFetchCurrencyAttrParams] = useState(params)
-
   const fetchAllCurrencyByChain = useCallback(async () => {
     setLoading(true)
     try {
       getCurrencyAttr({
-        ...fetchCurrencyAttrParams,
+        ...params,
         project_id: process.env.NEXT_PUBLIC_PROJECT_ID,
       }).then((response) => {
         // console.log('fetchCurrencyAttrParams', fetchCurrencyAttrParams)
@@ -72,17 +71,13 @@ export const useFetchAllCurrencyByChain = (
       console.error(error)
       dispatch(setCurrencyByChain({ currencyByChain: null }))
     }
-  }, [dispatch, fetchCurrencyAttrParams])
+  }, [dispatch, fetchCurrencyAttrParams, params])
 
   useEffect(() => {
-    console.log('params.blockchain_id', params.blockchain_id)
-
     if (params.blockchain_id) {
-      console.log('params.blockchain_id22=======', params.blockchain_id)
-
       fetchAllCurrencyByChain()
     }
-  }, [fetchCurrencyAttrParams, params.blockchain_id])
+  }, [params.blockchain_id])
 
   return { fetchAllCurrencyByChain, loading, setFetchCurrencyAttrParams }
 }

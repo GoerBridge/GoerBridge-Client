@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Flex, Logo } from '@pancakeswap/uikit'
+import { Flex, Logo, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { NetworkSwitcher } from 'components/NetworkSwitcher'
 import { useRouter } from 'next/router'
 import UserWalletWithModal from './UserWalletWithModal'
@@ -36,9 +36,9 @@ const WrapMenu = styled.div`
     display: inline-flex;
     position: relative;
     z-index: 10;
-    padding: 5px 15px;
+    padding: 7px 15px;
     border-radius: 10px;
-    background-color: #fff;
+    background-color: #ffffff60;
     gap: 10px;
   }
 `
@@ -59,22 +59,24 @@ const Footer = styled.div`
 
 const Menu = ({ children }) => {
   const router = useRouter()
-
+  const { isMobile } = useMatchBreakpoints()
   return (
     <WrapMenu>
-      <div className="nav">
+      <div style={{ display: 'flex', justifyContent: 'space-between' }} className="nav">
         <Flex>
           <Logo className="logo" href="/" />
         </Flex>
-        <Flex alignItems="center" style={{ justifyContent: 'flex-end', gap: 10 }}>
+        <Flex flex={2} alignItems="center" justifyContent="flex-end" style={{ gap: 5 }}>
           <Flex onClick={() => router.push('/history')} alignItems="center" className="historyMn">
             {' '}
             <img src="/images/history.svg" alt="history" /> History
           </Flex>
-          <NetworkSwitcher />
-          <Flex width="200px" justifyContent="flex-end">
+          <div style={{ minWidth: 40 }}>
+            <NetworkSwitcher />
+          </div>
+          <div style={{ width: isMobile ? 150 : 187, display: 'flex', justifyContent: 'end' }}>
             <UserWalletWithModal />
-          </Flex>
+          </div>
         </Flex>
       </div>
       <InnerBody>{children}</InnerBody>

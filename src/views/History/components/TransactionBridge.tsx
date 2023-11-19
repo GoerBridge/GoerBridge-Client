@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Text, Grid } from '@pancakeswap/uikit'
 import TableBase from 'components/Table/TableBase'
 import { formatAmount, formatDate, formatCode } from 'helpers'
+import dayjs from 'dayjs'
 
 const TransactionBridgeStyle = styled.div`
   max-width: 1290px;
@@ -74,7 +75,31 @@ const TransactionBridgeStyle = styled.div`
     // color: #343131;
     font-weight: 500;
     font-size: 14px;
-    background: #fff;
+    background: #ffffff99;
+  }
+  .ant-table-wrapper .ant-table:not(.ant-table-bordered) .ant-table-tbody > tr.ant-table-row:hover > td:first-child,
+  .ant-table-wrapper
+    .ant-table:not(.ant-table-bordered)
+    .ant-table-tbody
+    > tr
+    > td.ant-table-cell-row-hover:first-child,
+  .ant-table-wrapper
+    .ant-table:not(.ant-table-bordered)
+    .ant-table-tbody
+    > tr.ant-table-row.ant-table-row-selected
+    > td:first-child {
+    border-start-start-radius: 0px;
+    border-end-start-radius: 0px;
+  }
+  .ant-table-wrapper .ant-table:not(.ant-table-bordered) .ant-table-tbody > tr.ant-table-row:hover > td:last-child,
+  .ant-table-wrapper .ant-table:not(.ant-table-bordered) .ant-table-tbody > tr > td.ant-table-cell-row-hover:last-child,
+  .ant-table-wrapper
+    .ant-table:not(.ant-table-bordered)
+    .ant-table-tbody
+    > tr.ant-table-row.ant-table-row-selected
+    > td:last-child {
+    border-start-end-radius: 0px;
+    border-end-end-radius: 0px;
   }
   .ImCmd {
     font-weight: 300;
@@ -212,20 +237,29 @@ const TransactionBridge = ({ transactionList, chainList }) => {
     {
       title: 'Created',
       dataIndex: 'createdAt',
-      render: (text) => <div className="data-created">{formatDate(+text * 1000, 'YYYY/MM/DD   hh:ss')}</div>,
+      render: (text, record) => (
+        <div className="data-created">{dayjs(record.createdAt * 1000).format('YYYY/MM/DD  hh:mm:ss')}</div>
+      ),
+    },
+    {
+      title: 'Updated',
+      dataIndex: 'updatedAt',
+      render: (text, record) => (
+        <div className="data-created">{dayjs(record.updatedAt * 1000).format('YYYY/MM/DD  hh:mm:ss')}</div>
+      ),
     },
   ]
   return (
     <TransactionBridgeStyle>
       <div className="head">
-        <Text fontSize={[16, , 20]} fontWeight="700">
+        <Text fontSize={[16, , 20]} fontWeight="700" color="rgb(92, 225, 230)">
           Recent transactions
         </Text>
-        <Link href="/transactions" passHref>
-          <Text as="a" fontSize={[16, , 20]}>
+        {/* <Link href="/transactions" passHref>
+          <Text as="a" fontSize={[16, , 20]} color="rgb(92, 225, 230)">
             View all transactions
           </Text>
-        </Link>
+        </Link> */}
       </div>
       <TableBase
         className="table-custom"
