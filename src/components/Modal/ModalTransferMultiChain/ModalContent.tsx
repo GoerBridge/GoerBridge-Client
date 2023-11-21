@@ -74,11 +74,11 @@ export const TransferContent = ({
               <ChainLogo chainId={fromNetwork?.chainid} />
             </Box>
             <Text fontSize={[14, , 16]} ml={[0, , '10px']}>
-              {fromNetwork.title}
+              {fromNetwork?.title}
             </Text>
           </Flex>
           <Text fontSize={[14, , 16]} textAlign="right">
-            -{sendAmount} {currency.code}
+            -{sendAmount} {currency?.code}
           </Text>
         </Flex>{' '}
         <Flex justifyContent="space-between">
@@ -87,7 +87,7 @@ export const TransferContent = ({
             as="a"
             fontSize={[14, , 16]}
             textAlign="right"
-            href={getBlockExploreLink(currency.token_address, 'address', fromNetwork.chainid)}
+            href={getBlockExploreLink(currency?.token_address, 'address', fromNetwork?.chainid)}
             target="_blank"
             rel="noreferrer"
           >
@@ -138,7 +138,7 @@ export const TransferContent = ({
             Gas Fee:
           </Text>
           <Text fontSize={['13px', '', '16px']} color="#F98C36">
-            {gasFee || '--'} {currency.code}
+            {gasFee || '--'} {currency?.code}
           </Text>
         </Flex>
         <Flex justifyContent="space-between" mb="5px">

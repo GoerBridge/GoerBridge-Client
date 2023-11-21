@@ -254,7 +254,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
 
   const currencyByChain = useCurrencyByChain()
   const getToChain = async () => {
-    const listToBlockchain = await bridgeContract.listBlockchain()
+    const listToBlockchain = await bridgeContract.listBlockchainTo()
     const supportedToChain = _.intersection(
       [bsc, creditChain].map((item) => item.network),
       listToBlockchain,

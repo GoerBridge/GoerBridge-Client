@@ -224,19 +224,6 @@
   },
   {
     "inputs": [],
-    "name": "ADMIN_ROLE",
-    "outputs": [
-      {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "DEFAULT_ADMIN_ROLE",
     "outputs": [
       {
@@ -303,7 +290,7 @@
   {
     "inputs": [
       {
-        "internalType": "address",
+        "internalType": "address payable",
         "name": "receiver",
         "type": "address"
       },
@@ -347,17 +334,17 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
       }
     ],
-    "name": "addAdmin",
+    "name": "addBlockchainFrom",
     "outputs": [
       {
-        "internalType": "bool",
+        "internalType": "uint256",
         "name": "",
-        "type": "bool"
+        "type": "uint256"
       }
     ],
     "stateMutability": "nonpayable",
@@ -376,7 +363,7 @@
         "type": "uint256"
       }
     ],
-    "name": "addBlockchain",
+    "name": "addBlockchainTo",
     "outputs": [
       {
         "internalType": "uint256",
@@ -409,31 +396,12 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "blockchain",
-    "outputs": [
-      {
         "internalType": "string",
-        "name": "",
+        "name": "name",
         "type": "string"
       }
     ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "delAdmin",
+    "name": "delBlockchainFrom",
     "outputs": [
       {
         "internalType": "bool",
@@ -452,7 +420,7 @@
         "type": "string"
       }
     ],
-    "name": "delBlockchain",
+    "name": "delBlockchainTo",
     "outputs": [
       {
         "internalType": "bool",
@@ -490,7 +458,26 @@
         "type": "string"
       }
     ],
-    "name": "existsBlockchain",
+    "name": "existsBlockchainFrom",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      }
+    ],
+    "name": "existsBlockchainTo",
     "outputs": [
       {
         "internalType": "bool",
@@ -509,6 +496,25 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "fromBlockchainReceive",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
       }
     ],
     "stateMutability": "view",
@@ -648,7 +654,20 @@
   },
   {
     "inputs": [],
-    "name": "listBlockchain",
+    "name": "listBlockchainFrom",
+    "outputs": [
+      {
+        "internalType": "string[]",
+        "name": "",
+        "type": "string[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "listBlockchainTo",
     "outputs": [
       {
         "internalType": "string[]",
@@ -777,17 +796,7 @@
       },
       {
         "internalType": "address",
-        "name": "adminDefault",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
         "name": "monitor",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "admin",
         "type": "address"
       },
       {
@@ -888,6 +897,25 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "toBlockchainTransfer",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "token",
     "outputs": [
@@ -914,6 +942,25 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "transferOwnership",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "unpause",
     "outputs": [],
@@ -928,7 +975,7 @@
         "type": "uint256"
       },
       {
-        "internalType": "address",
+        "internalType": "address payable",
         "name": "receiverWallet",
         "type": "address"
       }
