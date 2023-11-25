@@ -33,7 +33,7 @@ const Flex = styled.div`
 
 const colors = {
   // these color names should be place in the theme once the palette is finalized
-  warning: "#F98C36",
+  warning: "#000000",
   success: "#129E7D",
   danger: "failure",
 };

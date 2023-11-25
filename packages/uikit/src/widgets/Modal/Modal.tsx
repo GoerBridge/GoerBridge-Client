@@ -48,7 +48,7 @@ const Modal: React.FC<React.PropsWithChildren<ModalProps>> = ({
           <Flex flexDirection="column">
             <Heading>{title}</Heading>
             {description && (
-              <Text color="#F98C36" fontSize="16px" mt="8px">
+              <Text color="#000000" fontSize="16px" mt="8px">
                 {description}
               </Text>
             )}
