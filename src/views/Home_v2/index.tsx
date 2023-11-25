@@ -616,7 +616,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
                 <Text fontSize={['14px', '', '16px']} color="#052C83">
                   System Fee ({formValue.currency?.system_fee || '--'}%):
                 </Text>
-                <Text fontSize={['14px', '', '16px']} color="#F98C36">
+                <Text fontSize={['14px', '', '16px']} color="#000000">
                   {+formValue.sendAmount * (+formValue.currency?.system_fee / 100)}
                 </Text>
               </Flex> */}
@@ -624,7 +624,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
                 <Text fontSize={['14px', '', '16px']} color="#052C83">
                   Gas Fee:
                 </Text>
-                <Text fontSize={['14px', '', '16px']} color="#F98C36">
+                <Text fontSize={['14px', '', '16px']} color="#000000">
                   {gasFee || '--'} {formValue.currency?.code}
                 </Text>
               </Flex>
@@ -632,7 +632,7 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
                 <Text fontSize={['14px', '', '16px']} color="#052C83">
                   Estimated Time:
                 </Text>
-                <Text fontSize={['14px', '', '16px']} color="#F98C36">
+                <Text fontSize={['14px', '', '16px']} color="#000000">
                   60 seconds
                 </Text>
               </Flex>

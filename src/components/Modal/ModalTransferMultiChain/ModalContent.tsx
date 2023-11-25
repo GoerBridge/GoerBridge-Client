@@ -129,7 +129,7 @@ export const TransferContent = ({
           <Text fontSize={['13px', '', '16px']} color="#008037">
             System Fee ({tokenFeePercent ? tokenFeePercent * 100 : '--'}%):
           </Text>
-          <Text fontSize={['13px', '', '16px']} color="#F98C36">
+          <Text fontSize={['13px', '', '16px']} color="#000000">
             {+sendAmount * +tokenFeePercent}
           </Text>
         </Flex>
@@ -137,7 +137,7 @@ export const TransferContent = ({
           <Text fontSize={['13px', '', '16px']} color="#008037">
             Gas Fee:
           </Text>
-          <Text fontSize={['13px', '', '16px']} color="#F98C36">
+          <Text fontSize={['13px', '', '16px']} color="#000000">
             {gasFee || '--'} {currency?.code}
           </Text>
         </Flex>
@@ -145,7 +145,7 @@ export const TransferContent = ({
           <Text fontSize={['13px', '', '16px']} color="#008037">
             Estimated Time:
           </Text>
-          <Text fontSize={['13px', '', '16px']} color="#F98C36">
+          <Text fontSize={['13px', '', '16px']} color="#000000">
             60 seconds
           </Text>
         </Flex>
