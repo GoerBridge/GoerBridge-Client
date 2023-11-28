@@ -36,7 +36,6 @@ export function useApproveCallback(
   const { toastError } = useToast()
   const token = amountToApprove?.currency?.isToken ? amountToApprove.currency : undefined
   const currentAllowance = useTokenAllowance(token, account ?? undefined, spender)
-  console.log('currentAllowance', currentAllowance)
 
   const pendingApproval = useHasPendingApproval(token?.address, spender)
 
@@ -46,7 +45,6 @@ export function useApproveCallback(
     if (amountToApprove.currency?.isNative) return ApprovalState.APPROVED
     // we might not have enough data to know whether or not we need to approve
     if (!currentAllowance) return ApprovalState.UNKNOWN
-
     // amountToApprove will be defined if currentAllowance is
     return currentAllowance.lessThan(amountToApprove)
       ? pendingApproval
@@ -93,6 +91,8 @@ export function useApproveCallback(
     const estimatedGas = await tokenContract.estimateGas.approve(spender, MaxUint256).catch(() => {
       // general fallback for tokens who restrict approval amounts
       useExact = true
+      console.log('amountToApprove', amountToApprove)
+
       return tokenContract.estimateGas.approve(spender, amountToApprove.quotient.toString())
     })
 

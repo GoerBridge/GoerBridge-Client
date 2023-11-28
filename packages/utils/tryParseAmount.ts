@@ -7,7 +7,8 @@ function tryParseAmount<T extends Currency>(value?: string, currency?: T): Curre
     return undefined
   }
   try {
-    const typedValueParsed = parseUnits(value, 18).toString()
+    const typedValueParsed = parseUnits(value.toString(), 18).toString()
+    console.log('typedValueParsed', typedValueParsed)
 
     if (typedValueParsed !== '0') {
       return CurrencyAmount.fromRawAmount(currency, JSBI.BigInt(typedValueParsed))

@@ -1,12 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { InjectedModalProps, Modal, useToast } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import { useApproveCallback, useApproveTransfer } from 'hooks/useApproveCallback'
+import { useApproveCallback } from 'hooks/useApproveCallback'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useBridgeContract } from 'hooks/useContract'
 import { useEffect, useState } from 'react'
 import { useTransactionAdder } from 'state/transactions/hooks'
-import { calculateGasMargin } from 'utils'
+import { calculateGasMargin, isAddress } from 'utils'
 import { getDecimalAmount } from 'utils/formatBalance'
 import { logError } from 'utils/sentry'
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
@@ -18,16 +18,16 @@ import { TransferContent, TransferSuccessContent } from './ModalContent'
 
 const ModalTransferMultiChain: React.FC<InjectedModalProps> = ({ onDismiss, dataModal }) => {
   const { fromNetwork, toNetwork, currency, address, sendAmount, chainId, account } = dataModal || {}
-  // console.log('dataModal ====>', dataModal);
+  console.log('dataModal ====>', currency, address, chainId)
   const { toastError } = useToast()
   const { t } = useTranslation()
-
-  const _currency = useCurrency(currency.token_address)
-  const bridgeContract = useBridgeContract(currency.contract_bridge)
+  const checksummedInput = isAddress(currency?.token_address)
+  const _currency = useCurrency((checksummedInput || currency?.token_address) as string)
+  const bridgeContract = useBridgeContract(currency?.contract_bridge)
   const [loading, setLoading] = useState<boolean>(false)
   const [transferSuccess, setTransferSuccess] = useState<boolean>(false)
-  const independentAmount: CurrencyAmount<Currency> | undefined = tryParseAmount(`${sendAmount}`, _currency as Currency)
-  const [approvalState, approve] = useApproveCallback(independentAmount, bridgeContract.address)
+  const independentAmount: CurrencyAmount<Currency> | undefined = tryParseAmount(`${1}`, _currency as Currency)
+  const [approvalState, approve] = useApproveCallback(independentAmount, bridgeContract?.address)
 
   const { callWithGasPrice } = useCallWithGasPrice()
   const addTransaction = useTransactionAdder()

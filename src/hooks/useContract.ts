@@ -9,7 +9,7 @@ import {
   Weth,
   Zap,
 } from 'config/abi/types'
-import BridgeABI from 'config/abi/Bridge.json'
+import BridgeABI from 'config/abi/abi_bridge.json'
 import zapAbi from 'config/abi/zap.json'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useProviderOrSigner } from 'hooks/useProviderOrSigner'

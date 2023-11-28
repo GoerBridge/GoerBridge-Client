@@ -7,16 +7,20 @@ import { GELATO_NATIVE } from 'config/constants'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
+import useSWRImmutable from 'swr/immutable'
+import multicall from 'utils/multicall'
+import { FetchStatus } from 'config/constants/types'
+import { ERC20_BYTES32_ABI } from '../config/abi/erc20'
+import erc20ABI from '../config/abi/erc20.json'
 import {
   combinedTokenMapFromActiveUrlsAtom,
   combinedTokenMapFromOfficialsUrlsAtom,
   useUnsupportedTokenList,
   useWarningTokenList,
 } from '../state/lists/hooks'
-import { NEVER_RELOAD, useSingleCallResult } from '../state/multicall/hooks'
 import useUserAddedTokens from '../state/user/hooks/useUserAddedTokens'
 import { isAddress } from '../utils'
-import { useBytes32TokenContract, useTokenContract } from './useContract'
+import { useActiveChainId } from './useActiveChainId'
 import useNativeCurrency from './useNativeCurrency'
 
 const mapWithoutUrls = (tokenMap: TokenAddressMap, chainId: number) =>
@@ -122,56 +126,66 @@ function parseStringOrBytes32(str: string | undefined, bytes32: string | undefin
 // null if loading
 // otherwise returns the token
 export function useToken(tokenAddress?: string): Token | undefined | null {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const tokens = useAllTokens()
 
   const address = isAddress(tokenAddress)
 
-  const tokenContract = useTokenContract(address || undefined, false)
-  const tokenContractBytes32 = useBytes32TokenContract(address || undefined, false)
   const token: Token | undefined = address ? tokens[address] : undefined
 
-  const tokenName = useSingleCallResult(token ? undefined : tokenContract, 'name', undefined, NEVER_RELOAD)
-  const tokenNameBytes32 = useSingleCallResult(
-    token ? undefined : tokenContractBytes32,
-    'name',
-    undefined,
-    NEVER_RELOAD,
+  const { data, status } = useSWRImmutable(
+    !token && chainId && address && ['fetchTokenInfo', chainId, address],
+    async () => {
+      const calls = ['name', 'symbol', 'decimals'].map((method) => {
+        return { address: address.toString(), name: method }
+      })
+
+      return multicall(erc20ABI, calls, chainId)
+    },
   )
-  const symbol = useSingleCallResult(token ? undefined : tokenContract, 'symbol', undefined, NEVER_RELOAD)
-  const symbolBytes32 = useSingleCallResult(token ? undefined : tokenContractBytes32, 'symbol', undefined, NEVER_RELOAD)
-  const decimals = useSingleCallResult(token ? undefined : tokenContract, 'decimals', undefined, NEVER_RELOAD)
+
+  const tokenName = data?.[0]?.[0]
+  const symbol = data?.[1]?.[0]
+  const decimals = data?.[2]?.[0]
+
+  const { data: dataBytes, status: statusBytes } = useSWRImmutable(
+    !token &&
+      chainId &&
+      address &&
+      (status === FetchStatus.Fetched || status === FetchStatus.Failed) &&
+      (!tokenName || !symbol) && ['fetchTokenInfo32', chainId, address],
+    async () => {
+      const calls = ['name', 'symbol'].map((method) => {
+        return { address: address.toString(), name: method }
+      })
+
+      return multicall(ERC20_BYTES32_ABI, calls, chainId)
+    },
+  )
+
+  const tokenNameBytes32 = dataBytes?.[0]?.[0]
+  const symbolBytes32 = dataBytes?.[1]?.[0]
 
   return useMemo(() => {
     if (token) return token
     if (!chainId || !address) return undefined
-    if (decimals.loading || symbol.loading || tokenName.loading) return null
-    if (decimals.result) {
+    if (status !== FetchStatus.Fetched && statusBytes !== FetchStatus.Fetched) return null
+    if (Number.isInteger(decimals)) {
       return new Token(
         chainId,
         address,
-        decimals.result[0],
-        parseStringOrBytes32(symbol.result?.[0], symbolBytes32.result?.[0], 'UNKNOWN'),
-        parseStringOrBytes32(tokenName.result?.[0], tokenNameBytes32.result?.[0], 'Unknown Token'),
+        decimals,
+        parseStringOrBytes32(symbol, symbolBytes32, 'UNKNOWN'),
+        parseStringOrBytes32(tokenName, tokenNameBytes32, 'Unknown Token'),
       )
     }
     return undefined
-  }, [
-    address,
-    chainId,
-    decimals.loading,
-    decimals.result,
-    symbol.loading,
-    symbol.result,
-    symbolBytes32.result,
-    token,
-    tokenName.loading,
-    tokenName.result,
-    tokenNameBytes32.result,
-  ])
+  }, [address, chainId, status, statusBytes, decimals, symbol, symbolBytes32, token, tokenName, tokenNameBytes32])
 }
 
 export function useCurrency(currencyId: string | undefined): Currency | Token | null | undefined {
+  console.log('currencyId', currencyId?.toUpperCase())
+
   const native = useNativeCurrency()
   const isNative =
     currencyId?.toUpperCase() === native.symbol?.toUpperCase() || currencyId?.toLowerCase() === GELATO_NATIVE
