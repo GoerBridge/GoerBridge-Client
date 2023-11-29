@@ -105,7 +105,7 @@ const ModalTransferMultiChain: React.FC<InjectedModalProps> = ({ onDismiss, data
         }
         setLoading(false)
         setTransferSuccess(false)
-        throw error
+        // throw error
       })
   }
 
