@@ -36,8 +36,6 @@ export function useApproveCallback(
   const { toastError } = useToast()
   const token = amountToApprove?.currency?.isToken ? amountToApprove.currency : undefined
   const currentAllowance = useTokenAllowance(token, account ?? undefined, spender)
-  console.log('currentAllowance', currentAllowance)
-
   const pendingApproval = useHasPendingApproval(token?.address, spender)
 
   // check the current approval status

@@ -78,35 +78,69 @@ const ModalTransferMultiChain: React.FC<InjectedModalProps> = ({ onDismiss, data
       console.log('errror', error)
     }
 
-    callWithGasPrice(bridgeContract, methodName, [params.amount, params.toBlockchain, params.toAddress], {
-      gasLimit: calculateGasMargin(estimatedGas),
-      value: getDecimalAmount(new BigNumber(gasValue), 18).toString(), // fromNetwork.chainid === 5 ? params.amount : 0,
-    })
-      .then(async (response) => {
+    try {
+      const response = await callWithGasPrice(
+        bridgeContract,
+        methodName,
+        [params.amount, params.toBlockchain, params.toAddress],
+        {
+          gasLimit: calculateGasMargin(estimatedGas),
+          value: getDecimalAmount(new BigNumber(gasValue), 18).toString(), // fromNetwork.chainid === 5 ? params.amount : 0,
+        },
+      )
+      // TODO: need to fix
+      try {
         const resWait = await response.wait()
-        if (resWait) {
-          addTransaction(response, {
-            summary: `Transfer ${currency.code} from ${fromNetwork.code} to ${toNetwork.code}`,
-            translatableSummary: {
-              text: 'Transfer %currency% from %fromChain% to %toChain%',
-              data: { currency: currency.code, fromChain: fromNetwork.code, toChain: toNetwork.code },
-            },
-            type: 'bridge-transfer',
-          })
-          setLoading(false)
-          setTransferSuccess(true)
-        }
+      } catch (error) {
+        console.log('Failed to response.wait() token', error)
+      }
+
+      addTransaction(response, {
+        summary: `Transfer ${currency.code} from ${fromNetwork.code} to ${toNetwork.code}`,
+        translatableSummary: {
+          text: 'Transfer %currency% from %fromChain% to %toChain%',
+          data: { currency: currency.code, fromChain: fromNetwork.code, toChain: toNetwork.code },
+        },
+        type: 'bridge-transfer',
       })
-      .catch((error: any) => {
-        logError(error)
-        console.error('Failed to transfer token', error)
-        if (error?.code !== 4001) {
-          toastError(t('Error'), error.message)
-        }
-        setLoading(false)
-        setTransferSuccess(false)
-        // throw error
-      })
+      setLoading(false)
+      setTransferSuccess(true)
+    } catch (error: any) {
+      // logError(error)
+      console.log('error ============', error)
+      console.error('Failed to transfer token', error)
+      if (error?.code !== 4001) {
+        toastError(t('Error'), error.message)
+      }
+      setLoading(false)
+      setTransferSuccess(false)
+    }
+
+    // .then(async (response) => {
+    //   const resWait = await response.wait()
+    //   if (resWait) {
+    //     addTransaction(response, {
+    //       summary: `Transfer ${currency.code} from ${fromNetwork.code} to ${toNetwork.code}`,
+    //       translatableSummary: {
+    //         text: 'Transfer %currency% from %fromChain% to %toChain%',
+    //         data: { currency: currency.code, fromChain: fromNetwork.code, toChain: toNetwork.code },
+    //       },
+    //       type: 'bridge-transfer',
+    //     })
+    //     setLoading(false)
+    //     setTransferSuccess(true)
+    //   }
+    // })
+    // .catch((error: any) => {
+    //   logError(error)
+    //   console.error('Failed to transfer token', error)
+    //   if (error?.code !== 4001) {
+    //     toastError(t('Error'), error.message)
+    //   }
+    //   setLoading(false)
+    //   setTransferSuccess(false)
+    //   // throw error
+    // })
   }
 
   return (
