@@ -148,7 +148,7 @@ const ModalTransferMultiChain: React.FC<InjectedModalProps> = ({ onDismiss, data
       title="Transfer"
       description="Please review and confirm the details"
       onDismiss={onDismiss}
-      style={{ maxWidth: '630px', background: '#9b99b4' }}
+      style={{ maxWidth: '500px', background: '#9b99b4' }}
     >
       {!transferSuccess ? (
         <TransferContent
