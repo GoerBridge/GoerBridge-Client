@@ -14,12 +14,14 @@ import type { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Script from 'next/script'
-import { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistor, useStore } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
 import { usePollCoreFarmData } from 'state/farms/hooks'
 import { useFetchAllBlockchain } from 'state/home/fetchAllBlockChain'
+import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { Blocklist, Updaters } from '..'
 import Providers from '../Providers'
 import { SentryErrorBoundary } from '../components/ErrorBoundary'
@@ -128,6 +130,10 @@ type AppPropsWithLayout = AppProps & {
 const ProductionErrorBoundary = process.env.NODE_ENV === 'production' ? SentryErrorBoundary : Fragment
 
 const App = ({ Component, pageProps }: AppPropsWithLayout) => {
+  const { chainId } = useActiveChainId()
+  useEffect(() => {
+    replaceBrowserHistory('chainId', chainId)
+  }, [chainId])
   if (Component.pure) {
     return <Component {...pageProps} />
   }

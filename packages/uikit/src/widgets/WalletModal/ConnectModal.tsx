@@ -29,7 +29,7 @@ const WalletWrapper = styled(Box)`
     width: 90%;
 
     margin: 32px auto 0;
-    background: #5ac132;
+    // background: #5ac132;
     border-radius: 4px;
   }
 `;
