@@ -154,7 +154,7 @@ export const creditChain: Chain = {
     default: { name: 'Scan creditsmartchain', url: 'https://scan.creditsmartchain.com/' },
   },
   multicall: {
-    address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+    address: '0x0C0E3BBC68E070a57C0857B2f792f6Cf3Ced6A6C',
     blockCreated: 17422483,
   },
   testnet: true,

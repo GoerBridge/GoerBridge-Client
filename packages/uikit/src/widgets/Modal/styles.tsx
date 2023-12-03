@@ -12,7 +12,7 @@ export const ModalHeader = styled.div<{ background?: string }>`
   align-items: center;
   background: transparent;
   /* border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder}; */
-  border-bottom: 2px solid #383e48;
+  // border-bottom: 2px solid #383e48;
   display: flex;
   padding: 24px 16px;
 
@@ -59,7 +59,7 @@ export const ModalBackButton: React.FC<React.PropsWithChildren<{ onBack: ModalPr
   );
 };
 
-export const ModalContainer = styled(MotionBox) <{ $maxWidth: string }>`
+export const ModalContainer = styled(MotionBox)<{ $maxWidth: string }>`
   overflow: hidden;
   background: #fff;
   border-top-left-radius: 12px;
