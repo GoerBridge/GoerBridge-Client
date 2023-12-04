@@ -38,7 +38,7 @@ const WrapMenu = styled.div`
     z-index: 10;
     padding: 7px 15px;
     border-radius: 10px;
-    background-color: #ffffff60;
+    background-color: rgb(255, 255, 255, 0.6);
     gap: 10px;
   }
 `

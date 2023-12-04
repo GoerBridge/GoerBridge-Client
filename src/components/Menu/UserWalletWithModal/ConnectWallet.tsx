@@ -8,7 +8,7 @@ export const StyledUserMenu = styled(Flex)`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  background-color: #ffffff60;
+  background-color: rgb(255, 255, 255, 0.6);
   border-radius: 10px;
   /* width: 205px;
   height: 36px; */
@@ -34,7 +34,7 @@ export const StyledUserMenu = styled(Flex)`
 `
 export const LabelText = styled.div`
   font-size: 14px;
-  background: #ffffff60;
+  background: rgb(255, 255, 255, 0.6);
   // color: #000;
   font-weight: 600;
   padding: 5px 10px;
