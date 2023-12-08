@@ -83,7 +83,7 @@ const Menu = ({ children }) => {
       <Footer>
         Powered by{' '}
         <a href={process.env.NEXT_PUBLIC_APP_URL ?? '/'} target="_blank" style={{ color: '#5ce1e6' }} rel="noreferrer">
-          Teleportstation.com
+          Teleportstation.io
         </a>
       </Footer>
     </WrapMenu>
