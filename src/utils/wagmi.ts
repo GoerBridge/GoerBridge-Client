@@ -1,5 +1,5 @@
 import { SafeConnector } from '@gnosis.pm/safe-apps-wagmi'
-import { bsc, creditChain } from '@pancakeswap/wagmi/chains'
+import { avalandche, bsc, creditChain } from '@pancakeswap/wagmi/chains'
 import { BinanceWalletConnector } from '@pancakeswap/wagmi/connectors/binanceWallet'
 import memoize from 'lodash/memoize'
 import { configureChains, createClient } from 'wagmi'
@@ -9,7 +9,8 @@ import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 
-export const CHAINS = process.env.NEXT_PUBLIC_NODE_ENV === 'production' ? [bsc, creditChain] : [bsc, creditChain]
+export const CHAINS =
+  process.env.NEXT_PUBLIC_NODE_ENV === 'production' ? [bsc, creditChain, avalandche] : [bsc, creditChain, avalandche]
 
 const getNodeRealUrl = (networkName: string) => {
   let host = null

@@ -13,6 +13,7 @@ export enum ChainId {
   BASE_GOERLI_ETH = 84531,
   POLYGON_MUMBAI = 80001,
   CREDIT = 4400,
+  AVALANCHE = 43114,
 }
 
 export enum TradeType {

@@ -24,6 +24,7 @@ export const NetworkModal = ({ pageSupportedChains = SUPPORT_ONLY_BSC }: { pageS
     () => Boolean(pageSupportedChains.length) && !pageSupportedChains.includes(chainId),
     [chainId, pageSupportedChains],
   )
+  console.log('pageSupportedChains', pageSupportedChains)
 
   if (isPageNotSupported && isBNBOnlyPage) {
     return (

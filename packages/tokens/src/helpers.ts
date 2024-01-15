@@ -62,6 +62,7 @@ export const EMPTY_LIST: TokenAddressMap = {
   [ChainId.BASE_GOERLI_ETH]: {},
   [ChainId.POLYGON_MUMBAI]: {},
   [ChainId.CREDIT]: {},
+  [ChainId.AVALANCHE]: {},
 }
 
 export function deserializeToken(serializedToken: SerializedWrappedToken): Token {
