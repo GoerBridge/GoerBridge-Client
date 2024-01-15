@@ -4,7 +4,7 @@ import { Chain } from 'wagmi'
 export const avalandche: Chain = {
   id: 43114,
   name: 'Avalanche C-Chain',
-  network: 'avalanche',
+  network: 'AVAX',
   rpcUrls: {
     default: 'https://rpc.ankr.com/avalanche',
   },
