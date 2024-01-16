@@ -13,7 +13,7 @@ const GlobalStyle = createGlobalStyle`
   }
   body {
     // background-color: #f1f3fb;
-    background-image: url('/images/background/bg.jpeg');
+    background-image: url('/images/background/bg.jpg');
     background-repeat: no-repeat;
 background-position: center center;
 background-attachment: fixed;
