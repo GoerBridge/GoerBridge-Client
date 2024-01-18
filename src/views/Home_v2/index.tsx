@@ -34,7 +34,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { useAllBlockchain } from 'state/home/fetchAllBlockChain'
 import multicall from 'utils/multicall'
 import { useBalance } from 'wagmi'
-import { CHAINS, isChainSupported } from 'utils/wagmi'
+import { CHAINS, chains, isChainSupported } from 'utils/wagmi'
 import BigNumber from 'bignumber.js'
 import { useCurrency } from 'hooks/Tokens'
 // eslint-disable-next-line lodash/import-scope
@@ -226,17 +226,18 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
   const { balance: getBalance } = useTokenBalance(formValue?.currency?.token_address)
 
   let currencyBalance = 0
-  // console.log('formValue?.currency?.token_address==>', formValue?.currency?.token_address);
 
   if (formValue?.currency?.token_address === '0x0000000000000000000000000000000000000000') {
     if (typeof nativeBalance.data !== 'undefined') {
       currencyBalance = +formatBigNumber(nativeBalance.data.value, 6)
     }
   } else {
-    currencyBalance = +formatBigNumber(etherBigNumber.from(getBalance.toString()), 6)
+    currencyBalance = +formatBigNumber(
+      etherBigNumber.from(getBalance.toString()),
+      6,
+      chains.find((item) => item.id === chainId).nativeCurrency.decimals,
+    )
   }
-
-  // console.log('currencyBalance===>', currencyBalance);
 
   const formIsValid =
     !!formError?.fromNetwork ||
