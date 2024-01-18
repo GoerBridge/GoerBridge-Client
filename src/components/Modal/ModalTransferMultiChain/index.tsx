@@ -39,7 +39,8 @@ const ModalTransferMultiChain: React.FC<InjectedModalProps> = ({ onDismiss, data
       if (bridgeContract) {
         const _gasFee = await bridgeContract?.FEE_NATIVE()
         const _tokenFeePercent = await bridgeContract?.feePercentageBridge()
-        setGasFee((+_gasFee / 10 ** (_currency?.decimals || 18)).toString())
+        const _currencyDecimals = 10 ** (_currency?.decimals || 18)
+        setGasFee((+_gasFee / _currencyDecimals).toString())
         setGasFeeTokenPercent((+_tokenFeePercent / 1000).toString())
       }
     }

@@ -229,14 +229,10 @@ const Home = ({ pageSupportedChains }: { pageSupportedChains: number[] }) => {
 
   if (formValue?.currency?.token_address === '0x0000000000000000000000000000000000000000') {
     if (typeof nativeBalance.data !== 'undefined') {
-      currencyBalance = +formatBigNumber(nativeBalance.data.value, 6)
+      currencyBalance = +formatBigNumber(nativeBalance.data.value, 6, _currency?.decimals || 18)
     }
   } else {
-    currencyBalance = +formatBigNumber(
-      etherBigNumber.from(getBalance.toString()),
-      6,
-      chains.find((item) => item.id === chainId).nativeCurrency.decimals,
-    )
+    currencyBalance = +formatBigNumber(etherBigNumber.from(getBalance.toString()), 6, _currency?.decimals || 18)
   }
 
   const formIsValid =
