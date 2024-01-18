@@ -7,13 +7,19 @@ export const avalandche: Chain = {
   network: 'AVAX',
   rpcUrls: {
     default: 'https://rpc.ankr.com/avalanche',
+    public: 'https://rpc.ankr.com/avalanche',
   },
-  nativeCurrency: { name: 'Avalanche', symbol: 'AVAX', decimals: 18 },
+  nativeCurrency: { name: 'Avalanche', symbol: 'AVAX', decimals: 6 },
   blockExplorers: {
     default: {
       name: 'snowtrace',
       url: 'https://snowtrace.io/',
     },
+  },
+
+  multicall: {
+    address: '0xd68A5f46e7F7AB0f122cda11F4AC49e72b56f005',
+    blockCreated: 40374887,
   },
 }
 

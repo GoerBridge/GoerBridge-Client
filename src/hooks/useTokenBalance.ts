@@ -9,11 +9,12 @@ import { useMemo } from 'react'
 import useSWR from 'swr'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { bscRpcProvider } from 'utils/providers'
+import { useAccount } from 'wagmi'
 import { useTokenContract } from './useContract'
 import { useSWRContract } from './useSWRContract'
 
 const useTokenBalance = (tokenAddress: string, forceBSC?: boolean) => {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
 
   const contract = useTokenContract(tokenAddress, false)
 
@@ -26,7 +27,7 @@ const useTokenBalance = (tokenAddress: string, forceBSC?: boolean) => {
             params: [account],
           }
         : null,
-    [account, contract, forceBSC],
+    [account, contract],
   )
 
   const { data, status, ...rest } = useSWRContract(key as any, {
@@ -36,10 +37,9 @@ const useTokenBalance = (tokenAddress: string, forceBSC?: boolean) => {
   return {
     ...rest,
     fetchStatus: status,
-    balance: data ? new BigNumber(data.toString()) : BIG_ZERO,
+    balance: data ? new BigNumber(data?.toString()) : BIG_ZERO,
   }
 }
-
 export const useGetBnbBalance = () => {
   const { account } = useWeb3React()
   const { status, data, mutate } = useSWR([account, 'bnbBalance'], async () => {
