@@ -1,7 +1,8 @@
 import AdminHomePage from 'views/Admin/Home'
 import AdminLayout from 'components/Admin/Layout'
+import { chains } from 'utils/wagmi'
 
-const pageSupportedChains = process.env.NEXT_PUBLIC_NODE_ENV === 'development' ? [5, 97] : [1, 56]
+const pageSupportedChains = chains.map((chain) => chain.id)
 
 const Admin = () => {
   return <AdminHomePage />

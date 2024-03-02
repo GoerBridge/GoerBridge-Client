@@ -2,7 +2,14 @@
 import Link from 'next/link'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { DollarOutlined, GroupOutlined, HomeOutlined, MenuOutlined } from '@ant-design/icons'
+import {
+  DollarOutlined,
+  BarsOutlined,
+  HomeOutlined,
+  MenuOutlined,
+  EditOutlined,
+  FileProtectOutlined,
+} from '@ant-design/icons'
 import { Button, Layout, Menu, MenuProps, Space, Spin } from 'antd'
 import styled, { keyframes } from 'styled-components'
 import BreadCrumbs from 'components/BreadCrumbs'
@@ -34,7 +41,7 @@ const turnLeft = keyframes`
 
 const WAdminLayout = styled.div`
   font-family: Roboto, sans-serif;
-
+  min-height: 100vh;
   .logo {
     height: 70px;
     background: rgba(0, 0, 0, 0.3);
@@ -204,7 +211,9 @@ const WMenuStyled = styled.div`
   li {
     padding: 12px 24px;
     margin-bottom: 8px;
-
+    p {
+      color: #fff !important;
+    }
     &.active {
       padding-left: 24px;
       background-color: rgba(0, 0, 0, 4);
@@ -229,6 +238,9 @@ const WMenuStyled = styled.div`
 
       span {
         margin-left: 10px;
+        svg {
+          fill: #fff;
+        }
       }
 
       p {
@@ -256,18 +268,13 @@ const items: MenuItemType[] = [
   {
     key: '/admin',
     label: 'Sale Report',
-    icon: <HomeOutlined />,
+    icon: <HomeOutlined color="#FFF" />,
   },
-  // {
-  //   key: '/admin/campaigns',
-  //   label: 'Campaigns',
-  //   icon: <GroupOutlined />,
-  // },
-  // {
-  //   key: '/admin/pool',
-  //   label: 'Stake Pool',
-  //   icon: <DollarOutlined />,
-  // },
+  {
+    key: '/admin/token-list',
+    label: 'Token List',
+    icon: <BarsOutlined color="#FFF" />,
+  },
 ]
 
 const AdminLayout = ({ children }: any) => {
@@ -319,7 +326,7 @@ const AdminLayout = ({ children }: any) => {
 
   return (
     <WAdminLayout>
-      <Layout>
+      <Layout style={{ minHeight: '100vh' }}>
         <Sider
           trigger={null}
           collapsible
@@ -335,7 +342,7 @@ const AdminLayout = ({ children }: any) => {
             {items.map((item) => {
               const Icon = item.icon
               return (
-                <li key={item.key} className={activeMenuItem.key === item.key ? `active` : ''}>
+                <li key={item.key} className={activeMenuItem?.key === item?.key ? `active` : ''}>
                   <Link href={`${item.key}`}>
                     <a>
                       {Icon}
