@@ -320,9 +320,9 @@ const AdminLayout = ({ children }: any) => {
       </RequireLoginStyled>
     )
   }
-  // if (!isOwner) {
-  //   return <RequireLoginStyled>You do not have access to this site</RequireLoginStyled>
-  // }
+  if (!isOwner) {
+    return <RequireLoginStyled>You do not have access to this site</RequireLoginStyled>
+  }
 
   return (
     <WAdminLayout>
