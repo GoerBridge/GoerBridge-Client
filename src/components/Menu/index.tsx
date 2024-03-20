@@ -67,6 +67,14 @@ const Menu = ({ children }) => {
           <Logo className="logo" href="/" />
         </Flex>
         <Flex flex={2} alignItems="center" justifyContent="flex-end" style={{ gap: 5 }}>
+          <Flex
+            onClick={() => router.push('https://swap.teleportstation.io/')}
+            alignItems="center"
+            className="historyMn"
+            style={{ minWidth: 40, height: 38 }}
+          >
+            <div>Swap</div>
+          </Flex>
           <Flex onClick={() => router.push('/history')} alignItems="center" className="historyMn">
             {' '}
             <img src="/images/history.svg" alt="history" /> History

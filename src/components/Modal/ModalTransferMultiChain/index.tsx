@@ -39,14 +39,13 @@ const ModalTransferMultiChain: React.FC<InjectedModalProps> = ({ onDismiss, data
       if (bridgeContract) {
         const _gasFee = await bridgeContract?.FEE_NATIVE()
         const _tokenFeePercent = await bridgeContract?.feePercentageBridge()
-        const _currencyDecimals = 10 ** (_currency?.decimals || 18)
+        const _currencyDecimals = 10 ** 18
         setGasFee((+_gasFee / _currencyDecimals).toString())
         setGasFeeTokenPercent((+_tokenFeePercent / 1000).toString())
       }
     }
     getFeeGas()
   }, [bridgeContract])
-  // console.log('tokenFeePercent===>', tokenFeePercent);
 
   async function onTransfer() {
     setLoading(true)
